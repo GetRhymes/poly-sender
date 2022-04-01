@@ -1,0 +1,87 @@
+.button__create {
+}
+
+.text__button {
+    padding-top: 2px;
+}
+
+.popup {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.popup.active {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.popup__content {
+    border-radius: 12px;
+    background-color: white;
+    height: 250px;
+    width: 450px;
+}
+
+.popup__info {
+    border-radius: 12px;
+    background-color: white;
+    height: 410px;
+    width: 500px;
+}
+
+.popup__buttons {
+    margin: 20px 5px 5px;
+    justify-content: space-between;
+    display: flex;
+}
+
+.popup__label {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-family: "Roboto","Helvetica","Arial", sans-serif;
+    justify-content: center;
+    color: white;
+    background-color: #366ac3;
+    display: flex;
+}
+
+.popup__share__content  {
+    border-radius: 12px;
+    background-color: white;
+    height: 350px;
+    width: 500px;
+}
+
+.popup__share__body {
+    overflow: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    height: 242px;
+}
+
+.popup__share_button {
+    margin: 10px;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+.popup__configuration__block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -1,0 +1,17 @@
+.top__bar {
+    height: 65px;
+    background: #366ac3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+    width: 250px;
+}
+
+
+.drop__menu {
+   margin-right: 12px;
+   margin-top: 8.5px;
+   margin-bottom: 8.5px;
+}

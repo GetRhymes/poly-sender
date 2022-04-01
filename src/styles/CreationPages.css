@@ -1,0 +1,42 @@
+.header__label {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    font-family: "Roboto","Helvetica","Arial", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    color: #366ac3;
+}
+
+.header__label.counter {
+    font-size: 18px;
+    margin-bottom: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.double__block {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.background__card {
+    padding: 20px;
+    border: 1px solid rgba(145, 158, 171, 0.12);
+    background-color: rgba(251, 251, 252, 1);
+    margin-right: 20px;
+    border-radius: 12px;
+    flex: 1;
+}
+
+.header__block {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.end__block {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
