@@ -8,47 +8,26 @@ import AttributesList from "./attributes/AttributesList";
 import AttributesExpression from "./attributes/AttributesExpression";
 import FiltersList from "./filters/FiltersList";
 import FiltersExpression from "./filters/FiltersExpression";
-import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
 
 function NavigationRoutes() {
 
     const [currentIdAttribute, setCurrentIdAttribute] = useState(null)
+
     const [currentIdFilter, setCurrentIdFilter] = useState(null)
 
-    const [dataTable, setDataTable] = useStateIfMounted([])
+    const [nameAttribute, setNameAttribute] = useStateIfMounted("")
 
-    const [dataAccordions, setDataAccordions] = useStateIfMounted([])
-
-    const [dataAttributes, setDataAttributes] = useStateIfMounted([])
-
-    async function fetchDataTable() {
-        const dataTable = await axios('http://localhost:8080/students/getAll');
-        setDataTable(dataTable.data);
-    }
-    async function fetchDataAccordion() {
-        const dataAccordions = await axios('http://localhost:8080/attributes/getGroupAttributes');
-        setDataAccordions(dataAccordions.data);
-    }
-
-    async function fetchDataAttributes() {
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
-        setDataAttributes(dataAttributes.data);
-    }
-
-    useEffect(()=> {
-        fetchDataTable()
-        fetchDataAccordion()
-        fetchDataAttributes()
-    }, [])
+    const [selectedGroupName, setSelectedGroupName] = useState("")
 
     return (
         <Routes>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/attributes" element={
                 <ManageAttributes
-
                     setId={setCurrentIdAttribute}
+                    setNameAttribute={setNameAttribute}
+                    setSelectedGroupName={setSelectedGroupName}
                 />
             }/>
             <Route path="/filters" element={
@@ -60,17 +39,19 @@ function NavigationRoutes() {
             <Route path="/attributes/list" element={
                 <AttributesList
                     id={currentIdAttribute}
-                    dataTable={dataTable}
-                    dataAccordions={dataAccordions}
-                    dataAttributes={dataAttributes}
+                    nameAttribute={nameAttribute}
+                    setNameAttribute={setNameAttribute}
+                    selectedGroupName={selectedGroupName}
+                    setSelectedGroupName={setSelectedGroupName}
+                    setCurrentIdAttribute={setCurrentIdAttribute}
                 />
             }/>
             <Route path="/attributes/expression" element={<AttributesExpression/>}/>
             <Route path="/filters/list" element={
                 <FiltersList
                     id={currentIdFilter}
-                    dataTable={dataTable}
-                    dataAccordions={dataAccordions}
+                    // dataTable={dataTable}
+                    // dataAccordions={dataAccordions}
                 />
             }/>
             <Route path="/filters/expression" element={<FiltersExpression/>}/>

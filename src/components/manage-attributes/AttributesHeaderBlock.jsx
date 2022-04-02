@@ -36,6 +36,7 @@ function AttributesHeaderBlock({setPopupCreateActive, setId, handleSearchValue, 
                 />
                 <Autocomplete
                     clearOnEscape
+                    disabled={dataGroupNames.length === 0}
                     options={dataGroupNames}
                     onChange={(event, value) => handleGroupName(value)}
                     sx={{ width: 300, marginLeft: "20px" }}

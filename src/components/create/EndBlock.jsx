@@ -2,8 +2,18 @@ import React from 'react';
 import {Button} from "@mui/material";
 import '../../styles/CreationPages.css'
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-function EndBlock({name, selectedStudents, mailOption, selectedGroupName}) {
+function EndBlock(
+    {
+        name,
+        selectedStudents,
+        mailOption,
+        selectedGroupName,
+        id,
+        setLoading
+    }
+) {
     return (
         <div className="background__card end__block">
             <div className="header__label counter">
@@ -14,19 +24,37 @@ function EndBlock({name, selectedStudents, mailOption, selectedGroupName}) {
                 selectedStudents={selectedStudents}
                 mailOption={mailOption}
                 selectedGroupName={selectedGroupName}
+                id={id}
+                setLoading={setLoading}
             />
         </div>
     );
 }
 
-function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName}) {
+function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName, id, setLoading}) {
+
+    let navigate = useNavigate();
+
+    const endPoint = mailOption !== undefined ? "filters" : "attributes"
+
+    function redirect() {
+        let path = "/" + endPoint
+        navigate(path);
+    }
+
     return (
         <Button
             onClick={() => {
-                mailOption !== undefined ?
-                    createFilter(name, selectedStudents, mailOption)
+                id !== null ?
+                    mailOption !== undefined ?
+                        updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect)
+                        :
+                        updateAttribute(id, name, selectedStudents, selectedGroupName, setLoading, redirect)
                     :
-                    createAttribute(name, selectedStudents, selectedGroupName)
+                    mailOption !== undefined ?
+                        createFilter(name, selectedStudents, mailOption, setLoading, redirect)
+                        :
+                        createAttribute(name, selectedStudents, selectedGroupName, setLoading, redirect)
             }}
             sx={{
                 paddingRight: "10px",
@@ -43,7 +71,7 @@ function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName}) {
                 }
             }}
         >
-            <p className="text__button">Создать</p>
+            <p className="text__button">{id === null ? "Создать" : "Сохранить"}</p>
         </Button>
     );
 }
@@ -60,7 +88,8 @@ function arraySelectedStudents(selectedStudents) {
     return arrayStudentsId
 }
 
-async function createAttribute(nameAttribute, selectedStudents, selectedGroupAttribute) {
+async function createAttribute(nameAttribute, selectedStudents, selectedGroupAttribute, setLoading, redirect) {
+    setLoading(true)
     const newAttribute = {
         name: nameAttribute,
         groupName: selectedGroupAttribute,
@@ -68,9 +97,32 @@ async function createAttribute(nameAttribute, selectedStudents, selectedGroupAtt
     }
     console.log(newAttribute)
     await axios.post("http://localhost:8080/attributes/createAttribute", newAttribute)
+    setLoading(false)
+    redirect()
 }
 
-async function createFilter(nameFilter, selectedStudents, mailOption) {
+async function updateAttribute(
+    idAttribute,
+    nameAttribute,
+    selectedStudents,
+    selectedGroupAttribute,
+    setLoading,
+    redirect
+) {
+    setLoading(true)
+    const newAttribute = {
+        idAttribute: idAttribute,
+        name: nameAttribute,
+        groupName: selectedGroupAttribute,
+        studentsId: arraySelectedStudents(selectedStudents)
+    }
+    await axios.post("http://localhost:8080/attributes/updateAttribute", newAttribute)
+    setLoading(false)
+    redirect()
+}
+
+async function createFilter(nameFilter, selectedStudents, mailOption, setLoading, redirect) {
+    setLoading(true)
     const newFilter = {
         name: nameFilter,
         mailOption: mailOption,
@@ -78,6 +130,22 @@ async function createFilter(nameFilter, selectedStudents, mailOption) {
     }
     console.log(newFilter)
     // await axios.post("http://localhost:8080/attributes/createFilter", newFilter)
+    setLoading(false)
+    redirect()
+}
+
+async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, setLoading, redirect) {
+    setLoading(true)
+    const newFilter = {
+        idFilter: idFilter,
+        name: nameFilter,
+        mailOption: mailOption,
+        studentsId: arraySelectedStudents(selectedStudents)
+    }
+    console.log(newFilter)
+    // await axios.post("http://localhost:8080/attributes/updateFilter", newFilter)
+    setLoading(false)
+    redirect()
 }
 
 export default EndBlock;

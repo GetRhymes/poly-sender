@@ -7,7 +7,7 @@ import {FormControl, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 
-function PopupCreate({active, setActive, endPoint}) {
+function PopupCreate({active, setActive, endPoint, setLoading}) {
 
     const [way, setWay] = useState(null);
 
@@ -35,8 +35,9 @@ function PopupCreate({active, setActive, endPoint}) {
     }
 
     async function createGroupName(groupName) {
-        console.log(groupName)
+        setLoading(true)
         await axios.post("http://localhost:8080/attributes/createGroupName", groupName)
+        setLoading(false)
     }
 
     function createGroup() {

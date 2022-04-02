@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import LabelInBlock from "./create/LabelInBlock";
-import {FormControl, FormControlLabel, InputLabel, Radio, RadioGroup, Select} from "@mui/material";
+import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useStateIfMounted} from "use-state-if-mounted";
 import axios from "axios";
+import LoadingScreen from "./LoadingScreen";
 
 function SelectorGroup({selectedGroupName, handleSelector}) {
 
@@ -14,13 +15,13 @@ function SelectorGroup({selectedGroupName, handleSelector}) {
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])
 
     async function fetchDataGroupNames() {
-        const dataGroupNames = await axios('http://localhost:8080/attributes/getGroupNames');
+        const dataGroupNames = await axios('http://localhost:8080/attributes/getGroupNamesCurrentStaff');
         setDataGroupNames(dataGroupNames.data);
     }
 
     return (
         dataGroupNames.length === 0 ?
-            <h1>Loading...</h1>
+            <LoadingScreen/>
             :
         <div className="background__card">
             <LabelInBlock label="Выбор раздела"/>

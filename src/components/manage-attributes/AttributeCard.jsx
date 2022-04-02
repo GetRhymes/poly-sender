@@ -2,7 +2,7 @@ import React from 'react';
 import ButtonActionGroup from "../ButtonActionGroup";
 import AttributeRowInfo from "./AttributeRowInfo";
 
-function AttributeCard({attribute, setId, setPopupShareActive}) {
+function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute, setSelectedGroupName}) {
     return (
         <div className="attribute__card">
             <div className="attribute__card__header">
@@ -23,6 +23,10 @@ function AttributeCard({attribute, setId, setPopupShareActive}) {
                         id={attribute.id}
                         setId={setId}
                         setPopupShareActive={setPopupShareActive}
+                        nameAttribute={attribute.attributeName}
+                        setNameAttribute={setNameAttribute}
+                        selectedGroupName={attribute.groupName}
+                        setSelectedGroupName={setSelectedGroupName}
                     />
                 </div>
             </div>

@@ -32,10 +32,18 @@ function WorkBlock(
 
     let sampleDataTable = []
 
+    function includesArray(arrayAttr, arrayStudAttr) {
+        let isInclude = false
+        for (let studAttr of arrayStudAttr) {
+            isInclude = arrayAttr.includes(studAttr)
+            if (isInclude) break
+        }
+        return isInclude
+    }
     if (Object.keys(sample).length) {
         for (let data of dataTable) {
             const first = Object.entries(sample)[0]
-            if (first[1].includes(data.attributes[first[0]])) {
+            if (includesArray(first[1], data.attributes[first[0]])) {
                 sampleDataTable.push(data)
             }
         }
@@ -45,7 +53,7 @@ function WorkBlock(
             sampleWithOutFirst.splice(0, 1)
             for (let item of sampleDataTable) {
                 for (let groupAttributes of sampleWithOutFirst) {
-                    if (!groupAttributes[1].includes(item.attributes[groupAttributes[0]])) {
+                    if (!includesArray(groupAttributes[1], item.attributes[groupAttributes[0]])) {
                         temp.splice(temp.indexOf(item), 1)
                     }
                 }

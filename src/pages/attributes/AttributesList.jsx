@@ -5,17 +5,40 @@ import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
 import EndBlock from "../../components/create/EndBlock";
 import {useStateIfMounted} from "use-state-if-mounted";
+import PopupLoading from "../../components/PopupLoading";
+import axios from "axios";
+import LoadingScreen from "../../components/LoadingScreen";
 
 
-function AttributesList({id, dataTable, dataAccordions, dataAttributes}) {
+function AttributesList(
+    {
+        id,
+        nameAttribute,
+        setNameAttribute,
+        selectedGroupName,
+        setSelectedGroupName,
+        setCurrentIdAttribute
+    }
+) {
 
-    const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
+    const [dataTable, setDataTable] = useStateIfMounted([])
 
-    const [selectedGroupName, setSelectedGroupName] = useStateIfMounted("")
+    const [dataAccordions, setDataAccordions] = useStateIfMounted([])
 
-    function handleSelectedGroupName(event) {
-        const groupName = event.target.value
-        setSelectedGroupName(groupName)
+    const [dataAttributes, setDataAttributes] = useStateIfMounted([])
+
+    async function fetchDataTable() {
+        const dataTable = await axios('http://localhost:8080/students/getAll');
+        setDataTable(dataTable.data);
+    }
+    async function fetchDataAccordion() {
+        const dataAccordions = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        setDataAccordions(dataAccordions.data);
+    }
+
+    async function fetchDataAttributes() {
+        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
+        setDataAttributes(dataAttributes.data);
     }
 
     function initSelectedStudentState() {
@@ -32,26 +55,45 @@ function AttributesList({id, dataTable, dataAccordions, dataAttributes}) {
         return ss
     }
 
+    const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
-    const [nameAttribute, setNameAttribute] = useStateIfMounted("")
+    useEffect(() => {
+        fetchDataAttributes()
+        fetchDataTable()
+        fetchDataAccordion()
+
+        return () => {
+            setSelectedGroupName("")
+            setCurrentIdAttribute(null)
+            setNameAttribute("")
+        }
+    }, [])
+
+
+    function handleSelectedGroupName(event) {
+        const groupName = event.target.value
+        setSelectedGroupName(groupName)
+    }
 
     function handleAttributesName(event) {
         const name = event.target.value
         setNameAttribute(name)
     }
 
+    const [loading, setLoading] = useStateIfMounted(false)
+
     const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || dataAttributes.length === 0
 
     return (
         isLoading ?
-            <h1>Loading...</h1>
+            <LoadingScreen/>
             :
             <Container maxWidth="lg">
                 <HeaderBlock
                     name={nameAttribute}
                     handle={handleAttributesName}
                     isFilter={false}
-                    selectedName={selectedGroupName}
+                    selectedGroupName={selectedGroupName}
                     handleSelector={handleSelectedGroupName}
                 />
                 <WorkBlock
@@ -65,7 +107,10 @@ function AttributesList({id, dataTable, dataAccordions, dataAttributes}) {
                     name={nameAttribute}
                     selectedStudents={selectedStudents}
                     selectedGroupName={selectedGroupName}
+                    id={id}
+                    setLoading={setLoading}
                 />
+                <PopupLoading active={loading}/>
             </Container>
     );
 }

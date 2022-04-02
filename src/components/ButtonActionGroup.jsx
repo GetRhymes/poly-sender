@@ -5,7 +5,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 
-function ButtonActionGroup({orientation, endPoint, type, id, setId, setPopupShareActive}) {
+function ButtonActionGroup({orientation, endPoint, type, id, setId, setPopupShareActive, nameAttribute, setNameAttribute, selectedGroupName, setSelectedGroupName}) {
 
     let navigate = useNavigate();
 
@@ -17,8 +17,10 @@ function ButtonActionGroup({orientation, endPoint, type, id, setId, setPopupShar
     return (
         <ButtonGroup orientation={orientation} sx={{boxShadow: "unset", borderRadius: "12px"}}>
             <Button onClick={() => {
-                setId(id)
                 redirect()
+                setNameAttribute(nameAttribute)
+                setSelectedGroupName(selectedGroupName)
+                setId(id)
             }}>
                 <EditIcon/>
             </Button>
