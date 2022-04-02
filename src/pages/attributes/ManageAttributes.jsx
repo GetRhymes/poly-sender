@@ -34,11 +34,15 @@ const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
         setLoadingGroupNames(false)
     }
 
-    let [loadingAttributes, setLoadingAttributes] = useState(false)
+    const [loadingAttributes, setLoadingAttributes] = useState(false)
 
-    let [loadingGroupNames, setLoadingGroupNames] = useState(false)
+    const [loadingGroupNames, setLoadingGroupNames] = useState(false)
 
-    let [loadingCreateGroupName, setLoadingCreateGroupName] = useState(false)
+    const [loadingCreateGroupName, setLoadingCreateGroupName] = useState(false)
+
+    const [loadingDeleteAttribute, setLoadingDeleteAttribute] = useState(false)
+
+    const [loadingDeleteGroupAttribute, setLoadingDeleteGroupAttribute] = useState(false)
 
     const [popupCreateActive, setPopupCreateActive] = useState(false)
 
@@ -48,13 +52,22 @@ const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
 
     const [groupName, setGroupName] = useStateIfMounted(null)
 
+    useEffect(() => {
+        fetchDataGroupNamesCurrentStaff()
+        fetchDataAttributesCurrentStaff()
+    }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute])
 
     function handleAttributesName(event) {
         const value = event.target.value
         setSearchValue(value)
     }
 
-    const isLoading = loadingAttributes || loadingGroupNames || loadingCreateGroupName
+    const isLoading =
+        loadingAttributes ||
+        loadingGroupNames ||
+        loadingCreateGroupName ||
+        loadingDeleteAttribute ||
+        loadingDeleteGroupAttribute
 
     return (
         isLoading ?
@@ -67,6 +80,7 @@ const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
                     handleSearchValue={handleAttributesName}
                     dataGroupNames={dataGroupNames}
                     handleGroupName={setGroupName}
+                    setLoading={setLoadingDeleteGroupAttribute}
                 />
                 {
                     dataAttributes.length === 0 ?
@@ -80,6 +94,7 @@ const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
                             setNameAttribute={setNameAttribute}
                             setSelectedGroupName={setSelectedGroupName}
                             dataAttributes={dataAttributes}
+                            setLoading={setLoadingDeleteAttribute}
                         />
                 }
                 <PopupShare active={popupShareActive} setActive={setPopupShareActive}/>

@@ -6,7 +6,15 @@ import {Accordion, AccordionDetails, AccordionSummary, Button} from "@mui/materi
 import FilterRowInfo from "./FilterRowInfo";
 import ButtonActionGroup from "../ButtonActionGroup";
 
-function FilterAccordionItem({filter, setId, setPopupShareActive}) {
+function FilterAccordionItem(
+    {
+        filter,
+        setId,
+        setPopupShareActive,
+        setLoading,
+        setNameFilter,
+        setSelectedMailOption
+    }) {
 
     return (
         <Accordion
@@ -15,7 +23,14 @@ function FilterAccordionItem({filter, setId, setPopupShareActive}) {
             disableGutters={true}
         >
             <FilterAccordionSummary filter={filter}/>
-            <FilterAccordionDetails filter={filter} setId={setId} setPopupShareActive={setPopupShareActive}/>
+            <FilterAccordionDetails
+                filter={filter}
+                setId={setId}
+                setPopupShareActive={setPopupShareActive}
+                setLoading={setLoading}
+                setNameFilter={setNameFilter}
+                setSelectedMailOption={setSelectedMailOption}
+            />
         </Accordion>
     );
 }
@@ -26,7 +41,7 @@ function FilterAccordionSummary({filter}) {
             <div className="header__accordion__container">
                 <div className="header__accordion__block">
                     {ModeFilter(filter.mode)}
-                    <p className="header__accordion__label">{filter.filter_name}</p>
+                    <p className="header__accordion__label">{filter.filterName}</p>
                 </div>
                 <Button onClick={(event) => {
                     event.stopPropagation()
@@ -36,7 +51,16 @@ function FilterAccordionSummary({filter}) {
     );
 }
 
-function FilterAccordionDetails({filter, setId, setPopupShareActive}) {
+function FilterAccordionDetails(
+    {
+        filter,
+        setId,
+        setPopupShareActive,
+        setLoading,
+        setNameFilter,
+        setSelectedMailOption
+    }
+) {
     return (
         <AccordionDetails>
             <div className="background body__accordion__container">
@@ -45,8 +69,9 @@ function FilterAccordionDetails({filter, setId, setPopupShareActive}) {
                     <FilterRowInfo nameRow="Количество студентов:" valueRow={filter.students.length}/>
                     <FilterRowInfo nameRow="Создан:" valueRow={getType(filter.type)}/>
                     <FilterRowInfo nameRow="Режим:" valueRow={filter.mode}/>
-                    {filter.mode === "manual" ? <FilterRowInfo nameRow="Полученные ответы:" valueRow={filter.mail_counter}/> : null}
-                    <FilterRowInfo nameRow="Дата создания:" valueRow={filter.creation_data}/>
+                    {filter.mode === "manual" ?
+                        <FilterRowInfo nameRow="Полученные ответы:" valueRow={filter.mailCounter}/> : null}
+                    <FilterRowInfo nameRow="Дата создания:" valueRow={filter.created}/>
                 </div>
                 <div className="body__accordion__buttons">
                     <ButtonActionGroup
@@ -56,6 +81,12 @@ function FilterAccordionDetails({filter, setId, setPopupShareActive}) {
                         id={filter.id}
                         setId={setId}
                         setPopupShareActive={setPopupShareActive}
+                        setLoading={setLoading}
+                        name={filter.filterName}
+                        setName={setNameFilter}
+                        selectedOption={filter.mode}
+                        setSelectedOption={setSelectedMailOption}
+
                     />
                     {filter.mode === "manual" ?
                         <Button sx={{border: "1px solid rgba(25, 118, 210, 0.5)"}}>Получить</Button> : null}

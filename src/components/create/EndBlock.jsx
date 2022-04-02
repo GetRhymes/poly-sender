@@ -129,7 +129,7 @@ async function createFilter(nameFilter, selectedStudents, mailOption, setLoading
         studentsId: arraySelectedStudents(selectedStudents)
     }
     console.log(newFilter)
-    // await axios.post("http://localhost:8080/attributes/createFilter", newFilter)
+    await axios.post("http://localhost:8080/attributes/createFilter", newFilter)
     setLoading(false)
     redirect()
 }
@@ -143,7 +143,7 @@ async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, 
         studentsId: arraySelectedStudents(selectedStudents)
     }
     console.log(newFilter)
-    // await axios.post("http://localhost:8080/attributes/updateFilter", newFilter)
+    await axios.post("http://localhost:8080/attributes/updateFilter", newFilter)
     setLoading(false)
     redirect()
 }

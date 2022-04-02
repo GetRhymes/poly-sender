@@ -2,20 +2,32 @@ import React from 'react';
 import {Box} from "@mui/material";
 import List from "@mui/material/List";
 import FilterAccordionItem from "./FilterAccordionItem";
-import {dataFilters} from "../data/data";
 
-function FilterBodyBlock({setId, searchValue, setPopupShareActive}) {
+function FilterBodyBlock(
+    {
+        setId,
+        searchValue,
+        setPopupShareActive,
+        dataFilters,
+        setLoading,
+        setNameFilter,
+        setSelectedMailOption
+    }
+) {
     return (
         <Box height="calc(100% - 50px)" overflow="auto" sx={{marginTop: "10px"}}>
             <List>
                 {dataFilters.map((filter) => {
                     if (searchValue !== null) {
-                        if (filter.filter_name.includes(searchValue)) {
+                        if (filter.filterName.includes(searchValue)) {
                             return (
                                 <FilterAccordionItem
                                     filter={filter}
                                     setId={setId}
                                     setPopupShareActive={setPopupShareActive}
+                                    setLoading={setLoading}
+                                    setNameFilter={setNameFilter}
+                                    setSelectedMailOption={setSelectedMailOption}
                                 />
                             );
                         }
@@ -25,6 +37,9 @@ function FilterBodyBlock({setId, searchValue, setPopupShareActive}) {
                                 filter={filter}
                                 setId={setId}
                                 setPopupShareActive={setPopupShareActive}
+                                setLoading={setLoading}
+                                setNameFilter={setNameFilter}
+                                setSelectedMailOption={setSelectedMailOption}
                             />
                         );
                     }

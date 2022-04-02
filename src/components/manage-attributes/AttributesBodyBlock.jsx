@@ -10,7 +10,8 @@ function AttributesBodyBlock(
         groupName,
         setNameAttribute,
         setSelectedGroupName,
-        dataAttributes
+        dataAttributes,
+        setLoading
     }
 ) {
 
@@ -30,6 +31,7 @@ function AttributesBodyBlock(
                                 setPopupShareActive={setPopupShareActive}
                                 setNameAttribute={setNameAttribute}
                                 setSelectedGroupName={setSelectedGroupName}
+                                setLoading={setLoading}
                             />
                         );
                     } else if (searchValue === null && checkOnlyGroupName(attributes)) {
@@ -41,6 +43,7 @@ function AttributesBodyBlock(
                                 setPopupShareActive={setPopupShareActive}
                                 setNameAttribute={setNameAttribute}
                                 setSelectedGroupName={setSelectedGroupName}
+                                setLoading={setLoading}
                             />
                         );
                     } else if (checkOnlyAttributeName(attributes) && checkOnlyGroupName(attributes)) {
@@ -52,6 +55,7 @@ function AttributesBodyBlock(
                                 setPopupShareActive={setPopupShareActive}
                                 setNameAttribute={setNameAttribute}
                                 setSelectedGroupName={setSelectedGroupName}
+                                setLoading={setLoading}
                             />
                         );
                     }
@@ -64,6 +68,7 @@ function AttributesBodyBlock(
                             setPopupShareActive={setPopupShareActive}
                             setNameAttribute={setNameAttribute}
                             setSelectedGroupName={setSelectedGroupName}
+                            setLoading={setLoading}
                         />
                     );
                 }

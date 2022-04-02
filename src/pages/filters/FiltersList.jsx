@@ -1,12 +1,44 @@
-import React from 'react'; //todo refactor
+import React, {useEffect} from 'react';
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
 import EndBlock from "../../components/create/EndBlock";
-import {dataAccordions, dataAttributes} from "../../components/data/data";
 import {useStateIfMounted} from "use-state-if-mounted";
+import axios from "axios";
+import LoadingScreen from "../../components/LoadingScreen";
+import PopupLoading from "../../components/PopupLoading";
 
-function FiltersList({id, dataTable, dataAccordions}) {
+function FiltersList(
+    {
+        id,
+        setCurrentIdFilter,
+        nameFilter,
+        setNameFilter,
+        selectedMailOption,
+        setSelectedMailOption,
+    }
+) {
+
+    const [dataTable, setDataTable] = useStateIfMounted([])
+
+    const [dataAccordions, setDataAccordions] = useStateIfMounted([])
+
+    const [dataAttributes, setDataAttributes] = useStateIfMounted([])
+
+    async function fetchDataTable() {
+        const dataTable = await axios('http://localhost:8080/students/getAll');
+        setDataTable(dataTable.data);
+    }
+
+    async function fetchDataAccordion() {
+        const dataAccordions = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        setDataAccordions(dataAccordions.data);
+    }
+
+    async function fetchDataAttributes() {
+        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
+        setDataAttributes(dataAttributes.data);
+    }
 
     function initSelectedStudentState() {
         let memory = []
@@ -24,28 +56,43 @@ function FiltersList({id, dataTable, dataAccordions}) {
 
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
-    const [nameFilter, setNameFilter] = useStateIfMounted("")
+    useEffect(() => {
+        fetchDataAttributes()
+        fetchDataTable()
+        fetchDataAccordion()
+
+        return () => {
+            setSelectedMailOption("")
+            setCurrentIdFilter(null)
+            setNameFilter("")
+        }
+    }, [])
+
+    function handleMailOption(event) {
+        setSelectedMailOption(event.target.value)
+    }
 
     function handleAttributesName(event) {
         const name = event.target.value
         setNameFilter(name)
     }
 
-    const [mailOption, setMailOption] = useStateIfMounted("auto")
-
-    function handleMailOption(event) {
-        setMailOption(event.target.value)
-    }
+    const [loading, setLoading] = useStateIfMounted(false)
 
     const isLoading = dataTable.length === 0 || dataAccordions.length === 0
 
     return (
         isLoading ?
-            <h1>Loading...</h1>
+            <LoadingScreen/>
             :
             <Container maxWidth="lg">
-                <HeaderBlock name={nameFilter} handle={handleAttributesName} isFilter={true} mailOption={mailOption}
-                             handleMailOption={handleMailOption}/>
+                <HeaderBlock
+                    name={nameFilter}
+                    handle={handleAttributesName}
+                    isFilter={true}
+                    mailOption={selectedMailOption}
+                    handleMailOption={handleMailOption}
+                />
                 <WorkBlock
                     dataAccordions={dataAccordions}
                     dataTable={dataTable}
@@ -53,7 +100,14 @@ function FiltersList({id, dataTable, dataAccordions}) {
                     setSelectedStudents={setSelectedStudents}
                     height={550}
                 />
-                <EndBlock name={nameFilter} selectedStudents={selectedStudents} mailOption={mailOption}/>
+                <EndBlock
+                    name={nameFilter}
+                    selectedStudents={selectedStudents}
+                    mailOption={selectedMailOption}
+                    id={id}
+                    setLoading={setLoading}
+                />
+                <PopupLoading active={loading}/>
             </Container>
     );
 }

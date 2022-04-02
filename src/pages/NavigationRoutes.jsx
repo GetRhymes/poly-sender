@@ -20,6 +20,10 @@ function NavigationRoutes() {
 
     const [selectedGroupName, setSelectedGroupName] = useState("")
 
+    const [nameFilter, setNameFilter] = useStateIfMounted("")
+
+    const [selectedMailOption, setSelectedMailOption] = useState("")
+
     return (
         <Routes>
             <Route path="/profile" element={<Profile/>}/>
@@ -33,6 +37,8 @@ function NavigationRoutes() {
             <Route path="/filters" element={
                 <ManageFilters
                     setId={setCurrentIdFilter}
+                    setNameFilter={setNameFilter}
+                    setSelectedMailOption={setSelectedMailOption}
                 />
             }/>
             <Route path="/lists" element={<ExcelLists/>}/>
@@ -50,8 +56,11 @@ function NavigationRoutes() {
             <Route path="/filters/list" element={
                 <FiltersList
                     id={currentIdFilter}
-                    // dataTable={dataTable}
-                    // dataAccordions={dataAccordions}
+                    nameFilter={nameFilter}
+                    setNameFilter={setNameFilter}
+                    selectedMailOption={selectedMailOption}
+                    setSelectedMailOption={setSelectedMailOption}
+                    setCurrentIdFilter={setCurrentIdFilter}
                 />
             }/>
             <Route path="/filters/expression" element={<FiltersExpression/>}/>

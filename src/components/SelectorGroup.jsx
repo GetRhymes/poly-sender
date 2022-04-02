@@ -34,8 +34,8 @@ function SelectorGroup({selectedGroupName, handleSelector}) {
                     onChange={handleSelector}
                 >
                     {
-                        dataGroupNames.map((groupName) => {
-                            return <MenuItem key={groupName} value={groupName}>{groupName}</MenuItem>
+                        dataGroupNames.map(({idGroupName, groupName}) => {
+                            return <MenuItem key={idGroupName} value={groupName}>{groupName}</MenuItem>
                         })
                     }
                 </Select>
