@@ -95,7 +95,6 @@ async function createAttribute(nameAttribute, selectedStudents, selectedGroupAtt
         groupName: selectedGroupAttribute,
         studentsId: arraySelectedStudents(selectedStudents)
     }
-    console.log(newAttribute)
     await axios.post("http://localhost:8080/attributes/createAttribute", newAttribute)
     setLoading(false)
     redirect()
@@ -128,8 +127,7 @@ async function createFilter(nameFilter, selectedStudents, mailOption, setLoading
         mailOption: mailOption,
         studentsId: arraySelectedStudents(selectedStudents)
     }
-    console.log(newFilter)
-    await axios.post("http://localhost:8080/attributes/createFilter", newFilter)
+    await axios.post("http://localhost:8080/filters/createFilter", newFilter)
     setLoading(false)
     redirect()
 }
@@ -142,8 +140,7 @@ async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, 
         mailOption: mailOption,
         studentsId: arraySelectedStudents(selectedStudents)
     }
-    console.log(newFilter)
-    await axios.post("http://localhost:8080/attributes/updateFilter", newFilter)
+    await axios.post("http://localhost:8080/filters/updateFilter", newFilter)
     setLoading(false)
     redirect()
 }

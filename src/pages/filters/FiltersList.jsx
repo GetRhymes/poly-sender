@@ -11,11 +11,11 @@ import PopupLoading from "../../components/PopupLoading";
 function FiltersList(
     {
         id,
-        setCurrentIdFilter,
         nameFilter,
         setNameFilter,
         selectedMailOption,
         setSelectedMailOption,
+        setCurrentIdFilter,
     }
 ) {
 
@@ -23,7 +23,7 @@ function FiltersList(
 
     const [dataAccordions, setDataAccordions] = useStateIfMounted([])
 
-    const [dataAttributes, setDataAttributes] = useStateIfMounted([])
+    const [dataFilters, setDataFilters] = useStateIfMounted([])
 
     async function fetchDataTable() {
         const dataTable = await axios('http://localhost:8080/students/getAll');
@@ -36,20 +36,22 @@ function FiltersList(
     }
 
     async function fetchDataAttributes() {
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
-        setDataAttributes(dataAttributes.data);
+        const dataFilters = await axios('http://localhost:8080/filters/getFiltersShort');
+        setDataFilters(dataFilters.data);
     }
 
     function initSelectedStudentState() {
         let memory = []
-        if (id !== undefined) {
-            for (let attribute of dataAttributes) {
-                if (attribute.id === id) memory = attribute.students
+        if (id !== null) {
+            for (let filter of dataFilters) {
+                if (filter.id === id) memory = filter.students
             }
         }
+        console.log(id)
+        console.log(memory)
         let ss = {}
         for (let line of dataTable) {
-            ss[line.key] = memory.includes(line.key);
+            ss[line.id] = memory.includes(line.id);
         }
         return ss
     }
@@ -68,18 +70,22 @@ function FiltersList(
         }
     }, [])
 
+    useEffect(()=> {
+        setSelectedStudents(initSelectedStudentState)
+    }, [dataTable, dataFilters])
+
     function handleMailOption(event) {
         setSelectedMailOption(event.target.value)
     }
 
-    function handleAttributesName(event) {
+    function handleFilterName(event) {
         const name = event.target.value
         setNameFilter(name)
     }
 
     const [loading, setLoading] = useStateIfMounted(false)
 
-    const isLoading = dataTable.length === 0 || dataAccordions.length === 0
+    const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || dataFilters.length === 0
 
     return (
         isLoading ?
@@ -88,7 +94,7 @@ function FiltersList(
             <Container maxWidth="lg">
                 <HeaderBlock
                     name={nameFilter}
-                    handle={handleAttributesName}
+                    handle={handleFilterName}
                     isFilter={true}
                     mailOption={selectedMailOption}
                     handleMailOption={handleMailOption}

@@ -72,6 +72,8 @@ function WorkBlock(
         }
     }
 
+    // console.log(selectedStudents)
+
     return (
         <div className="double__block">
             <div className="background__card">

@@ -5,10 +5,9 @@ import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
 import EndBlock from "../../components/create/EndBlock";
 import {useStateIfMounted} from "use-state-if-mounted";
-import PopupLoading from "../../components/PopupLoading";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
-
+import PopupLoading from "../../components/PopupLoading";
 
 function AttributesList(
     {
@@ -37,13 +36,13 @@ function AttributesList(
     }
 
     async function fetchDataAttributes() {
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
+        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributesCurrentStaff');
         setDataAttributes(dataAttributes.data);
     }
 
     function initSelectedStudentState() {
         let memory = []
-        if (id !== undefined) {
+        if (id !== null) {
             for (let attribute of dataAttributes) {
                 if (attribute.id === id) memory = attribute.students
             }
@@ -69,6 +68,9 @@ function AttributesList(
         }
     }, [])
 
+    useEffect(()=> {
+        setSelectedStudents(initSelectedStudentState)
+    }, [dataTable, dataAttributes])
 
     function handleSelectedGroupName(event) {
         const groupName = event.target.value

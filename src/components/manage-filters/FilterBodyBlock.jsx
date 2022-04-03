@@ -22,6 +22,7 @@ function FilterBodyBlock(
                         if (filter.filterName.includes(searchValue)) {
                             return (
                                 <FilterAccordionItem
+                                    key={filter.id}
                                     filter={filter}
                                     setId={setId}
                                     setPopupShareActive={setPopupShareActive}
@@ -34,6 +35,7 @@ function FilterBodyBlock(
                     } else {
                         return (
                             <FilterAccordionItem
+                                key={filter.id}
                                 filter={filter}
                                 setId={setId}
                                 setPopupShareActive={setPopupShareActive}

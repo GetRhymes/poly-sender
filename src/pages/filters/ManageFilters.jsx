@@ -19,7 +19,7 @@ const ManageFilters = ({setId, setNameFilter, setSelectedMailOption}) => {
 
     async function fetchDataFilters() {
         setLoadingDataFilters(true)
-        const dataFilters = await axios('http://localhost:8080/attributes/getFilters');
+        const dataFilters = await axios('http://localhost:8080/filters/getFilters');
         setDataFilters(dataFilters.data)
         setLoadingDataFilters(false)
     }

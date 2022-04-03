@@ -5,6 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import {Accordion, AccordionDetails, AccordionSummary, Button} from "@mui/material";
 import FilterRowInfo from "./FilterRowInfo";
 import ButtonActionGroup from "../ButtonActionGroup";
+import axios from "axios";
 
 function FilterAccordionItem(
     {
@@ -89,7 +90,14 @@ function FilterAccordionDetails(
 
                     />
                     {filter.mode === "manual" ?
-                        <Button sx={{border: "1px solid rgba(25, 118, 210, 0.5)"}}>Получить</Button> : null}
+                        <Button
+                            sx={{border: "1px solid rgba(25, 118, 210, 0.5)"}}
+                            onClick={() => {
+                                getEmails(filter.id, setLoading)
+                            }}
+                        >
+                            Получить
+                        </Button> : null}
 
                 </div>
             </div>
@@ -112,6 +120,15 @@ function getType(type) {
     if (type === "list") return "из списка"
     else if (type === "expression") return "выражение"
     else return ""
+}
+
+async function getEmails(id, setLoading) {
+    setLoading(true)
+    const data = {
+        "idFilter": id
+    }
+    await axios.post("http://localhost:8080/filters/getEmails", data)
+    setLoading(false)
 }
 
 export default FilterAccordionItem;
