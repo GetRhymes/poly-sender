@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
@@ -35,9 +35,11 @@ function FiltersList(
         setDataAccordions(dataAccordions.data);
     }
 
-    async function fetchDataAttributes() {
+    async function fetchDataFilters() {
+        setLoadingDataFilters(true)
         const dataFilters = await axios('http://localhost:8080/filters/getFiltersShort');
         setDataFilters(dataFilters.data);
+        setLoadingDataFilters(false)
     }
 
     function initSelectedStudentState() {
@@ -47,8 +49,6 @@ function FiltersList(
                 if (filter.id === id) memory = filter.students
             }
         }
-        console.log(id)
-        console.log(memory)
         let ss = {}
         for (let line of dataTable) {
             ss[line.id] = memory.includes(line.id);
@@ -59,7 +59,7 @@ function FiltersList(
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
     useEffect(() => {
-        fetchDataAttributes()
+        fetchDataFilters()
         fetchDataTable()
         fetchDataAccordion()
 
@@ -83,9 +83,12 @@ function FiltersList(
         setNameFilter(name)
     }
 
+    const [loadingDataFilters, setLoadingDataFilters] = useState(false)
+
     const [loading, setLoading] = useStateIfMounted(false)
 
-    const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || dataFilters.length === 0
+    const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || loadingDataFilters
+
 
     return (
         isLoading ?

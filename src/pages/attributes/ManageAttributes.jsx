@@ -9,7 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 
-const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
+const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
     useEffect(() => {
         fetchDataGroupNamesCurrentStaff()
@@ -97,7 +97,7 @@ const ManageAttributes = ({setId, setNameAttribute, setSelectedGroupName}) => {
                             setLoading={setLoadingDeleteAttribute}
                         />
                 }
-                <PopupShare active={popupShareActive} setActive={setPopupShareActive}/>
+                <PopupShare active={popupShareActive} setActive={setPopupShareActive} id={idAttribute} setId={setId} endPoint="attributes"/>
                 <PopupCreate
                     active={popupCreateActive}
                     setActive={setPopupCreateActive}

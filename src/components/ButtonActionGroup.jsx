@@ -41,6 +41,7 @@ function ButtonActionGroup(
             </Button>
             <Button onClick={() => {
                 setPopupShareActive(true)
+                setId(id)
             }}>
                 <ShareIcon/>
             </Button>

@@ -34,6 +34,7 @@ function WorkBlock(
 
     function includesArray(arrayAttr, arrayStudAttr) {
         let isInclude = false
+        if (arrayStudAttr === undefined) return false
         for (let studAttr of arrayStudAttr) {
             isInclude = arrayAttr.includes(studAttr)
             if (isInclude) break
@@ -71,8 +72,6 @@ function WorkBlock(
             if (student.id === id) setInfo(student)
         }
     }
-
-    // console.log(selectedStudents)
 
     return (
         <div className="double__block">

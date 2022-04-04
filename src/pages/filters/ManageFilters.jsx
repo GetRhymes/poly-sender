@@ -9,7 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 
-const ManageFilters = ({setId, setNameFilter, setSelectedMailOption}) => {
+const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
 
     useEffect(() => {
         fetchDataFilters()
@@ -51,9 +51,9 @@ const ManageFilters = ({setId, setNameFilter, setSelectedMailOption}) => {
             :
             <div className="background main__container__filters">
                 <FilterHeaderBlock
-                    popupCreateActive={popupCreateActive}
                     setPopupCreateActive={setPopupCreateActive}
                     handleSearchValue={handleFiltersName}
+                    setId={setId}
                 />
                 {
                     dataFilters.length === 0 ?
@@ -70,7 +70,7 @@ const ManageFilters = ({setId, setNameFilter, setSelectedMailOption}) => {
                         />
                 }
                 <PopupCreate active={popupCreateActive} setActive={setPopupCreateActive} endPoint="filters"/>
-                <PopupShare active={popupShareActive} setActive={setPopupShareActive}/>
+                <PopupShare active={popupShareActive} setActive={setPopupShareActive} id={idFilter} setId={setId} endPoint="filters"/>
             </div>
     );
 };

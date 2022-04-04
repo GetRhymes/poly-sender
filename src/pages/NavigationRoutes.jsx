@@ -29,6 +29,7 @@ function NavigationRoutes() {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/attributes" element={
                 <ManageAttributes
+                    idAttribute={currentIdAttribute}
                     setId={setCurrentIdAttribute}
                     setNameAttribute={setNameAttribute}
                     setSelectedGroupName={setSelectedGroupName}
@@ -36,6 +37,7 @@ function NavigationRoutes() {
             }/>
             <Route path="/filters" element={
                 <ManageFilters
+                    idFilter={currentIdFilter}
                     setId={setCurrentIdFilter}
                     setNameFilter={setNameFilter}
                     setSelectedMailOption={setSelectedMailOption}

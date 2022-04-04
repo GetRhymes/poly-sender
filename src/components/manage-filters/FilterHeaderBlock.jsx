@@ -3,7 +3,7 @@ import {Box, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ButtonCreate from "../ButtonCreate";
 
-function FilterHeaderBlock({popupCreateActive, setPopupCreateActive, handleSearchValue}) {
+function FilterHeaderBlock({setPopupCreateActive, handleSearchValue, setId}) {
 
     const containerStyle = {
         marginTop: "10px",
@@ -28,7 +28,7 @@ function FilterHeaderBlock({popupCreateActive, setPopupCreateActive, handleSearc
                 sx={{width: "300px"}}
                 InputProps={{startAdornment: (adornment)}}
             />
-            <ButtonCreate active={popupCreateActive} setActive={setPopupCreateActive}/>
+            <ButtonCreate setActive={setPopupCreateActive} setId={setId}/>
         </Box>
     );
 }
