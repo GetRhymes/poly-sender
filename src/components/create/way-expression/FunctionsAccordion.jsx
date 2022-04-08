@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Box,
-    Checkbox,
+    Button,
     ListItem,
     ListItemText,
     Typography
@@ -12,12 +11,15 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
+import EditIcon from "@mui/icons-material/Edit";
+import React from "react";
 
-function AttributesAccordion({dataAccordions, setSample, height}) {
+function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPosition}) {
 
     const styleListItem = {
         height: "35px",
         paddingTop: "4px",
+        paddingLeft: "0px",
         paddingBottom: "4px"
     }
 
@@ -34,34 +36,22 @@ function AttributesAccordion({dataAccordions, setSample, height}) {
         marginBottom: "4px"
     }
 
-
-    function initState() {
-        const result = {}
-        for (let accord of dataAccordions) {
-            result[accord.groupName] = {}
-            for (let it of accord.attributes) {
-                result[accord.groupName][it] = false
-            }
-        }
-        return result
+    const addButtonStyle = {
+        height: "27px",
+        width: "30px",
+        color: "#366ac3",
+        padding: "5px",
+        minWidth: "unset",
+        marginLeft: "15px",
+        borderRadius: "8px",
+        border: "1px solid rgba(54, 106, 195, 100)",
+        marginRight: "15px"
     }
 
-    const [checkBoxState, setCheckBoxState] = useState(initState())
-
-    const handleCheck = (event) => {
-        const name = event.target.name
-        const id = event.target.id
-        const value = event.target.checked
-        const accords = {...checkBoxState}
-        accords[name][id] = value
-        setCheckBoxState(accords);
-        setSample({name, id, value})
-    }
-
-    return (
+    return(
         <Box height={height} overflow="auto">
             {
-                dataAccordions.map(({id, groupName, attributes}) =>
+                dataFunctions.map(({id, nameFunction, args}) =>
                     <Accordion
                         inputprops={{
                             position: "initial"
@@ -75,20 +65,27 @@ function AttributesAccordion({dataAccordions, setSample, height}) {
                             expandIcon={<ExpandMoreIcon/>}
                             key={id + "sum"}
                         >
-                            <Typography key={id + "sumtext"}>{groupName}</Typography>
+                            <Typography key={id + "sumtext"}>{nameFunction}</Typography>
                         </AccordionSummary>
                         <AccordionDetails sx={styleAccordion} key={id + "det"}>
                             <Divider/>
                             <List>
-                                {attributes.map((item) =>
+                                {args.map((item) =>
                                     <ListItem sx={styleListItem} key={item + "listItem"}>
-                                        <Checkbox
-                                            id={item}
-                                            key={item + "checkBox"}
-                                            name={groupName}
-                                            onChange={handleCheck}
-                                            checked={checkBoxState[groupName][item]}
-                                        />
+                                        <Button
+                                            sx={addButtonStyle}
+                                            onClick={()=> {
+                                                setExpression((expression)=> {
+                                                    const position = focus.current.selectionEnd
+                                                    const left = expression.substring(0, position) + nameFunction + '[' + item + ']'
+                                                    setPosition(left.length)
+                                                    return left + expression.substring(position)
+                                                })
+                                                focus.current.focus()
+                                            }}
+                                        >
+                                            <EditIcon fontSize="small"/>
+                                        </Button>
                                         <ListItemText key={item + "text"} primary={item}/>
                                     </ListItem>
                                 )}
@@ -101,4 +98,4 @@ function AttributesAccordion({dataAccordions, setSample, height}) {
     );
 }
 
-export default AttributesAccordion;
+export default FunctionsAccordion;

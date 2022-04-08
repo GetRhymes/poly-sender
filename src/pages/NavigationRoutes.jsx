@@ -24,6 +24,8 @@ function NavigationRoutes() {
 
     const [selectedMailOption, setSelectedMailOption] = useState("")
 
+    const [expression, setExpression] = useStateIfMounted("")
+
     return (
         <Routes>
             <Route path="/profile" element={<Profile/>}/>
@@ -54,7 +56,18 @@ function NavigationRoutes() {
                     setCurrentIdAttribute={setCurrentIdAttribute}
                 />
             }/>
-            <Route path="/attributes/expression" element={<AttributesExpression/>}/>
+            <Route path="/attributes/expression" element={
+                <AttributesExpression
+                    id={currentIdAttribute}
+                    nameAttribute={nameAttribute}
+                    setNameAttribute={setNameAttribute}
+                    selectedGroupName={selectedGroupName}
+                    setSelectedGroupName={setSelectedGroupName}
+                    setCurrentIdAttribute={setCurrentIdAttribute}
+                    expression={expression}
+                    setExpression={setExpression}
+                />
+            }/>
             <Route path="/filters/list" element={
                 <FiltersList
                     id={currentIdFilter}

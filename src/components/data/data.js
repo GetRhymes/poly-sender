@@ -222,3 +222,27 @@ export const groups = [
     {groupName: "Никто"},
     {groupName: "Мои"},
 ]
+
+
+export const dataFunction = [
+    {
+        id: '1',
+        nameFunction: 'финансирование',
+        args: ['бюджет', 'контракт']
+    },
+    {
+        id: '2',
+        nameFunction: 'группа',
+        args: ['3530901/80203', '3530901/80202']
+    },
+    {
+        id: '3',
+        nameFunction: 'курс',
+        args: ['1', '2', '3', '4', '5']
+    },
+    {
+        id: '4',
+        nameFunction: 'форма_обучения',
+        args: ['очно', 'заочно', 'очно-заочно']
+    },
+]

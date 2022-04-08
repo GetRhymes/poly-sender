@@ -11,13 +11,20 @@ function EndBlock(
         mailOption,
         selectedGroupName,
         id,
-        setLoading
+        setLoading,
+        expression
     }
 ) {
     return (
         <div className="background__card end__block">
             <div className="header__label counter">
-                <p>Выбрано студентов: {arraySelectedStudents(selectedStudents).length}</p>
+                {
+                    expression === undefined ?
+                        <p>Выбрано студентов: {arraySelectedStudents(selectedStudents).length}</p>
+                        :
+                        null
+                }
+
             </div>
             <ButtonEnd
                 name={name}

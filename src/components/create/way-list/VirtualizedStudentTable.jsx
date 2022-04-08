@@ -217,7 +217,6 @@ export default function VirtualizedStudentTable(
                                 setter: setSelectedStudents
                             },
                             student.name,
-                            // student.groupNumber,
                             student.email,
                             <MoreVertIcon fontSize="medium"/>
                         );
@@ -234,11 +233,6 @@ export default function VirtualizedStudentTable(
                         label: 'ФИО',
                         dataKey: 'fullName',
                     },
-                    // {
-                    //     width: 150,
-                    //     label: 'Группа',
-                    //     dataKey: 'group',
-                    // },
                     {
                         width: 355,
                         label: 'Почта',

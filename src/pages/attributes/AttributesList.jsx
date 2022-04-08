@@ -36,7 +36,7 @@ function AttributesList(
     }
 
     async function fetchDataAttributes() {
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributesCurrentStaff');
+        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
         setDataAttributes(dataAttributes.data);
     }
 
