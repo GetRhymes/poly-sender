@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoadingScreen from "../../components/LoadingScreen";
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
-import WorkBlock from "../../components/create/way-list/WorkBlock";
 import EndBlock from "../../components/create/EndBlock";
 import PopupLoading from "../../components/PopupLoading";
 import {useStateIfMounted} from "use-state-if-mounted";
-import axios from "axios";
 import ExpressionBlock from "../../components/create/way-expression/ExpressionBlock";
 import {dataFunction} from "../../components/data/data";
 
@@ -40,10 +38,22 @@ function AttributesExpression(
     }, [])
 
     function handleExpression(event) {
-        const expression = event.target.value
-        setExpression(expression)
-        setPosition(expression.length)
+        let expr = event.target.value
+        const oldLength = expression.length
+        const newPosition = expr.length > oldLength ?
+            event.target.selectionEnd + (expr.length - oldLength - 1)
+            :
+            event.target.selectionEnd - (oldLength - expr.length - 1)
+        if (expr.substring(newPosition - 1, newPosition) === '(' && oldLength < expr.length) {
+            expr = expr.substring(0, newPosition) + ')' + expr.substring(newPosition)
+        }
+        if (expr.substring(newPosition - 1, newPosition) === '[' && oldLength < expr.length) {
+            expr = expr.substring(0, newPosition) + ']' + expr.substring(newPosition)
+        }
+        setExpression(expr)
+        setPosition(newPosition)
     }
+
 
     function handleSelectedGroupName(event) {
         const groupName = event.target.value
