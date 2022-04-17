@@ -7,11 +7,16 @@ import {FormControl, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 
-function PopupCreate({active, setActive, endPoint, setLoading}) {
+function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) {
 
     const [way, setWay] = useState(null);
 
-    const [select, setSelect] = useState(endPoint)
+    const [select, setSelect] = useState(() => {
+        if (endPoint === "attributes") {
+            if (dataGroupNames.length > 0) return endPoint
+            else return "group"
+        } else return endPoint
+    })
 
     const [groupName, setGroupName] = useState("")
 
@@ -27,6 +32,10 @@ function PopupCreate({active, setActive, endPoint, setLoading}) {
         setWay(way);
     };
 
+    const [incorrectGroupName, setIncorrectGroupName] = useState(false)
+
+    const [uniqueGroupName, setUniqueGroupName] = useState(true)
+
     let navigate = useNavigate();
 
     function redirect() {
@@ -41,10 +50,14 @@ function PopupCreate({active, setActive, endPoint, setLoading}) {
     }
 
     function createGroup() {
-        if (groupName !== "") {
-            createGroupName({groupName})
-            setActive(false)
-        }
+        if (!/[^a-zA-Zа-яА-Я_0-9\s]+/.test(groupName)) {
+            const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
+            if (finder === undefined) {
+                createGroupName({groupName})
+                setIncorrectGroupName(false)
+                setActive(false)
+            } else setUniqueGroupName(false)
+        } else setIncorrectGroupName(true)
     }
 
     function createField() {
@@ -55,15 +68,20 @@ function PopupCreate({active, setActive, endPoint, setLoading}) {
     }
 
     return (
-        <div className={active ? "popup active" : "popup"} onClick={() => setActive(false)}>
+        <div className={active ? "popup active" : "popup"} onClick={() => {
+            setActive(false)
+            setWay(null)
+            setIncorrectGroupName(false)
+            setGroupName("")
+        }}>
             <div className="popup__content" onClick={e => e.stopPropagation()}>
                 <div>
                     <p className="popup__label">Конфигуратор</p>
                     <div className="popup__configuration__block">
-                        <Selector select={select} setSelect={handleSelector} endPoint={endPoint}/>
+                        <Selector select={select} setSelect={handleSelector} endPoint={endPoint} dataGroupNames={dataGroupNames}/>
                         {
                             select === "group" ?
-                                <TextFieldGroupName groupName={groupName} setGroupName={handleGroupName}/>
+                                <TextFieldGroupName groupName={groupName} setGroupName={handleGroupName} incorrectGroupName={incorrectGroupName} uniqueGroupName={uniqueGroupName}/>
                                 :
                                 <ConfigurationButtons way={way} handleChangeWay={handleChangeWay}/>
                         }
@@ -78,6 +96,8 @@ function PopupCreate({active, setActive, endPoint, setLoading}) {
                         <PopupButton text="Закрыть" action={() => {
                             setActive(false)
                             setWay(null)
+                            setIncorrectGroupName(false)
+                            setGroupName("")
                         }}/>
                     </div>
                 </div>
@@ -99,7 +119,7 @@ function ConfigurationButtons({way, handleChangeWay}) {
     );
 }
 
-function Selector({select, setSelect, endPoint}) {
+function Selector({select, setSelect, endPoint, dataGroupNames}) {
 
     const styleSelector = {
         marginTop: "15px",
@@ -112,14 +132,15 @@ function Selector({select, setSelect, endPoint}) {
                 value={select}
                 onChange={setSelect}
             >
-                <MenuItem value={endPoint}>{endPoint === "attributes" ? "Атрибут" : "Фильтр"}</MenuItem>
                 {endPoint === "attributes" ? <MenuItem value="group">Раздел</MenuItem> : null}
+                {endPoint === "attributes" && dataGroupNames.length > 0 ? <MenuItem value={endPoint}>Атрибут</MenuItem> : null}
+                {endPoint === "filters" ? <MenuItem value={endPoint}>Фильтр</MenuItem> : null}
             </Select>
         </FormControl>
     );
 }
 
-function TextFieldGroupName({groupName, setGroupName}) {
+function TextFieldGroupName({groupName, setGroupName, incorrectGroupName, uniqueGroupName}) {
 
     const styleTextField = {
         marginTop: "22.5px",
@@ -129,9 +150,11 @@ function TextFieldGroupName({groupName, setGroupName}) {
     return (
         <TextField
             sx={styleTextField}
-            label="Название раздела"
+            focused={true}
+            color={incorrectGroupName || !uniqueGroupName ? "error" : null}
+            label={incorrectGroupName ? "Запрещенные символы" : uniqueGroupName ? "Название раздела" : "Раздел уже существует"}
             variant="outlined"
-            // value={groupName}
+            value={groupName}
             onChange={setGroupName}
         />
     );

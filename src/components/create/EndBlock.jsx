@@ -12,7 +12,12 @@ function EndBlock(
         selectedGroupName,
         id,
         setLoading,
-        expression
+        expression,
+        setStatus,
+        setCorrectName,
+        unique,
+        setUnique,
+        data
     }
 ) {
     return (
@@ -33,12 +38,33 @@ function EndBlock(
                 selectedGroupName={selectedGroupName}
                 id={id}
                 setLoading={setLoading}
+                expression={expression}
+                setStatus={setStatus}
+                setCorrectName={setCorrectName}
+                unique={unique}
+                setUnique={setUnique}
+                data={data}
             />
         </div>
     );
 }
 
-function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName, id, setLoading}) {
+function ButtonEnd(
+    {
+        name,
+        selectedStudents,
+        mailOption,
+        selectedGroupName,
+        id,
+        setLoading,
+        expression,
+        setStatus,
+        setCorrectName,
+        unique,
+        setUnique,
+        data
+    }
+) {
 
     let navigate = useNavigate();
 
@@ -52,16 +78,38 @@ function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName, id, s
     return (
         <Button
             onClick={() => {
-                id !== null ?
-                    mailOption !== undefined ?
-                        updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect)
+                let localUnique = true
+                const checkStudents = (expression !== undefined && expression !== "") ||
+                    (selectedStudents !== undefined && arraySelectedStudents(selectedStudents).length > 0)
+
+                const checkSelectedOption = (selectedGroupName !== undefined && selectedGroupName !== "") ||
+                    (mailOption !== undefined && mailOption !== "")
+
+                const checkCorrectName = !/[^a-zA-Zа-яА-Я_0-9\\\s/]+/.test(name)
+                const type = mailOption !== undefined ? "filter" : "attribute"
+                if (!checkUnique(name, data, type, selectedGroupName, id)) {
+                    setUnique(() => {
+                        localUnique = false
+                        return false
+                    })
+                } else setUnique(true)
+                if (!checkCorrectName) {
+                    setCorrectName(false)
+                } else setCorrectName(true)
+
+                if (checkStudents && checkSelectedOption && checkCorrectName && localUnique) {
+                    id !== null ?
+                        mailOption !== undefined ?
+                            updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus)
+                            :
+                            updateAttribute(id, name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus)
                         :
-                        updateAttribute(id, name, selectedStudents, selectedGroupName, setLoading, redirect)
-                    :
-                    mailOption !== undefined ?
-                        createFilter(name, selectedStudents, mailOption, setLoading, redirect)
-                        :
-                        createAttribute(name, selectedStudents, selectedGroupName, setLoading, redirect)
+                        mailOption !== undefined ?
+                            createFilter(name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus)
+                            :
+                            createAttribute(name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus)
+                    setCorrectName(true)
+                }
             }}
             sx={{
                 paddingRight: "10px",
@@ -83,6 +131,21 @@ function ButtonEnd({name, selectedStudents, mailOption, selectedGroupName, id, s
     );
 }
 
+function checkUnique(name, listNames, type, groupName, id) {
+    if (type === "filter") {
+        const needFilter = listNames.find((filter) =>
+            filter.filterName.replaceAll(/\s+/g, "_").toLowerCase() === name.replaceAll(/\s+/g, "_").toLowerCase()
+        )
+        return needFilter === undefined || (id !== undefined && id === needFilter.id)
+    } else {
+        const needAttr = listNames.find(
+            (item) => item.attributeName.replaceAll(/\s+/g, "_").toLowerCase() === name.replaceAll(/\s+/g, "_").toLowerCase() &&
+                groupName.replaceAll(/\s+/g, "_").toLowerCase() === item.groupName.replaceAll(/\s+/g, "_").toLowerCase()
+        )
+        return needAttr === undefined || (id !== null && id === needAttr.id)
+    }
+}
+
 function arraySelectedStudents(selectedStudents) {
     let arrayStudentsId = []
     let arraySelectedStudents = Object.entries(selectedStudents)
@@ -95,16 +158,42 @@ function arraySelectedStudents(selectedStudents) {
     return arrayStudentsId
 }
 
-async function createAttribute(nameAttribute, selectedStudents, selectedGroupAttribute, setLoading, redirect) {
+async function createAttribute(
+    nameAttribute,
+    selectedStudents,
+    selectedGroupAttribute,
+    setLoading,
+    redirect,
+    expression,
+    setStatus
+) {
     setLoading(true)
-    const newAttribute = {
-        name: nameAttribute,
-        groupName: selectedGroupAttribute,
-        studentsId: arraySelectedStudents(selectedStudents)
+    let currentStatus = ""
+    let students = []
+    if (expression !== "" && expression !== undefined) {
+        const data = {
+            "expression": expression
+        }
+        const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+        currentStatus = computedExpression.data.status
+        if (currentStatus === "success") {
+            for (let student of computedExpression.data.students) {
+                students.push(student.id)
+            }
+        }
     }
-    await axios.post("http://localhost:8080/attributes/createAttribute", newAttribute)
+    if (currentStatus === "" || currentStatus === "success") {
+        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+        const newAttribute = {
+            name: nameAttribute,
+            groupName: selectedGroupAttribute,
+            expression: expression,
+            studentsId: students
+        }
+        await axios.post("http://localhost:8080/attributes/createAttribute", newAttribute)
+        redirect()
+    } else setStatus(currentStatus)
     setLoading(false)
-    redirect()
 }
 
 async function updateAttribute(
@@ -113,43 +202,110 @@ async function updateAttribute(
     selectedStudents,
     selectedGroupAttribute,
     setLoading,
-    redirect
+    redirect,
+    expression,
+    setStatus
 ) {
     setLoading(true)
-    const newAttribute = {
-        idAttribute: idAttribute,
-        name: nameAttribute,
-        groupName: selectedGroupAttribute,
-        studentsId: arraySelectedStudents(selectedStudents)
+    let currentStatus = ""
+    let students = []
+    if (expression !== "" && expression !== undefined) {
+        const data = {
+            "expression": expression
+        }
+        const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+        currentStatus = computedExpression.data.status
+        if (currentStatus === "success") {
+            for (let student of computedExpression.data.students) {
+                students.push(student.id)
+            }
+        }
     }
-    await axios.post("http://localhost:8080/attributes/updateAttribute", newAttribute)
+    if (currentStatus === "" || currentStatus === "success") {
+        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+        const newAttribute = {
+            idAttribute: idAttribute,
+            name: nameAttribute,
+            groupName: selectedGroupAttribute,
+            expression: expression,
+            studentsId: students
+        }
+        await axios.post("http://localhost:8080/attributes/updateAttribute", newAttribute)
+        setLoading(false)
+        redirect()
+    } else setStatus(currentStatus)
     setLoading(false)
-    redirect()
 }
 
-async function createFilter(nameFilter, selectedStudents, mailOption, setLoading, redirect) {
+async function createFilter(
+    nameFilter,
+    selectedStudents,
+    mailOption,
+    setLoading,
+    redirect,
+    expression,
+    setStatus
+) {
     setLoading(true)
-    const newFilter = {
-        name: nameFilter,
-        mailOption: mailOption,
-        studentsId: arraySelectedStudents(selectedStudents)
+    let currentStatus = ""
+    let students = []
+    if (expression !== "" && expression !== undefined) {
+        const data = {
+            "expression": expression
+        }
+        const computedExpression = await axios.post('http://localhost:8080/filters/calculate', data)
+        currentStatus = computedExpression.data.status
+        if (currentStatus === "success") {
+            for (let student of computedExpression.data.students) {
+                students.push(student.id)
+            }
+        }
     }
-    await axios.post("http://localhost:8080/filters/createFilter", newFilter)
+    if (currentStatus === "" || currentStatus === "success") {
+        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+        const newFilter = {
+            name: nameFilter,
+            mailOption: mailOption,
+            expression: expression,
+            studentsId: students
+        }
+        await axios.post("http://localhost:8080/filters/createFilter", newFilter)
+        setLoading(false)
+        redirect()
+    } else setStatus(currentStatus)
     setLoading(false)
-    redirect()
 }
 
-async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, setLoading, redirect) {
+async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, setLoading, redirect, expression, setStatus) {
     setLoading(true)
-    const newFilter = {
-        idFilter: idFilter,
-        name: nameFilter,
-        mailOption: mailOption,
-        studentsId: arraySelectedStudents(selectedStudents)
+    let currentStatus = ""
+    let students = []
+    if (expression !== "" && expression !== undefined) {
+        const data = {
+            "expression": expression
+        }
+        const computedExpression = await axios.post('http://localhost:8080/filters/calculate', data)
+        currentStatus = computedExpression.data.status
+        if (currentStatus === "success") {
+            for (let student of computedExpression.data.students) {
+                students.push(student.id)
+            }
+        }
     }
-    await axios.post("http://localhost:8080/filters/updateFilter", newFilter)
+    if (currentStatus === "" || currentStatus === "success") {
+        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+        const newFilter = {
+            idFilter: idFilter,
+            name: nameFilter,
+            mailOption: mailOption,
+            expression: expression,
+            studentsId: students
+        }
+        await axios.post("http://localhost:8080/filters/updateFilter", newFilter)
+        setLoading(false)
+        redirect()
+    } else setStatus(currentStatus)
     setLoading(false)
-    redirect()
 }
 
 export default EndBlock;

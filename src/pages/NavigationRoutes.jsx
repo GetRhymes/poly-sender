@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Route, Routes} from "react-router-dom";
 import Profile from "./Profile";
 import ManageAttributes from "./attributes/ManageAttributes";
@@ -78,7 +78,18 @@ function NavigationRoutes() {
                     setCurrentIdFilter={setCurrentIdFilter}
                 />
             }/>
-            <Route path="/filters/expression" element={<FiltersExpression/>}/>
+            <Route path="/filters/expression" element={
+                <FiltersExpression
+                    id={currentIdFilter}
+                    setId={setCurrentIdFilter}
+                    nameFilter={nameFilter}
+                    setNameFilter={setNameFilter}
+                    expression={expression}
+                    setExpression={setExpression}
+                    selectedMailOption={selectedMailOption}
+                    setSelectedMailOption={setSelectedMailOption}
+                />
+            }/>
         </Routes>
     );
 }

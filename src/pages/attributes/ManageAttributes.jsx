@@ -103,6 +103,7 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
                     setActive={setPopupCreateActive}
                     endPoint="attributes"
                     setLoading={setLoadingCreateGroupName}
+                    dataGroupNames={dataGroupNames}
                 />
             </div>
     );

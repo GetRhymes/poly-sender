@@ -84,6 +84,10 @@ function AttributesList(
 
     const [loading, setLoading] = useStateIfMounted(false)
 
+    const [correctName, setCorrectName] = useStateIfMounted(true)
+
+    const [unique, setUnique] = useStateIfMounted(true)
+
     const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || dataAttributes.length === 0
 
     return (
@@ -97,6 +101,8 @@ function AttributesList(
                     isFilter={false}
                     selectedGroupName={selectedGroupName}
                     handleSelector={handleSelectedGroupName}
+                    correctName={correctName}
+                    unique={unique}
                 />
                 <WorkBlock
                     dataAccordions={dataAccordions}
@@ -111,6 +117,10 @@ function AttributesList(
                     selectedGroupName={selectedGroupName}
                     id={id}
                     setLoading={setLoading}
+                    setCorrectName={setCorrectName}
+                    unique={unique}
+                    setUnique={setUnique}
+                    data={dataAttributes}
                 />
                 <PopupLoading active={loading}/>
             </Container>

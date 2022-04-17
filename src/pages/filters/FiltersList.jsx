@@ -62,7 +62,6 @@ function FiltersList(
         fetchDataFilters()
         fetchDataTable()
         fetchDataAccordion()
-
         return () => {
             setSelectedMailOption("")
             setCurrentIdFilter(null)
@@ -87,8 +86,11 @@ function FiltersList(
 
     const [loading, setLoading] = useStateIfMounted(false)
 
-    const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || loadingDataFilters
+    const [correctName, setCorrectName] = useStateIfMounted(true)
 
+    const [unique, setUnique] = useStateIfMounted(true)
+
+    const isLoading = dataTable.length === 0 || dataAccordions.length === 0 || loadingDataFilters
 
     return (
         isLoading ?
@@ -101,6 +103,8 @@ function FiltersList(
                     isFilter={true}
                     mailOption={selectedMailOption}
                     handleMailOption={handleMailOption}
+                    correctName={correctName}
+                    unique={unique}
                 />
                 <WorkBlock
                     dataAccordions={dataAccordions}
@@ -115,6 +119,10 @@ function FiltersList(
                     mailOption={selectedMailOption}
                     id={id}
                     setLoading={setLoading}
+                    setCorrectName={setCorrectName}
+                    unique={unique}
+                    setUnique={setUnique}
+                    data={dataFilters}
                 />
                 <PopupLoading active={loading}/>
             </Container>

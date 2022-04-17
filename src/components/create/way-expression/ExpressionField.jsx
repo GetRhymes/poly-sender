@@ -2,6 +2,11 @@ import {Button, TextField} from "@mui/material";
 import React, {useEffect, useRef} from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import axios from "axios";
+import '../../../styles/CreationPages.css'
+import IconButton from "@mui/material/IconButton";
+import InfoIcon from '@mui/icons-material/Info';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
 function ExpressionField(
     {
@@ -11,7 +16,14 @@ function ExpressionField(
         setExpression,
         focus,
         position,
-        setPosition
+        setPosition,
+        setLoading,
+        status,
+        setStatus,
+        students,
+        setStudents,
+        setCheckAbout,
+        setInfoStudents
     }
 ) {
 
@@ -24,8 +36,17 @@ function ExpressionField(
 
     return (
         <div style={{height: height, width: 730}}>
-            <ButtonOperands setExpression={setExpression} focus={focus} setPosition={setPosition}/>
+            <ButtonOperands
+                expression={expression}
+                setExpression={setExpression}
+                focus={focus}
+                setPosition={setPosition}
+                setLoading={setLoading}
+                setStudents={setStudents}
+                setStatus={setStatus}
+            />
             <TextField
+                focused={true}
                 sx={{
                     marginTop: "10px",
                     width: "100%",
@@ -35,14 +56,15 @@ function ExpressionField(
                 multiline
                 onChange={handleExpression}
                 inputRef={focus}
-                rows={19}
+                color={ status !== "" ? status : null }
+                rows={height === 550 ? 17 : 19}
             />
-            <Report/>
+            <Report status={status} students={students} setCheckAbout={setCheckAbout} setInfoStudents={setInfoStudents}/>
         </div>
     );
 }
 
-function ButtonOperands({setExpression, focus, setPosition}) {
+function ButtonOperands({expression, setExpression, focus, setPosition, setLoading, setStatus, setStudents}) {
 
     const buttonStyle = {
         height: "35px",
@@ -127,26 +149,76 @@ function ButtonOperands({setExpression, focus, setPosition}) {
             >
                 <RemoveIcon/>
             </Button>
-            <Button sx={buttonStyle}>
+            <Button
+                sx={buttonStyle}
+                onClick={() => {
+                    if (expression !== "") {
+                        calculateExpression(setLoading, expression, setStatus, setStudents)
+                    }
+                }}
+            >
                 <PlayArrowIcon/>
             </Button>
         </div>
     );
 }
 
-function Report() {
+function Report({status, students, setCheckAbout, setInfoStudents}) {
     return (
-        <div className="report">
-            <div className="report__line">
-                <p>Количество студентов:</p>
-                <p style={{marginLeft: "20px"}}>30</p>
+        <div className="block__report">
+            <div className="report">
+                <div className={"report__line " + status}>
+                    <p>Количество студентов:</p>
+                    <p style={{marginLeft: "20px"}}>{students.length}</p>
+
+                </div>
+                <div className={"report__line " + status}>
+                    <p>Синтаксис: </p>
+                    <p style={{marginLeft: "20px"}}>{getStatus(status)}</p>
+
+                </div>
             </div>
-            <div className="report__line">
-                <p>Синтаксис: </p>
-                <p style={{marginLeft: "20px"}}>Successful!</p>
+            <div className="buttons__report">
+                <div style={{ height: "24px", width: "24px", marginTop: "9px", marginLeft: "20px"}}>
+                    {
+                        students.length > 0 ?
+                            <IconButton sx={{ padding: "5px"}} onClick={()=> setInfoStudents(true)}>
+                                <ViewListIcon/>
+                            </IconButton>
+                            :
+                            null
+                    }
+                </div>
+                <div style={{ height: "24px", width: "24px", marginTop: "11px", marginLeft: "20px"}}>
+                    {
+                        status !== "" && status !== undefined && status !== null ?
+                            <IconButton sx={{ padding: "5px"}} onClick={() => setCheckAbout(true)}>
+                                <InfoIcon fontSize="medium"/>
+                            </IconButton>
+                            :
+                            null
+                    }
+                </div>
             </div>
         </div>
     );
+}
+
+function getStatus(status) {
+    if (status === 'success') return "Successful!"
+    if (status === 'warning') return "Warning!"
+    if (status === 'error') return "Error!"
+}
+
+async function calculateExpression(setLoading, expression, setStatus, setStudents) {
+    setLoading(true)
+    const data = {
+        "expression": expression
+    }
+    const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+    setStatus(computedExpression.data.status)
+    setStudents(computedExpression.data.students)
+    setLoading(false)
 }
 
 export default ExpressionField

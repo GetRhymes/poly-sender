@@ -68,4 +68,37 @@
     font-size: 18px;
     font-style: normal;
     color: #366ac3;
+    align-items: center;
 }
+
+.warning {
+    color: #ed6c02;
+}
+
+.error {
+    color: #d32f2f;
+}
+
+.success {
+    color: #2e7d32;
+}
+
+.about__text {
+    margin-top: 30px;
+    margin-left: 15px;
+    font-size: 16px;
+    font-family: "Roboto","Helvetica","Arial", sans-serif;
+    font-style: normal;
+}
+
+.block__report {
+    display: flex;
+    flex-direction: row;
+}
+
+.buttons__report {
+    display: flex;
+    flex-direction: column;
+}
+
+

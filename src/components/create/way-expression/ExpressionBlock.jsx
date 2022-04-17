@@ -12,7 +12,14 @@ function ExpressionBlock(
         dataFunctions,
         height,
         position,
-        setPosition
+        setPosition,
+        setLoading,
+        status,
+        setStatus,
+        students,
+        setStudents,
+        setCheckAbout,
+        setInfoStudents
     }
 ) {
 
@@ -30,6 +37,13 @@ function ExpressionBlock(
                     focus={focus}
                     position={position}
                     setPosition={setPosition}
+                    setLoading={setLoading}
+                    status={status}
+                    setStatus={setStatus}
+                    students={students}
+                    setStudents={setStudents}
+                    setCheckAbout={setCheckAbout}
+                    setInfoStudents={setInfoStudents}
                 />
             </div>
             <div className="background__card">

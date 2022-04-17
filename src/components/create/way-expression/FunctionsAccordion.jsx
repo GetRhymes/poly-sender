@@ -51,7 +51,7 @@ function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPos
     return(
         <Box height={height} overflow="auto">
             {
-                dataFunctions.map(({id, nameFunction, args}) =>
+                dataFunctions.map(({id, groupName, attributes}) =>
                     <Accordion
                         inputprops={{
                             position: "initial"
@@ -65,19 +65,19 @@ function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPos
                             expandIcon={<ExpandMoreIcon/>}
                             key={id + "sum"}
                         >
-                            <Typography key={id + "sumtext"}>{nameFunction}</Typography>
+                            <Typography key={id + "sumtext"}>{groupName}</Typography>
                         </AccordionSummary>
                         <AccordionDetails sx={styleAccordion} key={id + "det"}>
                             <Divider/>
                             <List>
-                                {args.map((item) =>
+                                {attributes.map((item) =>
                                     <ListItem sx={styleListItem} key={item + "listItem"}>
                                         <Button
                                             sx={addButtonStyle}
                                             onClick={()=> {
                                                 setExpression((expression)=> {
                                                     const position = focus.current.selectionEnd
-                                                    const left = expression.substring(0, position) + nameFunction + '[' + item + ']'
+                                                    const left = expression.substring(0, position) + groupName + '[' + item + ']'
                                                     setPosition(left.length)
                                                     return left + expression.substring(position)
                                                 })
