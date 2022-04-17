@@ -1,53 +1,8 @@
 import React from 'react';
 import '../../../styles/Create.css'
-import {Box, ListItem, ListItemButton, ListItemText} from "@mui/material";
+import {Box, ListItem, ListItemText} from "@mui/material";
 import {FixedSizeList} from 'react-window';
 import Divider from "@mui/material/Divider";
-
-
-export const students3 = [
-    {
-        name: "1234",
-        email: "dmskfsd"
-    }, {
-        name: "123324",
-        email: "dmskfsd"
-    }, {
-        name: "123234",
-        email: "d323mskfsd"
-    }, {
-        name: "12342344",
-        email: "dm4234skfsd"
-    }, {
-        name: "1234",
-        email: "dmsk1312432fsd"
-    }, {
-        name: "12325534",
-        email: "dms523565634kfsd"
-    }, {
-        name: "1234532rfd34",
-        email: "dmsk553543fsd"
-    }, {
-        name: "123vsvsv4",
-        email: "dmvsdsdskfsd"
-    }, {
-        name: "123ssdeg4",
-        email: "dmsvsvsdvkfsd"
-    }, {
-        name: "123bdfbd4",
-        email: "dmsbfdbdkfsd"
-    }, {
-        name: "123fdbdfb4",
-        email: "ddbfbdbmskfsd"
-    }, {
-        name: "1dtt3rr234",
-        email: "dmfdvfdvdskfsd"
-    }, {
-        name: "12dfvdb34",
-        email: "dmsbdfbfdbkfsd"
-    },
-]
-
 
 function PopupStudentsList({active, setActive, students}) {
     const styleText = {
@@ -63,7 +18,6 @@ function PopupStudentsList({active, setActive, students}) {
                 style={style}
                 key={index}
                 component="div"
-                // sx={{ marginLeft: "25px" }}
                 disablePadding
             >
                 <ListItemText>
@@ -85,7 +39,7 @@ function PopupStudentsList({active, setActive, students}) {
                     height={380}
                     width={650}
                     itemSize={40}
-                    itemCount={students.length}
+                    itemCount={students !== null ? students.length : 0}
                     overscanCount={5}
                 >
                     {renderRow}
@@ -103,7 +57,6 @@ function PopupStudentsList({active, setActive, students}) {
                 <ListItem
                     component="div"
                     disablePadding
-                    // sx={{ marginLeft: "25px"}}
                 >
                     <ListItemText>
                         <p style={styleText}>ФИО</p>

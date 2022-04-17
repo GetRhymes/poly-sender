@@ -11,11 +11,6 @@ import CleanBlock from "../../components/CleanBlock";
 
 const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
-    useEffect(() => {
-        fetchDataGroupNamesCurrentStaff()
-        fetchDataAttributesCurrentStaff()
-    }, [])
-
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])

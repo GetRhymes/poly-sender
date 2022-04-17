@@ -25,7 +25,7 @@ function FiltersExpression(
 
     const [dataFunctions, setDataFunctions] = useStateIfMounted([])
 
-    const [students, setStudents] = useStateIfMounted([])
+    const [students, setStudents] = useStateIfMounted(null)
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
@@ -57,7 +57,7 @@ function FiltersExpression(
         setNameFilter(filter.data.filterName)
         setSelectedMailOption(filter.data.mode)
         setExpression(filter.data.expression)
-        setStudents(filter.data.students)
+        setStudents(filter.data.studentsDTO)
     }
 
     useEffect(() => {
@@ -115,7 +115,7 @@ function FiltersExpression(
 
     const [loadingDataFilters, setLoadingDataFilters] = useState(false)
 
-    const isLoading = (students.length === 0 && id !== null) || dataFunctions.length === 0 || loadingDataFilters
+    const isLoading = (students === null && id !== null) || dataFunctions.length === 0 || loadingDataFilters
 
     return (
         isLoading ?

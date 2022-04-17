@@ -11,10 +11,6 @@ import CleanBlock from "../../components/CleanBlock";
 
 const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
 
-    useEffect(() => {
-        fetchDataFilters()
-    }, [])
-
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
     async function fetchDataFilters() {

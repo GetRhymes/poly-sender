@@ -246,3 +246,78 @@ export const dataFunction = [
         args: ['очно', 'заочно', 'очно-заочно']
     },
 ]
+
+
+const lol = [{
+    "id": "1cdf23fc-6a1d-4648-9c4f-a0f13ac8c60b",
+    "attributeName": "ИКНиТ / ВШИСиСТ",
+    "groupName": "Подразделение",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["8ff93425-b708-4f63-9792-91814ea2a2de", "33067576-4164-492a-a2f7-908831aeb240", "41066575-4361-452a-b2f7-908831aeb240"],
+    "status": "success"
+}, {
+    "id": "318511c1-e9b1-4597-8e93-b68149fd3657",
+    "attributeName": "Российская Федерация",
+    "groupName": "Страна",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["8ff93425-b708-4f63-9792-91814ea2a2de"],
+    "status": "success"
+}, {
+    "id": "614b6832-4f19-40c4-b02a-dcc586892b47",
+    "attributeName": "Бюджет",
+    "groupName": "Финансирование",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["8ff93425-b708-4f63-9792-91814ea2a2de", "41066575-4361-452a-b2f7-908831aeb240"],
+    "status": "success"
+}, {
+    "id": "b41b2f91-cca9-41c1-9597-99a2416f1928",
+    "attributeName": "3530901/80203",
+    "groupName": "Номер группы",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["8ff93425-b708-4f63-9792-91814ea2a2de"],
+    "status": "success"
+}, {
+    "id": "eddbd202-c79a-45de-9d84-4de8f93fcb04",
+    "attributeName": "Республика Ангола",
+    "groupName": "Страна",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["33067576-4164-492a-a2f7-908831aeb240", "41066575-4361-452a-b2f7-908831aeb240"],
+    "status": "success"
+}, {
+    "id": "d159c111-18cd-4413-a69c-2dc67b2bb7be",
+    "attributeName": "Контракт",
+    "groupName": "Финансирование",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["33067576-4164-492a-a2f7-908831aeb240"],
+    "status": "success"
+}, {
+    "id": "da45efeb-ac57-447b-b062-4c500d2675fa",
+    "attributeName": "3530901/80202",
+    "groupName": "Номер группы",
+    "expression": null,
+    "type": "list",
+    "created": "2022-04-03",
+    "students": ["33067576-4164-492a-a2f7-908831aeb240", "41066575-4361-452a-b2f7-908831aeb240"],
+    "status": "success"
+}, {
+    "id": "adfede6f-34fb-4efe-b575-b1905a43fa8f",
+    "attributeName": "second",
+    "groupName": "Q",
+    "expression": "q[first] | номер_группы[3530901/80202]",
+    "type": "expression",
+    "created": "2022-04-17",
+    "students": ["33067576-4164-492a-a2f7-908831aeb240", "41066575-4361-452a-b2f7-908831aeb240", "8ff93425-b708-4f63-9792-91814ea2a2de"],
+    "status": "error"
+}]

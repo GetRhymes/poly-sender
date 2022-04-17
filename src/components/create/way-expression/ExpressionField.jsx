@@ -169,7 +169,7 @@ function Report({status, students, setCheckAbout, setInfoStudents}) {
             <div className="report">
                 <div className={"report__line " + status}>
                     <p>Количество студентов:</p>
-                    <p style={{marginLeft: "20px"}}>{students.length}</p>
+                    <p style={{marginLeft: "20px"}}>{students !== null ? students.length : 0}</p>
 
                 </div>
                 <div className={"report__line " + status}>
@@ -181,7 +181,7 @@ function Report({status, students, setCheckAbout, setInfoStudents}) {
             <div className="buttons__report">
                 <div style={{ height: "24px", width: "24px", marginTop: "9px", marginLeft: "20px"}}>
                     {
-                        students.length > 0 ?
+                        students !== null && students.length > 0 ?
                             <IconButton sx={{ padding: "5px"}} onClick={()=> setInfoStudents(true)}>
                                 <ViewListIcon/>
                             </IconButton>

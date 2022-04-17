@@ -28,6 +28,7 @@
     align-items: end;
     height: 40px;
     width: 250px;
+    justify-content: space-between;
 }
 
 .attribute__card__header__text {

@@ -6,6 +6,8 @@ import {Accordion, AccordionDetails, AccordionSummary, Button} from "@mui/materi
 import FilterRowInfo from "./FilterRowInfo";
 import ButtonActionGroup from "../ButtonActionGroup";
 import axios from "axios";
+import WarningIcon from "@mui/icons-material/Warning";
+import ReportIcon from "@mui/icons-material/Report";
 
 function FilterAccordionItem(
     {
@@ -44,9 +46,16 @@ function FilterAccordionSummary({filter}) {
                     {ModeFilter(filter.mode)}
                     <p className="header__accordion__label">{filter.filterName}</p>
                 </div>
-                <Button onClick={(event) => {
-                    event.stopPropagation()
-                }}>Отправить</Button>
+                {
+                    filter.status === "warning" ?
+                        <WarningIcon sx={{marginRight: "10px", color: "#f6d65e"}}/>
+                        :
+                        filter.status === "error" ?
+                            <ReportIcon sx={{marginRight: "10px", color: "#ff5f5f"}}/>
+                            :
+                            <div style={{height: "24px", width: "24px", marginRight: "10px"}}/>
+
+                }
             </div>
         </AccordionSummary>
     );

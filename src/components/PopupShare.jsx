@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import '../styles/Create.css'
-import {Autocomplete, Box, Button, TextField} from "@mui/material";
-import {dataStaff} from "./data/data";
+import {Autocomplete, Button, TextField} from "@mui/material";
 import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,17 +8,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 function PopupShare({active, setActive, id, setId, endPoint}) {
 
     useEffect(() => {
-        // setLoading(true)
         getStaff()
-        // setLoading(false)
     }, [])
 
     async function getStaff() {
         const dataStaff = await axios.get("http://localhost:8080/staff/getAll")
         setDataStaff(dataStaff.data)
     }
-
-    // const [loading, setLoading] = useState()
 
     const [dataStaff, setDataStaff] = useStateIfMounted([])
 

@@ -27,7 +27,7 @@ function AttributesExpression(
 
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
-    const [students, setStudents] = useStateIfMounted([])
+    const [students, setStudents] = useStateIfMounted(null)
 
     async function fetchDataFunctions() {
         const dataFunction = await axios('http://localhost:8080/attributes/getGroupAttributes');
@@ -50,7 +50,7 @@ function AttributesExpression(
         setNameAttribute(attribute.data.attributeName)
         setSelectedGroupName(attribute.data.groupName)
         setExpression(attribute.data.expression)
-        setStudents(attribute.data.students)
+        setStudents(attribute.data.studentsDTO)
     }
 
     async function fetchDataAttributesCurrentStaff() {
@@ -118,7 +118,7 @@ function AttributesExpression(
 
     const [loadingAttributes, setLoadingAttributes] = useStateIfMounted(false)
 
-    const isLoading = (students.length === 0 && id !== null) || dataFunctions.length === 0 || loadingAttributes
+    const isLoading = (students === null && id !== null) || dataFunctions.length === 0 || loadingAttributes
 
     return (
         isLoading ?
