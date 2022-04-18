@@ -9,7 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 
-const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
+const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption, setRootPath}) => {
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
@@ -31,6 +31,7 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
     const [popupShareActive, setPopupShareActive] = useState(false)
 
     useEffect(() => {
+        setRootPath("Фильтры")
         fetchDataFilters()
     }, [loadingDeleteFilter])
 

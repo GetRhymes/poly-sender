@@ -19,7 +19,8 @@ function AttributesExpression(
         setSelectedGroupName,
         setCurrentIdAttribute,
         expression,
-        setExpression
+        setExpression,
+        setCreate
     }
 ) {
 
@@ -62,6 +63,7 @@ function AttributesExpression(
 
     useEffect(() => {
         fetchDataFunctions()
+        setCreate(true)
         if (id !== null) {
             fetchDataAttributesCurrentStaff()
             fetchDataAttributeById()
@@ -71,6 +73,7 @@ function AttributesExpression(
             setCurrentIdAttribute(null)
             setExpression("")
             setNameAttribute("")
+            setCreate(false)
         }
     }, [])
 

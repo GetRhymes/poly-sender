@@ -15,3 +15,21 @@
    margin-top: 8.5px;
    margin-bottom: 8.5px;
 }
+
+.label__block {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.label {
+    font-size: 18px;
+    font-style: normal;
+    font-family: "Roboto","Helvetica","Arial", sans-serif;
+}
+
+.path__block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

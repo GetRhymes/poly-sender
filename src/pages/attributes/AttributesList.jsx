@@ -16,7 +16,8 @@ function AttributesList(
         setNameAttribute,
         selectedGroupName,
         setSelectedGroupName,
-        setCurrentIdAttribute
+        setCurrentIdAttribute,
+        setCreate
     }
 ) {
 
@@ -60,11 +61,12 @@ function AttributesList(
         fetchDataAttributes()
         fetchDataTable()
         fetchDataAccordion()
-
+        setCreate(true)
         return () => {
             setSelectedGroupName("")
             setCurrentIdAttribute(null)
             setNameAttribute("")
+            setCreate(false)
         }
     }, [])
 

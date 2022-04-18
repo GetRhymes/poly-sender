@@ -9,7 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 
-const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
+const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName, setRootPath}) => {
 
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
@@ -48,6 +48,7 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
     const [groupName, setGroupName] = useStateIfMounted(null)
 
     useEffect(() => {
+        setRootPath("Атрибуты")
         fetchDataGroupNamesCurrentStaff()
         fetchDataAttributesCurrentStaff()
     }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute])

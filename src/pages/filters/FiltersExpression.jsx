@@ -20,6 +20,7 @@ function FiltersExpression(
         setExpression,
         selectedMailOption,
         setSelectedMailOption,
+        setCreate
     }
 ) {
 
@@ -61,10 +62,12 @@ function FiltersExpression(
     }
 
     useEffect(() => {
+        setCreate(true)
         fetchDataFilters()
         fetchDataFunctions()
         if (id !== null) fetchDataFilterById()
         return () => {
+            setCreate(false)
             setSelectedMailOption("")
             setId(null)
             setExpression("")

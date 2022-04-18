@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../styles/Profile.css'
 
-const Profile = () => {
+const Profile = ({setRootPath}) => {
+
+    useEffect(()=> {
+        setRootPath("Профиль")
+    })
 
     return (
         <div className="profile__container">

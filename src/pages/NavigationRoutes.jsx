@@ -10,7 +10,7 @@ import FiltersList from "./filters/FiltersList";
 import FiltersExpression from "./filters/FiltersExpression";
 import {useStateIfMounted} from "use-state-if-mounted";
 
-function NavigationRoutes() {
+function NavigationRoutes({setRootPath, setCreate}) {
 
     const [currentIdAttribute, setCurrentIdAttribute] = useState(null)
 
@@ -28,13 +28,14 @@ function NavigationRoutes() {
 
     return (
         <Routes>
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile" element={<Profile setRootPath={setRootPath}/>}/>
             <Route path="/attributes" element={
                 <ManageAttributes
                     idAttribute={currentIdAttribute}
                     setId={setCurrentIdAttribute}
                     setNameAttribute={setNameAttribute}
                     setSelectedGroupName={setSelectedGroupName}
+                    setRootPath={setRootPath}
                 />
             }/>
             <Route path="/filters" element={
@@ -43,9 +44,10 @@ function NavigationRoutes() {
                     setId={setCurrentIdFilter}
                     setNameFilter={setNameFilter}
                     setSelectedMailOption={setSelectedMailOption}
+                    setRootPath={setRootPath}
                 />
             }/>
-            <Route path="/lists" element={<ExcelLists/>}/>
+            <Route path="/lists" element={<ExcelLists setRootPath={setRootPath}/>}/>
             <Route path="/attributes/list" element={
                 <AttributesList
                     id={currentIdAttribute}
@@ -54,6 +56,7 @@ function NavigationRoutes() {
                     selectedGroupName={selectedGroupName}
                     setSelectedGroupName={setSelectedGroupName}
                     setCurrentIdAttribute={setCurrentIdAttribute}
+                    setCreate={setCreate}
                 />
             }/>
             <Route path="/attributes/expression" element={
@@ -66,6 +69,7 @@ function NavigationRoutes() {
                     setCurrentIdAttribute={setCurrentIdAttribute}
                     expression={expression}
                     setExpression={setExpression}
+                    setCreate={setCreate}
                 />
             }/>
             <Route path="/filters/list" element={
@@ -76,6 +80,7 @@ function NavigationRoutes() {
                     selectedMailOption={selectedMailOption}
                     setSelectedMailOption={setSelectedMailOption}
                     setCurrentIdFilter={setCurrentIdFilter}
+                    setCreate={setCreate}
                 />
             }/>
             <Route path="/filters/expression" element={
@@ -88,6 +93,7 @@ function NavigationRoutes() {
                     setExpression={setExpression}
                     selectedMailOption={selectedMailOption}
                     setSelectedMailOption={setSelectedMailOption}
+                    setCreate={setCreate}
                 />
             }/>
         </Routes>

@@ -13,6 +13,8 @@ import SidebarData from "./SidebarData";
 import {Box, ListItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import MuiAppBar from '@mui/material/AppBar';
+import {useState} from "react";
+import sidebarData from "./SidebarData";
 
 const drawerWidth = 240;
 
@@ -81,9 +83,31 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 
-function Sidebar() {
+
+function Sidebar({rootPath, create}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+
+    const [isActive, setIsActive] = useState(() => {
+        let result = {}
+        for (let item of sidebarData) {
+            let temp = result
+            temp[item.id] = false
+            result = temp
+        }
+        return result
+    })
+
+    function handleIsActive(id) {
+        let result = {}
+        for (let item of sidebarData) {
+            let temp = result
+            temp[item.id] = false
+            result = temp
+        }
+        result[id] = true
+        setIsActive(result)
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -95,7 +119,7 @@ function Sidebar() {
     return (
         <Box>
             <AppBar position="fixed" open={open}>
-                <TopBar open={open} handleDrawerOpen={handleDrawerOpen}/>
+                <TopBar open={open} handleDrawerOpen={handleDrawerOpen} rootPath={rootPath} create={create}/>
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader sx={{background: "#366ac3"}}>
@@ -108,6 +132,7 @@ function Sidebar() {
                     {
                         SidebarData.map((item) =>
                             <ListItem
+                                onClick={() => handleIsActive(item.id)}
                                 key={item.id}
                                 component={Link}
                                 to={item.path}
@@ -115,15 +140,15 @@ function Sidebar() {
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.5,
+                                    background: isActive[item.id] ? 'white' : null,
                                     ":hover": {
                                         transition: "all 0.25s ease-in-out",
-                                        background: "#739ee8",
-
+                                        background: isActive[item.id] ? 'rgb(158,189,231)' : "#739ee8",
                                     }
                                 }}>
                                 <ListItemIcon
                                     sx={{
-                                        color: "white",
+                                        color: isActive[item.id] ? '#366ac3' : "white",
                                         minWidth: 0,
                                         mr: open ? 3 : 'auto',
                                         justifyContent: 'center',
@@ -132,7 +157,7 @@ function Sidebar() {
                                 </ListItemIcon>
                                 <ListItemText primary={item.name} sx={{
                                     textDecoration: "none",
-                                    color: "white",
+                                    color: isActive[item.id] ? '#366ac3' : "white",
                                     opacity: open ? 1 : 0,
                                 }}/>
                             </ListItem>

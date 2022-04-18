@@ -13,19 +13,19 @@ const SidebarData = [
         icon: <AccountCircleIcon/>
     },
     {
-        id: 3,
+        id: 2,
         name: "Атрибуты",
         path: "/attributes",
         icon: <AttributionIcon/>
     },
     {
-        id: 4,
+        id: 3,
         name: "Фильтры",
         path: "/filters",
         icon: <FilterAltIcon/>
     },
     {
-        id: 5,
+        id: 4,
         name: "Списки",
         path: "/lists",
         icon: <ListAltIcon/>

@@ -16,6 +16,7 @@ function FiltersList(
         selectedMailOption,
         setSelectedMailOption,
         setCurrentIdFilter,
+        setCreate
     }
 ) {
 
@@ -59,10 +60,12 @@ function FiltersList(
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
     useEffect(() => {
+        setCreate(true)
         fetchDataFilters()
         fetchDataTable()
         fetchDataAccordion()
         return () => {
+            setCreate(false)
             setSelectedMailOption("")
             setCurrentIdFilter(null)
             setNameFilter("")

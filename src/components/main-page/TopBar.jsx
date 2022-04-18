@@ -3,20 +3,20 @@ import '../../styles/TopBar.css'
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import DropMenu from "./DropMenu";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-function TopBar({open, handleDrawerOpen}) {
+function TopBar({open, handleDrawerOpen, rootPath, create}) {
 
     return (
         <>
             <div className="top__bar">
-                <div>
+                <div className="label__block">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
                         sx={{
-                            // display: "flex",
                             marginLeft: "12px",
                             marginTop: "12.5px",
                             marginBottom: "12.5px",
@@ -25,6 +25,9 @@ function TopBar({open, handleDrawerOpen}) {
                     >
                         <MenuIcon/>
                     </IconButton>
+                    <Path label={rootPath}/>
+                    { create ? <Path label="Создать"/> : null }
+
                 </div>
                 <div className="drop__menu">
                     <DropMenu/>
@@ -35,3 +38,13 @@ function TopBar({open, handleDrawerOpen}) {
 }
 
 export default TopBar;
+
+
+function Path({label}) {
+    return (
+        <div className="path__block">
+            <ArrowRightIcon fontSize="medium" sx={{marginLeft: "10px"}}/>
+            <p className="label">{label}</p>
+        </div>
+    );
+}
