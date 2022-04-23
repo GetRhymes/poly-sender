@@ -1,25 +1,27 @@
 import './styles/App.css';
-import Sidebar from "./components/main-page/Sidebar";
-import React, {useState} from "react";
-import NavigationRoutes from "./pages/NavigationRoutes";
+import React, {useEffect, useState} from "react";
+import {AuthContext} from "./context";
+import Application from "./Application";
 
 function App() {
 
-    const [rootPath, setRootPath] = useState("")
+    const [isAuth, setIsAuth] = useState(false)
 
-    const [create, setCreate] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        if (localStorage.getItem('auth') === 'true') {
+            setIsAuth(true)
+        }
+        setIsLoading(false)
+    }, [])
 
     return (
-        <div className="cont">
-            <Sidebar rootPath={rootPath} create={create}/>
-            <div className="active__screen">
-                <div className="plug"/>
-                <div className="dashboard">
-                    <NavigationRoutes setRootPath={setRootPath} setCreate={setCreate}/>
-                </div>
-            </div>
-        </div>
+        <AuthContext.Provider value={{isAuth, setIsAuth, isLoading}}>
+            <Application isAuth={isAuth} setIsAuth={setIsAuth}/>
+        </AuthContext.Provider>
     );
+
 }
 
 export default App;

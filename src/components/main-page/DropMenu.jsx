@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useContext} from 'react';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -10,14 +11,9 @@ import IconButton from "@mui/material/IconButton";
 import {AccountCircle} from "@mui/icons-material";
 import {Menu} from "@mui/material";
 import '../../styles/TopBar.css'
+import {AuthContext} from "../../context";
 
-function DropMenu() { //todo refactor
-
-    // const [auth, setAuth] = React.useState(true);
-
-    // const handleChange = (event) => {
-    //     setAuth(event.target.checked);
-    // };
+function DropMenu() {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -28,6 +24,15 @@ function DropMenu() { //todo refactor
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const {setIsAuth} = useContext(AuthContext)
+
+    function logout() {
+        handleClose()
+        setIsAuth(false)
+        localStorage.removeItem('auth')
+    }
+
     return (
         <>
             <IconButton
@@ -57,9 +62,9 @@ function DropMenu() { //todo refactor
                 </MenuItem>
                 <Divider/>
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={logout}
                     component={Link}
-                    to={"/profile"}>
+                    to={"/login"}>
                     <ListItemIcon>
                         <ExitToAppIcon fontSize="small"/>
                     </ListItemIcon>

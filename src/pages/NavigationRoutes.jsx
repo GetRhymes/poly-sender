@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes,} from "react-router-dom";
 import Profile from "./Profile";
 import ManageAttributes from "./attributes/ManageAttributes";
 import ManageFilters from "./filters/ManageFilters";
@@ -96,6 +96,7 @@ function NavigationRoutes({setRootPath, setCreate}) {
                     setCreate={setCreate}
                 />
             }/>
+            <Route path="*" element={<Navigate to="/attributes"/>}/>
         </Routes>
     );
 }
