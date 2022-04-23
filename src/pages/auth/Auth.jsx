@@ -32,12 +32,12 @@ function Auth() {
     let navigate = useNavigate();
 
     function createAccount() {
-        let path = "/signup"
+        let path = "/login/signup"
         navigate(path);
     }
 
     function returnPassword() {
-        let path = "/forgot-password"
+        let path = "/login/forgot-password"
         navigate(path)
     }
 

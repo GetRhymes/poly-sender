@@ -7,9 +7,9 @@ import ForgotPassword from "./ForgotPassword";
 function AuthNavigation() {
     return (
         <Routes>
-            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/login/signup" element={<SignUp/>}/>
             <Route path="/login" element={<Auth/>}/>
-            <Route path="/forgot-password" element={<ForgotPassword/>}/>
+            <Route path="/login/forgot-password" element={<ForgotPassword/>}/>
             <Route path="*" element={<Navigate to="/login"/>}/>
         </Routes>
     );
