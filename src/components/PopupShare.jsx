@@ -41,11 +41,6 @@ function PopupShare({active, setActive, id, setId, endPoint}) {
                                     getOptionLabel={(option) => option.fullName}
                                     filterSelectedOptions
                                     onChange={(event, value) => setSelectedStaff(value)}
-                                    // renderOption={(props, option)=> (
-                                    //     <Box {...props} overflow="auto">
-                                    //         {option.label}
-                                    //     </Box>
-                                    // )}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}

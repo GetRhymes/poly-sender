@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {styled, useTheme} from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,11 +11,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TopBar from "./TopBar";
 import SidebarData from "./SidebarData";
+import sidebarData from "./SidebarData";
 import {Box, ListItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import MuiAppBar from '@mui/material/AppBar';
-import {useState} from "react";
-import sidebarData from "./SidebarData";
 
 const drawerWidth = 240;
 
@@ -83,8 +83,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 
-
-function Sidebar({rootPath, create}) {
+function Sidebar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -119,7 +118,7 @@ function Sidebar({rootPath, create}) {
     return (
         <Box>
             <AppBar position="fixed" open={open}>
-                <TopBar open={open} handleDrawerOpen={handleDrawerOpen} rootPath={rootPath} create={create}/>
+                <TopBar open={open} handleDrawerOpen={handleDrawerOpen}/>
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader sx={{background: "#366ac3"}}>

@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import {PathContext} from "../context";
 
-const ExcelLists = ({setRootPath}) => {
+const ExcelLists = () => {
 
-    setRootPath("Списки")
+    const {setRootPath} = useContext(PathContext)
 
+    useEffect(() => {
+        setRootPath("Списки")
+        return (() => {
+            setRootPath("")
+        })
+    }, [])
     return (
         <div>
             <h1>ExcelLists</h1>

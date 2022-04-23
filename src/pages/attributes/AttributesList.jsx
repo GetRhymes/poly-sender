@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import '../../styles/CreationPages.css'
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
@@ -8,6 +8,7 @@ import {useStateIfMounted} from "use-state-if-mounted";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import PopupLoading from "../../components/PopupLoading";
+import {PathContext} from "../../context";
 
 function AttributesList(
     {
@@ -17,7 +18,6 @@ function AttributesList(
         selectedGroupName,
         setSelectedGroupName,
         setCurrentIdAttribute,
-        setCreate
     }
 ) {
 
@@ -57,16 +57,22 @@ function AttributesList(
 
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
+    const {setRootPath, setCreate} = useContext(PathContext)
+
     useEffect(() => {
         fetchDataAttributes()
         fetchDataTable()
         fetchDataAccordion()
+
         setCreate(true)
+        setRootPath("Атрибуты")
+
         return () => {
             setSelectedGroupName("")
             setCurrentIdAttribute(null)
             setNameAttribute("")
             setCreate(false)
+            setRootPath("")
         }
     }, [])
 

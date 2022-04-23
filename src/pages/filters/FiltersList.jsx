@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
@@ -7,6 +7,7 @@ import {useStateIfMounted} from "use-state-if-mounted";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import PopupLoading from "../../components/PopupLoading";
+import {PathContext} from "../../context";
 
 function FiltersList(
     {
@@ -16,7 +17,6 @@ function FiltersList(
         selectedMailOption,
         setSelectedMailOption,
         setCurrentIdFilter,
-        setCreate
     }
 ) {
 
@@ -59,12 +59,16 @@ function FiltersList(
 
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
+    const {setRootPath, setCreate} = useContext(PathContext)
+
     useEffect(() => {
         setCreate(true)
+        setRootPath("Фильтры")
         fetchDataFilters()
         fetchDataTable()
         fetchDataAccordion()
         return () => {
+            setRootPath("")
             setCreate(false)
             setSelectedMailOption("")
             setCurrentIdFilter(null)

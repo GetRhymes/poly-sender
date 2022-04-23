@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
-import {AuthContext} from "./context";
-import AuthNavigation from "./pages/AuthNavigation";
+import {AuthContext, PathContext} from "./context";
+import AuthNavigation from "./pages/auth/AuthNavigation";
 import Sidebar from "./components/main-page/Sidebar";
 import NavigationRoutes from "./pages/NavigationRoutes";
 import LoadingScreen from "./components/LoadingScreen";
@@ -17,22 +17,21 @@ function Application() {
         return <LoadingScreen/>
     }
 
-    console.log("Application")
-    console.log(isAuth)
-
     return (
         !isAuth ?
             <AuthNavigation/>
             :
-            <div className="cont">
-                <Sidebar rootPath={rootPath} create={create}/>
-                <div className="active__screen">
-                    <div className="plug"/>
-                    <div className="dashboard">
-                        <NavigationRoutes setRootPath={setRootPath} setCreate={setCreate}/>
+            <PathContext.Provider value={{rootPath, setRootPath, create, setCreate}}>
+                <div className="cont">
+                    <Sidebar/>
+                    <div className="active__screen">
+                        <div className="plug"/>
+                        <div className="dashboard">
+                            <NavigationRoutes/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </PathContext.Provider>
     );
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import LoadingScreen from "../../components/LoadingScreen";
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
@@ -9,6 +9,7 @@ import ExpressionBlock from "../../components/create/way-expression/ExpressionBl
 import axios from "axios";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
+import {PathContext} from "../../context";
 
 function AttributesExpression(
     {
@@ -20,7 +21,6 @@ function AttributesExpression(
         setCurrentIdAttribute,
         expression,
         setExpression,
-        setCreate
     }
 ) {
 
@@ -61,10 +61,13 @@ function AttributesExpression(
         setLoadingAttributes(false)
     }
 
+    const {setRootPath, setCreate} = useContext(PathContext)
+
     useEffect(() => {
         fetchDataFunctions()
         fetchDataAttributesCurrentStaff()
         setCreate(true)
+        setRootPath("Атрибуты")
         if (id !== null) {
             fetchDataAttributeById()
         }
@@ -74,6 +77,7 @@ function AttributesExpression(
             setExpression("")
             setNameAttribute("")
             setCreate(false)
+            setRootPath("")
         }
     }, [])
 

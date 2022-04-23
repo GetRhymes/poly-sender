@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import PopupCreate from "../../components/create/PopupCreate";
 import '../../styles/ManageAttributes.css'
 import AttributesHeaderBlock from "../../components/manage-attributes/AttributesHeaderBlock";
@@ -8,8 +8,9 @@ import PopupShare from "../../components/PopupShare";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
+import {PathContext} from "../../context";
 
-const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName, setRootPath}) => {
+const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
@@ -47,10 +48,15 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
 
     const [groupName, setGroupName] = useStateIfMounted(null)
 
+    const {setRootPath} = useContext(PathContext)
+
     useEffect(() => {
         setRootPath("Атрибуты")
         fetchDataGroupNamesCurrentStaff()
         fetchDataAttributesCurrentStaff()
+        return (() => {
+            setRootPath("")
+        })
     }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute])
 
     function handleAttributesName(event) {

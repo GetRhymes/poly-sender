@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import '../../styles/ManageFilters.css'
 import FilterHeaderBlock from "../../components/manage-filters/FilterHeaderBlock";
 import FilterBodyBlock from "../../components/manage-filters/FilterBodyBlock";
@@ -8,8 +8,9 @@ import PopupShare from "../../components/PopupShare";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
+import {PathContext} from "../../context";
 
-const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption, setRootPath}) => {
+const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
@@ -30,9 +31,14 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption, s
 
     const [popupShareActive, setPopupShareActive] = useState(false)
 
+    const {setRootPath} = useContext(PathContext)
+
     useEffect(() => {
         setRootPath("Фильтры")
         fetchDataFilters()
+        return (() => {
+            setRootPath("")
+        })
     }, [loadingDeleteFilter])
 
     function handleFiltersName(event) {

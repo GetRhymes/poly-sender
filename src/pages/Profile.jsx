@@ -1,10 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import '../styles/Profile.css'
+import {PathContext} from "../context";
 
-const Profile = ({setRootPath}) => {
+const Profile = () => {
 
-    useEffect(()=> {
+    const {setRootPath} = useContext(PathContext)
+
+    useEffect(() => {
+        localStorage.setItem("rootPath", "Профиль")
         setRootPath("Профиль")
+        return (() => {
+            localStorage.removeItem("rootPath")
+            setRootPath("")
+        })
     })
 
     return (

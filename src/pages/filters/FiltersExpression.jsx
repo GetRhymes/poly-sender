@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useStateIfMounted} from "use-state-if-mounted";
 import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
@@ -9,6 +9,7 @@ import EndBlock from "../../components/create/EndBlock";
 import PopupLoading from "../../components/PopupLoading";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
+import {PathContext} from "../../context";
 
 function FiltersExpression(
     {
@@ -20,7 +21,6 @@ function FiltersExpression(
         setExpression,
         selectedMailOption,
         setSelectedMailOption,
-        setCreate
     }
 ) {
 
@@ -61,7 +61,10 @@ function FiltersExpression(
         setStudents(filter.data.studentsDTO)
     }
 
+    const {setRootPath, setCreate} = useContext(PathContext)
+
     useEffect(() => {
+        setRootPath("Фильтры")
         setCreate(true)
         fetchDataFilters()
         fetchDataFunctions()
@@ -72,6 +75,7 @@ function FiltersExpression(
             setId(null)
             setExpression("")
             setNameFilter("")
+            setRootPath("")
         }
     }, [])
 
