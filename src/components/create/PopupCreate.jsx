@@ -50,14 +50,16 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
     }
 
     function createGroup() {
-        if (!/[^a-zA-Zа-яА-Я_0-9\s]+/.test(groupName)) {
-            const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
-            if (finder === undefined) {
-                createGroupName({groupName})
-                setIncorrectGroupName(false)
-                setActive(false)
-            } else setUniqueGroupName(false)
-        } else setIncorrectGroupName(true)
+        if (groupName !== "") {
+            if (!/[^a-zA-Zа-яА-Я_0-9\s]+/.test(groupName)) {
+                const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
+                if (finder === undefined) {
+                    createGroupName({groupName})
+                    setIncorrectGroupName(false)
+                    setActive(false)
+                } else setUniqueGroupName(false)
+            } else setIncorrectGroupName(true)
+        }
     }
 
     function createField() {

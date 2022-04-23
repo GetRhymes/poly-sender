@@ -43,7 +43,7 @@ export default TopBar;
 function Path({label}) {
     return (
         <div className="path__block">
-            <ArrowRightIcon fontSize="medium" sx={{marginLeft: "10px"}}/>
+            <ArrowRightIcon fontSize="large" sx={{marginLeft: "10px"}}/>
             <p className="label">{label}</p>
         </div>
     );

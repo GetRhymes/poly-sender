@@ -60,7 +60,6 @@ function ButtonEnd(
         expression,
         setStatus,
         setCorrectName,
-        unique,
         setUnique,
         data
     }

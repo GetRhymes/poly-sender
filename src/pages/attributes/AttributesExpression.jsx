@@ -63,9 +63,9 @@ function AttributesExpression(
 
     useEffect(() => {
         fetchDataFunctions()
+        fetchDataAttributesCurrentStaff()
         setCreate(true)
         if (id !== null) {
-            fetchDataAttributesCurrentStaff()
             fetchDataAttributeById()
         }
         return () => {
