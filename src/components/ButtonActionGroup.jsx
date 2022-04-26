@@ -5,6 +5,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import authHeader, {URL_deleteAttribute, URL_deleteFilter} from "../util/api";
 
 function ButtonActionGroup(
     {
@@ -60,8 +61,7 @@ async function deleteItem(id, setLoading, endPoint, orientation) {
         {"idAttribute": id}
         :
         {"idFilter": id}
-    const deleteEndPoint = endPoint + (orientation === "vertical" ? "/deleteAttribute" : "/deleteFilter")
-    await axios.post("http://localhost:8080/" + deleteEndPoint, item)
+    await axios.post(orientation === "vertical" ? URL_deleteAttribute : URL_deleteFilter, item, { headers: authHeader() })
     setLoading(false)
 }
 

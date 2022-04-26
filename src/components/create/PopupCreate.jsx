@@ -6,6 +6,7 @@ import PopupToggleButtonGroup from "./PopupToggleButtonGroup";
 import {FormControl, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
+import authHeader, {URL_createGroupName} from "../../util/api";
 
 function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) {
 
@@ -45,7 +46,7 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
 
     async function createGroupName(groupName) {
         setLoading(true)
-        await axios.post("http://localhost:8080/attributes/createGroupName", groupName)
+        await axios.post(URL_createGroupName, groupName, { headers: authHeader() })
         setLoading(false)
     }
 

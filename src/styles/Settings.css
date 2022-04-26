@@ -1,0 +1,31 @@
+.settings {
+    background-color: rgba(251, 251, 252, 1);
+    border: 1px solid rgba(145, 158, 171, 0.25);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 300px;
+    height: calc(100vh - 135px)
+}
+
+.settings__label {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    font-family: "Roboto","Helvetica","Arial", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    color: #366ac3;
+    flex-direction: column;
+}
+
+.settings__block__password {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.access__block {
+    margin-top: 20px;
+}

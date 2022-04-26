@@ -8,6 +8,7 @@ import ButtonActionGroup from "../ButtonActionGroup";
 import axios from "axios";
 import WarningIcon from "@mui/icons-material/Warning";
 import ReportIcon from "@mui/icons-material/Report";
+import authHeader, {URL_getEmails} from "../../util/api";
 
 function FilterAccordionItem(
     {
@@ -136,7 +137,7 @@ async function getEmails(id, setLoading) {
     const data = {
         "idFilter": id
     }
-    await axios.post("http://localhost:8080/filters/getEmails", data)
+    await axios.post(URL_getEmails, data, { headers: authHeader() })
     setLoading(false)
 }
 

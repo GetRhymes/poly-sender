@@ -3,6 +3,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AttributionIcon from '@mui/icons-material/Attribution';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import StorageIcon from '@mui/icons-material/Storage';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 
 const SidebarData = [
@@ -30,6 +32,18 @@ const SidebarData = [
         path: "/lists",
         icon: <ListAltIcon/>
     },
+    {
+        id: 5,
+        name: "Доступы",
+        path: "/access-manager",
+        icon: <PersonAddIcon/>
+    },
+    {
+        id: 6,
+        name: "Данные",
+        path: "/data-manager",
+        icon: <StorageIcon/>
+    }
 ];
 
 export default SidebarData;

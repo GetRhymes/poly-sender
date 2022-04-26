@@ -5,6 +5,7 @@ import ButtonCreate from "../ButtonCreate";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from "axios";
+import authHeader, {URL_deleteGroupAttribute} from "../../util/api";
 
 function AttributesHeaderBlock(
     {
@@ -86,7 +87,7 @@ function AttributesHeaderBlock(
 async function deleteGroupName(id, setLoading) {
     setLoading(true)
     const data = { "idGroupAttribute": id }
-    await axios.post("http://localhost:8080/attributes/deleteGroupAttribute", data)
+    await axios.post(URL_deleteGroupAttribute, data, { headers: authHeader() })
     setLoading(false)
 }
 

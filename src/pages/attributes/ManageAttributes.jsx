@@ -9,6 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
+import authHeader, {URL_getAttributesCurrentStaff, URL_getGroupNamesCurrentStaff} from "../../util/api";
 
 const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
@@ -18,14 +19,14 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
 
     async function fetchDataAttributesCurrentStaff() {
         setLoadingAttributes(true)
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributesCurrentStaff');
+        const dataAttributes = await axios.get(URL_getAttributesCurrentStaff, {headers: authHeader()});
         setDataAttributes(dataAttributes.data);
         setLoadingAttributes(false)
     }
 
     async function fetchDataGroupNamesCurrentStaff() {
         setLoadingGroupNames(true)
-        const dataGroupNames = await axios('http://localhost:8080/attributes/getGroupNamesCurrentStaff');
+        const dataGroupNames = await axios.get(URL_getGroupNamesCurrentStaff, {headers: authHeader()});
         setDataGroupNames(dataGroupNames.data);
         setLoadingGroupNames(false)
     }
@@ -51,9 +52,9 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
     const {setRootPath} = useContext(PathContext)
 
     useEffect(() => {
-        setRootPath("Атрибуты")
         fetchDataGroupNamesCurrentStaff()
         fetchDataAttributesCurrentStaff()
+        setRootPath("Атрибуты")
         return (() => {
             setRootPath("")
         })
@@ -75,7 +76,7 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
         isLoading ?
             <LoadingScreen/>
             :
-            <div className="main__container_attributes">
+            <div className="main__container__attributes">
                 <AttributesHeaderBlock
                     setPopupCreateActive={setPopupCreateActive}
                     setId={setId}
@@ -99,7 +100,8 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
                             setLoading={setLoadingDeleteAttribute}
                         />
                 }
-                <PopupShare active={popupShareActive} setActive={setPopupShareActive} id={idAttribute} setId={setId} endPoint="attributes"/>
+                <PopupShare active={popupShareActive} setActive={setPopupShareActive} id={idAttribute} setId={setId}
+                            endPoint="attributes"/>
                 <PopupCreate
                     active={popupCreateActive}
                     setActive={setPopupCreateActive}

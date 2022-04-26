@@ -10,6 +10,7 @@ import axios from "axios";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
 import {PathContext} from "../../context";
+import authHeader, {URL_getAttributeById, URL_getAttributesCurrentStaff, URL_getGroupAttributes} from "../../util/api";
 
 function AttributesExpression(
     {
@@ -31,7 +32,7 @@ function AttributesExpression(
     const [students, setStudents] = useStateIfMounted(null)
 
     async function fetchDataFunctions() {
-        const dataFunction = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        const dataFunction = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
         for (let group of dataFunction.data) {
             group.groupName = group.groupName.toLowerCase().replaceAll(/\s/g, '_')
             let newAttributes = []
@@ -47,7 +48,7 @@ function AttributesExpression(
         const data = {
             "idAttribute": id
         }
-        const attribute = await axios.post('http://localhost:8080/attributes/getAttributeById', data)
+        const attribute = await axios.post(URL_getAttributeById, data, { headers: authHeader() })
         setNameAttribute(attribute.data.attributeName)
         setSelectedGroupName(attribute.data.groupName)
         setExpression(attribute.data.expression)
@@ -56,7 +57,7 @@ function AttributesExpression(
 
     async function fetchDataAttributesCurrentStaff() {
         setLoadingAttributes(true)
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributesCurrentStaff');
+        const dataAttributes = await axios.get(URL_getAttributesCurrentStaff, { headers: authHeader() });
         setDataAttributes(dataAttributes.data);
         setLoadingAttributes(false)
     }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {styled, useTheme} from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,7 +10,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TopBar from "./TopBar";
-import SidebarData from "./SidebarData";
 import sidebarData from "./SidebarData";
 import {Box, ListItem} from "@mui/material";
 import {Link} from "react-router-dom";
@@ -82,14 +81,27 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
+function filterPagesByRoles(roles) {
+    if (roles.length === 2) return sidebarData
+    if (roles.length === 1 && roles.includes('ADMIN')) return sidebarData.filter((item) => item.id > 4)
+    if (roles.length === 1 && roles.includes('USER')) return sidebarData.filter((item) => item.id < 5)
+    if (roles.length < 1) return []
+}
 
-function Sidebar() {
+function Sidebar({roles}) {
+
+    const [sideBarPages, setSideBarPages] = useState([])
+
+    useEffect(() => {
+        setSideBarPages(filterPagesByRoles(roles))
+    }, [roles])
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
     const [isActive, setIsActive] = useState(() => {
         let result = {}
-        for (let item of sidebarData) {
+        for (let item of sideBarPages) {
             let temp = result
             temp[item.id] = false
             result = temp
@@ -99,7 +111,7 @@ function Sidebar() {
 
     function handleIsActive(id) {
         let result = {}
-        for (let item of sidebarData) {
+        for (let item of sideBarPages) {
             let temp = result
             temp[item.id] = false
             result = temp
@@ -115,56 +127,57 @@ function Sidebar() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
     return (
-        <Box>
-            <AppBar position="fixed" open={open}>
-                <TopBar open={open} handleDrawerOpen={handleDrawerOpen}/>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader sx={{background: "#366ac3"}}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider/>
-                <List sx={{background: "#366ac3"}}>
-                    {
-                        SidebarData.map((item) =>
-                            <ListItem
-                                onClick={() => handleIsActive(item.id)}
-                                key={item.id}
-                                component={Link}
-                                to={item.path}
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                    background: isActive[item.id] ? 'white' : null,
-                                    ":hover": {
-                                        transition: "all 0.25s ease-in-out",
-                                        background: isActive[item.id] ? 'rgb(158,189,231)' : "#739ee8",
-                                    }
-                                }}>
-                                <ListItemIcon
+            <Box>
+                <AppBar position="fixed" open={open}>
+                    <TopBar open={open} handleDrawerOpen={handleDrawerOpen}/>
+                </AppBar>
+                <Drawer variant="permanent" open={open}>
+                    <DrawerHeader sx={{background: "#366ac3"}}>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                        </IconButton>
+                    </DrawerHeader>
+                    <Divider/>
+                    <List sx={{background: "#366ac3"}}>
+                        {
+                            sideBarPages.map((item) =>
+                                <ListItem
+                                    onClick={() => handleIsActive(item.id)}
+                                    key={item.id}
+                                    component={Link}
+                                    to={item.path}
                                     sx={{
-                                        color: isActive[item.id] ? '#366ac3' : "white",
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                        background: isActive[item.id] ? 'white' : null,
+                                        ":hover": {
+                                            transition: "all 0.25s ease-in-out",
+                                            background: isActive[item.id] ? 'rgb(158,189,231)' : "#739ee8",
+                                        }
                                     }}>
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={item.name} sx={{
-                                    textDecoration: "none",
-                                    color: isActive[item.id] ? '#366ac3' : "white",
-                                    opacity: open ? 1 : 0,
-                                }}/>
-                            </ListItem>
-                        )
-                    }
-                </List>
-            </Drawer>
-        </Box>
+                                    <ListItemIcon
+                                        sx={{
+                                            color: isActive[item.id] ? '#366ac3' : "white",
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                        }}>
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.name} sx={{
+                                        textDecoration: "none",
+                                        color: isActive[item.id] ? '#366ac3' : "white",
+                                        opacity: open ? 1 : 0,
+                                    }}/>
+                                </ListItem>
+                            )
+                        }
+                    </List>
+                </Drawer>
+            </Box>
     );
 }
 

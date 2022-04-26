@@ -10,6 +10,7 @@ import PopupLoading from "../../components/PopupLoading";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
 import {PathContext} from "../../context";
+import authHeader, {URL_getFilterById, URL_getFilters, URL_getGroupAttributes} from "../../util/api";
 
 function FiltersExpression(
     {
@@ -31,7 +32,7 @@ function FiltersExpression(
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
     async function fetchDataFunctions() {
-        const dataFunction = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        const dataFunction = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
         for (let group of dataFunction.data) {
             group.groupName = group.groupName.toLowerCase().replaceAll(/\s/g, '_')
             let newAttributes = []
@@ -45,7 +46,7 @@ function FiltersExpression(
 
     async function fetchDataFilters() {
         setLoadingDataFilters(true)
-        const dataFilters = await axios('http://localhost:8080/filters/getFilters');
+        const dataFilters = await axios.get(URL_getFilters, { headers: authHeader() });
         setDataFilters(dataFilters.data)
         setLoadingDataFilters(false)
     }
@@ -54,7 +55,7 @@ function FiltersExpression(
         const data = {
             "idFilter": id
         }
-        const filter = await axios.post('http://localhost:8080/filters/getFilterById', data)
+        const filter = await axios.post(URL_getFilterById, data, { headers: authHeader() })
         setNameFilter(filter.data.filterName)
         setSelectedMailOption(filter.data.mode)
         setExpression(filter.data.expression)
@@ -70,11 +71,11 @@ function FiltersExpression(
         fetchDataFunctions()
         if (id !== null) fetchDataFilterById()
         return () => {
-            setCreate(false)
             setSelectedMailOption("")
             setId(null)
             setExpression("")
             setNameFilter("")
+            setCreate(false)
             setRootPath("")
         }
     }, [])

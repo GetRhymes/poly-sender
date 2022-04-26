@@ -9,6 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import PopupLoading from "../../components/PopupLoading";
 import {PathContext} from "../../context";
+import authHeader, {URL_getAllStudents, URL_getAttributes, URL_getGroupAttributes} from "../../util/api";
 
 function AttributesList(
     {
@@ -28,16 +29,16 @@ function AttributesList(
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
     async function fetchDataTable() {
-        const dataTable = await axios('http://localhost:8080/students/getAll');
+        const dataTable = await axios.get(URL_getAllStudents, { headers: authHeader() });
         setDataTable(dataTable.data);
     }
     async function fetchDataAccordion() {
-        const dataAccordions = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        const dataAccordions = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
         setDataAccordions(dataAccordions.data);
     }
 
     async function fetchDataAttributes() {
-        const dataAttributes = await axios('http://localhost:8080/attributes/getAttributes');
+        const dataAttributes = await axios.get(URL_getAttributes, { headers: authHeader() });
         setDataAttributes(dataAttributes.data);
     }
 

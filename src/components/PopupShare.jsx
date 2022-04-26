@@ -4,6 +4,7 @@ import {Autocomplete, Button, TextField} from "@mui/material";
 import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
 import CircularProgress from "@mui/material/CircularProgress";
+import authHeader, {URL_attributeShare, URL_filterShare, URL_getAllStaff} from "../util/api";
 
 function PopupShare({active, setActive, id, setId, endPoint}) {
 
@@ -12,7 +13,7 @@ function PopupShare({active, setActive, id, setId, endPoint}) {
     }, [])
 
     async function getStaff() {
-        const dataStaff = await axios.get("http://localhost:8080/staff/getAll")
+        const dataStaff = await axios.get(URL_getAllStaff, { headers: authHeader() })
         setDataStaff(dataStaff.data)
     }
 
@@ -100,7 +101,7 @@ async function share(itemId, staffIds, endPoint) {
         id: itemId,
         staffIds: getArrayIds(staffIds)
     }
-    await axios.post("http://localhost:8080/" + endPoint + "/share", data)
+    await axios.post(endPoint === 'attributes' ? URL_attributeShare : URL_filterShare, data, { headers: authHeader() })
 }
 
 

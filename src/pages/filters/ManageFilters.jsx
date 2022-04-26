@@ -9,6 +9,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
+import authHeader, {URL_getFilters} from "../../util/api";
 
 const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
 
@@ -16,7 +17,7 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
 
     async function fetchDataFilters() {
         setLoadingDataFilters(true)
-        const dataFilters = await axios('http://localhost:8080/filters/getFilters');
+        const dataFilters = await axios.get(URL_getFilters, { headers: authHeader() });
         setDataFilters(dataFilters.data)
         setLoadingDataFilters(false)
     }

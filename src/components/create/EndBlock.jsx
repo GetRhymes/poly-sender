@@ -3,6 +3,13 @@ import {Button} from "@mui/material";
 import '../../styles/CreationPages.css'
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import authHeader, {
+    URL_calculateAttribute,
+    URL_calculateFilter,
+    URL_createAttribute,
+    URL_createFilter,
+    URL_updateAttribute, URL_updateFilter
+} from "../../util/api";
 
 function EndBlock(
     {
@@ -173,7 +180,7 @@ async function createAttribute(
         const data = {
             "expression": expression
         }
-        const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+        const computedExpression = await axios.post(URL_calculateAttribute, data, { headers: authHeader() })
         currentStatus = computedExpression.data.status
         if (currentStatus === "success") {
             for (let student of computedExpression.data.students) {
@@ -189,7 +196,7 @@ async function createAttribute(
             expression: expression,
             studentsId: students
         }
-        await axios.post("http://localhost:8080/attributes/createAttribute", newAttribute)
+        await axios.post(URL_createAttribute, newAttribute, { headers: authHeader() })
         redirect()
     } else setStatus(currentStatus)
     setLoading(false)
@@ -212,7 +219,7 @@ async function updateAttribute(
         const data = {
             "expression": expression
         }
-        const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+        const computedExpression = await axios.post(URL_calculateAttribute, data, { headers: authHeader() })
         currentStatus = computedExpression.data.status
         if (currentStatus === "success") {
             for (let student of computedExpression.data.students) {
@@ -229,7 +236,7 @@ async function updateAttribute(
             expression: expression,
             studentsId: students
         }
-        await axios.post("http://localhost:8080/attributes/updateAttribute", newAttribute)
+        await axios.post(URL_updateAttribute, newAttribute, { headers: authHeader() })
         setLoading(false)
         redirect()
     } else setStatus(currentStatus)
@@ -252,7 +259,7 @@ async function createFilter(
         const data = {
             "expression": expression
         }
-        const computedExpression = await axios.post('http://localhost:8080/filters/calculate', data)
+        const computedExpression = await axios.post(URL_calculateFilter, data, { headers: authHeader() })
         currentStatus = computedExpression.data.status
         if (currentStatus === "success") {
             for (let student of computedExpression.data.students) {
@@ -268,7 +275,7 @@ async function createFilter(
             expression: expression,
             studentsId: students
         }
-        await axios.post("http://localhost:8080/filters/createFilter", newFilter)
+        await axios.post(URL_createFilter, newFilter, { headers: authHeader() })
         setLoading(false)
         redirect()
     } else setStatus(currentStatus)
@@ -283,7 +290,7 @@ async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, 
         const data = {
             "expression": expression
         }
-        const computedExpression = await axios.post('http://localhost:8080/filters/calculate', data)
+        const computedExpression = await axios.post(URL_calculateFilter, data, { headers: authHeader() })
         currentStatus = computedExpression.data.status
         if (currentStatus === "success") {
             for (let student of computedExpression.data.students) {
@@ -300,7 +307,7 @@ async function updateFilter(idFilter, nameFilter, selectedStudents, mailOption, 
             expression: expression,
             studentsId: students
         }
-        await axios.post("http://localhost:8080/filters/updateFilter", newFilter)
+        await axios.post(URL_updateFilter, newFilter, { headers: authHeader() })
         setLoading(false)
         redirect()
     } else setStatus(currentStatus)

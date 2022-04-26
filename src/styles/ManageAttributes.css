@@ -1,4 +1,4 @@
-.main__container_attributes {
+.main__container__attributes {
     padding: 20px;
     margin: 20px 120px;
     height: calc(100vh - 145px)
@@ -76,7 +76,7 @@
 .attribute__row__info {
     display: flex;
     flex-direction: row;
-    justify-content: left ;
+    justify-content: left;
 }
 
 .attribute__row__info__left {

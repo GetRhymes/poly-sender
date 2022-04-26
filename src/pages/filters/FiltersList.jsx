@@ -8,6 +8,7 @@ import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import PopupLoading from "../../components/PopupLoading";
 import {PathContext} from "../../context";
+import authHeader, {URL_getAllStudents, URL_getFiltersShort, URL_getGroupAttributes} from "../../util/api";
 
 function FiltersList(
     {
@@ -27,18 +28,18 @@ function FiltersList(
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
     async function fetchDataTable() {
-        const dataTable = await axios('http://localhost:8080/students/getAll');
+        const dataTable = await axios.get(URL_getAllStudents, { headers: authHeader() });
         setDataTable(dataTable.data);
     }
 
     async function fetchDataAccordion() {
-        const dataAccordions = await axios('http://localhost:8080/attributes/getGroupAttributes');
+        const dataAccordions = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
         setDataAccordions(dataAccordions.data);
     }
 
     async function fetchDataFilters() {
         setLoadingDataFilters(true)
-        const dataFilters = await axios('http://localhost:8080/filters/getFiltersShort');
+        const dataFilters = await axios.get(URL_getFiltersShort, { headers: authHeader() });
         setDataFilters(dataFilters.data);
         setLoadingDataFilters(false)
     }

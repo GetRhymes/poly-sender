@@ -4,7 +4,7 @@ import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useStateIfMounted} from "use-state-if-mounted";
 import axios from "axios";
-import LoadingScreen from "./LoadingScreen";
+import authHeader, {URL_getGroupNamesCurrentStaff} from "../util/api";
 
 function SelectorGroup({selectedGroupName, handleSelector}) {
 
@@ -18,7 +18,7 @@ function SelectorGroup({selectedGroupName, handleSelector}) {
 
     async function fetchDataGroupNames() {
         setLoading(true)
-        const dataGroupNames = await axios('http://localhost:8080/attributes/getGroupNamesCurrentStaff');
+        const dataGroupNames = await axios.get(URL_getGroupNamesCurrentStaff, { headers: authHeader() });
         setDataGroupNames(dataGroupNames.data);
         setLoading(false)
     }

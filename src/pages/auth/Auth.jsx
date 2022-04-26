@@ -6,8 +6,9 @@ import Divider from "@mui/material/Divider";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import PopupLoading from "../../components/PopupLoading";
+import {URL_check} from "../../util/api";
 
-function Auth() {
+function Auth({setRoles}) {
 
     const [login, setLogin] = useState("")
 
@@ -51,11 +52,16 @@ function Auth() {
                 login: login,
                 password: password
             }
-            console.log(data)
-            const isCorrect = await axios.post("http://localhost:8080/login/check", data)
-            if (isCorrect.data.result === true) {
+            const isCorrect = await axios.post(URL_check, data)
+            if (isCorrect.data.status === true) {
                 setIsAuth(true)
-                localStorage.setItem('auth', 'true')
+                localStorage.setItem('idStaff', isCorrect.data.idStaff)
+                localStorage.setItem('fullName', isCorrect.data.fullName)
+                localStorage.setItem('email', isCorrect.data.email)
+                localStorage.setItem('token', isCorrect.data.token)
+                localStorage.setItem('roles', isCorrect.data.roles)
+                localStorage.setItem('auth', isCorrect.data.status)
+                setRoles(isCorrect.data.roles)
             } else {
                 setCorrectLogin(false)
                 setCorrectPassword(false)

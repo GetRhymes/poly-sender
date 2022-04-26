@@ -4,6 +4,7 @@ import {Button, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import PopupLoading from "../../components/PopupLoading";
 import axios from "axios";
+import authHeader, {URL_reset} from "../../util/api";
 
 function ForgotPassword() {
 
@@ -30,8 +31,7 @@ function ForgotPassword() {
             const data = {
                 login: login
             }
-            console.log(data)
-            await axios.post("http://localhost:8080/login/reset", data)
+            await axios.post(URL_reset, data)
             goBack()
         } else {
             setCorrectLogin(false)

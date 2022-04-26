@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import PopupLoading from "../../components/PopupLoading";
 import axios from "axios";
+import authHeader, {URL_getAccess} from "../../util/api";
 
 function SignUp() {
 
@@ -86,7 +87,7 @@ function SignUp() {
                 department: department,
                 highSchool: highSchool
             }
-            await axios.post("http://localhost:8080/login/getAccess", data)
+            await axios.post(URL_getAccess, data)
             goBack()
         }
         setLoading(false)

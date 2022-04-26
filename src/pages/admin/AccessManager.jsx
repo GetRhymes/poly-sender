@@ -1,8 +1,80 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {useStateIfMounted} from "use-state-if-mounted";
+import LoadingScreen from "../../components/LoadingScreen";
+import '../../styles/ManageAccess.css'
+import CleanBlock from "../../components/CleanBlock";
+import {PathContext} from "../../context";
+import {dataAccessJS, dataRolesJS} from "../../components/data/data";
+import AccessCenterBlock from "../../components/manage-access/AccessCenterBlock";
+import AccessHeaderBlock from "../../components/manage-access/AccessHeaderBlock";
+import authHeader, {URL_getAccessList, URL_getRoles} from "../../util/api";
+import axios from "axios";
 
-function AccessManager(props) {
+function AccessManager() {
+
+    const {setRootPath} = useContext(PathContext)
+
+    useEffect(() => {
+        fetchDataAccess()
+        fetchDataRoles()
+        setRootPath("Доступы")
+        return (() => {
+            setRootPath("")
+        })
+    })
+
+    const [dataAccess, setDataAccess] = useStateIfMounted([])
+
+    const [dataRoles, setDataRoles] = useStateIfMounted([])
+
+    const [loadingDataAccess, setLoadingDataAccess] = useState(false)
+
+    const [loadingDataRoles, setLoadingDataRoles] = useState(false)
+
+    const [loadingAction, setLoadingAction] = useState(false)
+
+    const [search, setSearch] = useStateIfMounted(null)
+
+    function handleSearch(event) {
+        setSearch(event.target.value)
+    }
+
+    async function fetchDataAccess() {
+        setLoadingDataAccess(true)
+        // const dataAccess = await axios.get(URL_getAccessList, { headers: authHeader() });
+        const dataAccess = {data: dataAccessJS}
+        setDataAccess(dataAccess.data);
+        setLoadingDataAccess(false)
+    }
+
+    async function fetchDataRoles() {
+        setLoadingDataRoles(true)
+        // const dataRoles = await axios.get(URL_getRoles, { headers: authHeader() });
+        const dataRoles = {data: dataRolesJS}
+        setDataRoles(dataRoles.data)
+        setLoadingDataRoles(false)
+    }
+
+    const isLoading = loadingDataAccess || loadingDataRoles || loadingAction
+
     return (
-        <div></div>
+        isLoading ?
+            <LoadingScreen/>
+            :
+            <div className="background main__container__access">
+                <AccessHeaderBlock handleSearch={handleSearch}/>
+                {
+                    dataAccess.length === 0 ?
+                        <CleanBlock/>
+                        :
+                        <AccessCenterBlock
+                            dataAccess={dataAccess}
+                            searchValue={search}
+                            dataRoles={dataRoles}
+                            setLoading={setLoadingAction}
+                        />
+                }
+            </div>
     );
 }
 

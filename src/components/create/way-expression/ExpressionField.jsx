@@ -1,5 +1,5 @@
 import {Button, TextField} from "@mui/material";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import axios from "axios";
@@ -7,6 +7,7 @@ import '../../../styles/CreationPages.css'
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import authHeader, {URL_calculateAttribute} from "../../../util/api";
 
 function ExpressionField(
     {
@@ -215,7 +216,7 @@ async function calculateExpression(setLoading, expression, setStatus, setStudent
     const data = {
         "expression": expression
     }
-    const computedExpression = await axios.post('http://localhost:8080/attributes/calculate', data)
+    const computedExpression = await axios.post(URL_calculateAttribute, data, { headers: authHeader() })
     setStatus(computedExpression.data.status)
     setStudents(computedExpression.data.students)
     setLoading(false)
