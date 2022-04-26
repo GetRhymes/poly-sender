@@ -61,6 +61,9 @@ function Auth({setRoles}) {
                 localStorage.setItem('token', isCorrect.data.token)
                 localStorage.setItem('roles', isCorrect.data.roles)
                 localStorage.setItem('auth', isCorrect.data.status)
+                if (isCorrect.data.roles.includes('ADMIN')) {
+                    localStorage.setItem('disabled', 'true')
+                }
                 setRoles(isCorrect.data.roles)
             } else {
                 setCorrectLogin(false)

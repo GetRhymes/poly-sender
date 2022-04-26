@@ -47,7 +47,7 @@ function Settings(props) {
 
     const [equals, setEquals] = useStateIfMounted(null)
 
-    const [isDisable, setIsDisable] = useState(false)
+    const [isDisable, setIsDisable] = useState(!!localStorage.getItem('disabled'))
 
     return (
         <div className="settings">
@@ -139,7 +139,7 @@ function Settings(props) {
                             }
                         }}
                         onClick={() => changeAccess(
-                            localStorage.getItem('id'),
+                            localStorage.getItem('idStaff'),
                             setLoading,
                             setIsDisable
                         )}
@@ -177,7 +177,7 @@ async function changePassword(
 async function changeAccess(id, setLoading, setDisable) {
     setLoading(true)
     const data = {
-        "idStaff": id
+        "id": id
     }
     await axios.post(URL_changeAccess, data, {headers: authHeader()})
     setDisable(true)

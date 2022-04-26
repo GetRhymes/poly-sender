@@ -5,7 +5,7 @@ import NotificationItem from "./NotificationItem";
 import {Popover} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function NotificationPopover({loading, setLoading, dataNotification, anchorEl, setAnchorEl}) {
+function NotificationPopover({loading, setLoading, dataNotification, anchorEl, setAnchorEl, setData}) {
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -32,7 +32,11 @@ function NotificationPopover({loading, setLoading, dataNotification, anchorEl, s
                             <List
                                 sx={{width: "100%", height: "calc(100%)", overflow: "auto"}}>
                                 {dataNotification.map((notification) =>
-                                    <NotificationItem notification={notification} setLoading={setLoading}/>
+                                    <NotificationItem
+                                        notification={notification}
+                                        setLoading={setLoading}
+                                        setData={setData}
+                                    />
                                 )}
                             </List>
                         </div>

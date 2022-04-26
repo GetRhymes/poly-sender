@@ -1,11 +1,9 @@
 import React, {useState} from "react";
 import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import NotificationRowInfo from "./NotificationRowInfo";
-import {dataNotificationJS} from "../../data/data";
-import authHeader, {URL_acceptRequest, URL_rejectRequest} from "../../../util/api";
-import axios from "axios";
+import {acceptRequest, rejectRequest} from "../../../util/AsyncFunctionStaff";
 
-function NotificationItem({notification, setLoading}) {
+function NotificationItem({notification, setLoading, setData}) {
 
     const buttonStyle = {
         borderRadius: "5px",
@@ -66,7 +64,7 @@ function NotificationItem({notification, setLoading}) {
                     sx={buttonStyle}
                 >Принять</Button>
                 <Button
-                    onClick={() => rejectRequest(setLoading, notification.idNotification)}
+                    onClick={() => rejectRequest(setLoading, notification.idNotification, setData)}
                     sx={buttonStyle}
                 >Отклонить</Button>
             </div>
@@ -77,28 +75,6 @@ function NotificationItem({notification, setLoading}) {
 function getNameTypeByType(type) {
     if (type === 'filter') return 'Фильтр'
     if (type === 'attribute') return 'Атрибут'
-}
-
-async function acceptRequest(setLoading, idNotification, type) {
-    setLoading(true)
-    const data = {
-        "idNotification": idNotification,
-        "type": type
-    }
-    await axios.post(URL_acceptRequest, data, { headers: authHeader() })
-    console.log(data)
-    setLoading(false)
-}
-
-async function rejectRequest(setLoading, idNotification) {
-    setLoading(true)
-    const data = {
-        "idNotification": idNotification,
-        "type": null
-    }
-    await axios.post(URL_rejectRequest, data, { headers: authHeader() })
-    console.log(data)
-    setLoading(false)
 }
 
 export default NotificationItem;
