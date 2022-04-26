@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useStateIfMounted} from "use-state-if-mounted";
-import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import {Container} from "@mui/material";
 import HeaderBlock from "../../components/create/HeaderBlock";
@@ -10,7 +9,8 @@ import PopupLoading from "../../components/PopupLoading";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
 import {PathContext} from "../../context";
-import authHeader, {URL_getFilterById, URL_getFilters, URL_getGroupAttributes} from "../../util/api";
+import {fetchDataFunctions} from "../../util/AsyncFunctionAttributes";
+import {fetchDataFilterById, fetchDataFilters} from "../../util/AsyncFunctionFilters";
 
 function FiltersExpression(
     {
@@ -31,45 +31,14 @@ function FiltersExpression(
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
-    async function fetchDataFunctions() {
-        const dataFunction = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
-        for (let group of dataFunction.data) {
-            group.groupName = group.groupName.toLowerCase().replaceAll(/\s/g, '_')
-            let newAttributes = []
-            for (let attribute of group.attributes) {
-                newAttributes.push(attribute.toLowerCase().replaceAll(/\s/g, '_'))
-            }
-            group.attributes = newAttributes
-        }
-        setDataFunctions(dataFunction.data);
-    }
-
-    async function fetchDataFilters() {
-        setLoadingDataFilters(true)
-        const dataFilters = await axios.get(URL_getFilters, { headers: authHeader() });
-        setDataFilters(dataFilters.data)
-        setLoadingDataFilters(false)
-    }
-
-    async function fetchDataFilterById() {
-        const data = {
-            "idFilter": id
-        }
-        const filter = await axios.post(URL_getFilterById, data, { headers: authHeader() })
-        setNameFilter(filter.data.filterName)
-        setSelectedMailOption(filter.data.mode)
-        setExpression(filter.data.expression)
-        setStudents(filter.data.studentsDTO)
-    }
-
     const {setRootPath, setCreate} = useContext(PathContext)
 
     useEffect(() => {
         setRootPath("Фильтры")
         setCreate(true)
-        fetchDataFilters()
-        fetchDataFunctions()
-        if (id !== null) fetchDataFilterById()
+        fetchDataFilters(setLoadingDataFilters, setDataFilters)
+        fetchDataFunctions(setDataFunctions)
+        if (id !== null) fetchDataFilterById(id, setNameFilter, setSelectedMailOption, setExpression, setStudents)
         return () => {
             setSelectedMailOption("")
             setId(null)

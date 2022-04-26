@@ -85,7 +85,7 @@ async function acceptRequest(setLoading, idNotification, type) {
         "idNotification": idNotification,
         "type": type
     }
-    // await axios.post(URL_acceptRequest, data, { headers: authHeader() })
+    await axios.post(URL_acceptRequest, data, { headers: authHeader() })
     console.log(data)
     setLoading(false)
 }
@@ -96,7 +96,7 @@ async function rejectRequest(setLoading, idNotification) {
         "idNotification": idNotification,
         "type": null
     }
-    // await axios.post(URL_rejectRequest, data, { headers: authHeader() })
+    await axios.post(URL_rejectRequest, data, { headers: authHeader() })
     console.log(data)
     setLoading(false)
 }

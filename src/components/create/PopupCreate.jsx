@@ -5,8 +5,8 @@ import PopupButton from "./PopupButton";
 import PopupToggleButtonGroup from "./PopupToggleButtonGroup";
 import {FormControl, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
-import authHeader, {URL_createGroupName} from "../../util/api";
+
+import {createGroupName} from "../../util/AsyncFunctionAttributes";
 
 function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) {
 
@@ -44,18 +44,12 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
         navigate(path);
     }
 
-    async function createGroupName(groupName) {
-        setLoading(true)
-        await axios.post(URL_createGroupName, groupName, { headers: authHeader() })
-        setLoading(false)
-    }
-
     function createGroup() {
         if (groupName !== "") {
-            if (!/[^a-zA-Zа-яА-Я_0-9\s]+/.test(groupName)) {
+            if (!/[^a-zA-Zа-яА-Я0-9\s]+/.test(groupName)) {
                 const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
                 if (finder === undefined) {
-                    createGroupName({groupName})
+                    createGroupName(groupName, setLoading)
                     setIncorrectGroupName(false)
                     setActive(false)
                 } else setUniqueGroupName(false)

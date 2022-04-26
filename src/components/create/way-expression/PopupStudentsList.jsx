@@ -39,7 +39,7 @@ function PopupStudentsList({active, setActive, students}) {
                     height={380}
                     width={650}
                     itemSize={40}
-                    itemCount={students !== null ? students.length : 0}
+                    itemCount={students !== null && students !== undefined ? students.length : 0}
                     overscanCount={5}
                 >
                     {renderRow}

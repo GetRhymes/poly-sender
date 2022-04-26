@@ -3,7 +3,7 @@ import '../styles/Settings.css'
 import PopupLoading from "../components/PopupLoading";
 import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
-import {URL_changeAccess, URL_changePassword} from "../util/api";
+import authHeader, {URL_changeAccess, URL_changePassword} from "../util/api";
 import Divider from "@mui/material/Divider";
 import {Button, TextField} from "@mui/material";
 import {PathContext} from "../context";
@@ -55,6 +55,7 @@ function Settings(props) {
                 <p className="settings__label">Изменить пароль</p>
                 <div className="settings__block__password">
                     <TextField
+                        value={oldPassword !== null ? oldPassword  : ""}
                         focused={oldPassword !== null}
                         color={getColorPassword(equals, status, 1)}
                         onChange={handleOldPassword}
@@ -63,6 +64,7 @@ function Settings(props) {
                         type="password"
                     />
                     <TextField
+                        value={newPassword !== null ? newPassword  : ""}
                         focused={newPassword !== null}
                         color={getColorPassword(equals, status, 2)}
                         onChange={handleNewPassword}
@@ -71,6 +73,7 @@ function Settings(props) {
                         type="password"
                     />
                     <TextField
+                        value={repeatNewPassword !== null ? repeatNewPassword  : ""}
                         focused={repeatNewPassword !== null}
                         color={getColorPassword(equals, status, 3)}
                         onChange={handleRepeatNewPassword}
@@ -96,11 +99,15 @@ function Settings(props) {
                             if (newPassword === repeatNewPassword) {
                                 setEquals(true)
                                 changePassword(
-                                    localStorage.getItem('id'),
+                                    localStorage.getItem('idStaff'),
                                     oldPassword,
                                     newPassword,
                                     setLoading,
-                                    setStatus
+                                    setStatus,
+                                    setEquals,
+                                    setOldPassword,
+                                    setNewPassword,
+                                    setRepeatNewPassword
                                 )
                             } else {
                                 setEquals(false)
@@ -146,24 +153,24 @@ function Settings(props) {
     );
 }
 
-async function changePassword(id, oldPassword, newPassword, setLoading, setStatus) {
+async function changePassword(
+    id, oldPassword, newPassword, setLoading, setStatus, setEquals, setOldPassword, setNewPassword, setRepeatNewPassword) {
     setLoading(true)
     const data = {
         "idStaff": id,
         "oldPassword": oldPassword,
         "newPassword": newPassword
     }
-    // const result = await axios.post(URL_changePassword, data, { headers: authHeader() })
-    const result = {
-        data: {
-            status: 'error'
-        }
-    }
+    const result = await axios.post(URL_changePassword, data, {headers: authHeader()})
     const status = result.data.status
     setStatus(status)
-    // if (status === 'success') {
-    //     localStorage.setItem('token', result.data.token)
-    // }
+    if (status === 'success') {
+        localStorage.setItem('token', result.data.token)
+        setEquals(null)
+        setOldPassword("")
+        setNewPassword("")
+        setRepeatNewPassword("")
+    }
     setLoading(false)
 }
 
@@ -172,7 +179,7 @@ async function changeAccess(id, setLoading, setDisable) {
     const data = {
         "idStaff": id
     }
-    // await axios.post(URL_changeAccess, data, { headers: authHeader() })
+    await axios.post(URL_changeAccess, data, {headers: authHeader()})
     setDisable(true)
     localStorage.setItem('disabled', 'true')
     setLoading(false)
@@ -193,6 +200,15 @@ function getColorPassword(equals, status, idTextField) {
 }
 
 function getLabelPassword(equals, status, idTextField) {
+    if (equals === null) {
+        return idTextField === 1 ?
+            'Введите старый пароль'
+            :
+            idTextField === 2 ?
+                'Введите новый пароль'
+                :
+                'Повторите новый пароль'
+    }
     if (equals) {
         if (status !== null) {
             if (status === 'error' && idTextField === 1) return 'Неправильный старый пароль'

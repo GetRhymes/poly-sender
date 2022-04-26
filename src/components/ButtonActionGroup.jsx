@@ -4,8 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import authHeader, {URL_deleteAttribute, URL_deleteFilter} from "../util/api";
+import {deleteItem} from "../util/Utils";
 
 function ButtonActionGroup(
     {
@@ -46,23 +45,11 @@ function ButtonActionGroup(
             }}>
                 <ShareIcon/>
             </Button>
-            <Button onClick={() => {
-                deleteItem(id, setLoading, endPoint, orientation)
-            }}>
+            <Button onClick={() => deleteItem(id, setLoading, endPoint, orientation)}>
                 <DeleteIcon/>
             </Button>
         </ButtonGroup>
     );
-}
-
-async function deleteItem(id, setLoading, endPoint, orientation) {
-    setLoading(true)
-    const item = endPoint === "attributes" ?
-        {"idAttribute": id}
-        :
-        {"idFilter": id}
-    await axios.post(orientation === "vertical" ? URL_deleteAttribute : URL_deleteFilter, item, { headers: authHeader() })
-    setLoading(false)
 }
 
 export default ButtonActionGroup;

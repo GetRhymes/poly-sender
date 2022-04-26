@@ -3,25 +3,17 @@ import LabelInBlock from "./create/LabelInBlock";
 import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useStateIfMounted} from "use-state-if-mounted";
-import axios from "axios";
-import authHeader, {URL_getGroupNamesCurrentStaff} from "../util/api";
+import {fetchDataGroupNames} from "../util/AsyncFunctionAttributes";
 
 function SelectorGroup({selectedGroupName, handleSelector}) {
 
     useEffect(() => {
-        fetchDataGroupNames()
+        fetchDataGroupNames(setLoading, setDataGroupNames)
     }, [])
 
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])
 
     const [loading, setLoading] = useState(false)
-
-    async function fetchDataGroupNames() {
-        setLoading(true)
-        const dataGroupNames = await axios.get(URL_getGroupNamesCurrentStaff, { headers: authHeader() });
-        setDataGroupNames(dataGroupNames.data);
-        setLoading(false)
-    }
 
     return (
         loading ?

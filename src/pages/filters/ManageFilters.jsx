@@ -5,22 +5,14 @@ import FilterBodyBlock from "../../components/manage-filters/FilterBodyBlock";
 import PopupCreate from "../../components/create/PopupCreate";
 import {useStateIfMounted} from "use-state-if-mounted";
 import PopupShare from "../../components/PopupShare";
-import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
-import authHeader, {URL_getFilters} from "../../util/api";
+import {fetchDataFilters} from "../../util/AsyncFunctionFilters";
 
 const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) => {
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
-
-    async function fetchDataFilters() {
-        setLoadingDataFilters(true)
-        const dataFilters = await axios.get(URL_getFilters, { headers: authHeader() });
-        setDataFilters(dataFilters.data)
-        setLoadingDataFilters(false)
-    }
 
     const [loadingDataFilters, setLoadingDataFilters] = useState(false)
 
@@ -36,7 +28,7 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
 
     useEffect(() => {
         setRootPath("Фильтры")
-        fetchDataFilters()
+        fetchDataFilters(setLoadingDataFilters, setDataFilters)
         return (() => {
             setRootPath("")
         })

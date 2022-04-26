@@ -5,31 +5,16 @@ import AttributesHeaderBlock from "../../components/manage-attributes/Attributes
 import AttributesBodyBlock from "../../components/manage-attributes/AttributesBodyBlock";
 import {useStateIfMounted} from "use-state-if-mounted";
 import PopupShare from "../../components/PopupShare";
-import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
-import authHeader, {URL_getAttributesCurrentStaff, URL_getGroupNamesCurrentStaff} from "../../util/api";
+import {fetchDataAttributesCurrentStaff, fetchDataGroupNames} from "../../util/AsyncFunctionAttributes";
 
 const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
     const [dataAttributes, setDataAttributes] = useStateIfMounted([])
 
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])
-
-    async function fetchDataAttributesCurrentStaff() {
-        setLoadingAttributes(true)
-        const dataAttributes = await axios.get(URL_getAttributesCurrentStaff, {headers: authHeader()});
-        setDataAttributes(dataAttributes.data);
-        setLoadingAttributes(false)
-    }
-
-    async function fetchDataGroupNamesCurrentStaff() {
-        setLoadingGroupNames(true)
-        const dataGroupNames = await axios.get(URL_getGroupNamesCurrentStaff, {headers: authHeader()});
-        setDataGroupNames(dataGroupNames.data);
-        setLoadingGroupNames(false)
-    }
 
     const [loadingAttributes, setLoadingAttributes] = useState(false)
 
@@ -52,8 +37,8 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
     const {setRootPath} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataGroupNamesCurrentStaff()
-        fetchDataAttributesCurrentStaff()
+        fetchDataGroupNames(setLoadingGroupNames, setDataGroupNames)
+        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes)
         setRootPath("Атрибуты")
         return (() => {
             setRootPath("")

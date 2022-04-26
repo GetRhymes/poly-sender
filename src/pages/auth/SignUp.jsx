@@ -139,6 +139,7 @@ function SignUp() {
                     <FormControl sx={{width: "290px"}} focused={!correctDepartment}>
                         <InputLabel color={!correctDepartment ? "error" : null}>Выберите институт</InputLabel>
                         <Select
+                            value={department}
                             color={!correctDepartment ? "error" : null}
                             label="Выберите институт"
                             onChange={handleDepartment}
@@ -149,6 +150,7 @@ function SignUp() {
                     <FormControl sx={{width: "290px", marginLeft: "20px"}} focused={!correctHighSchool}>
                         <InputLabel color={!correctHighSchool ? "error" : null}>Выберите высшую школу</InputLabel>
                         <Select
+                            value={highSchool}
                             color={!correctHighSchool ? "error" : null}
                             label="Выберите высшую школу"
                             onChange={handleHighSchool}

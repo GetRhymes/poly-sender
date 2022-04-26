@@ -4,7 +4,6 @@ import LoadingScreen from "../../components/LoadingScreen";
 import '../../styles/ManageAccess.css'
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
-import {dataAccessJS, dataRolesJS} from "../../components/data/data";
 import AccessCenterBlock from "../../components/manage-access/AccessCenterBlock";
 import AccessHeaderBlock from "../../components/manage-access/AccessHeaderBlock";
 import authHeader, {URL_getAccessList, URL_getRoles} from "../../util/api";
@@ -14,6 +13,8 @@ function AccessManager() {
 
     const {setRootPath} = useContext(PathContext)
 
+    const [loadingAction, setLoadingAction] = useState(false)
+
     useEffect(() => {
         fetchDataAccess()
         fetchDataRoles()
@@ -21,7 +22,7 @@ function AccessManager() {
         return (() => {
             setRootPath("")
         })
-    })
+    }, [loadingAction])
 
     const [dataAccess, setDataAccess] = useStateIfMounted([])
 
@@ -31,8 +32,6 @@ function AccessManager() {
 
     const [loadingDataRoles, setLoadingDataRoles] = useState(false)
 
-    const [loadingAction, setLoadingAction] = useState(false)
-
     const [search, setSearch] = useStateIfMounted(null)
 
     function handleSearch(event) {
@@ -41,16 +40,14 @@ function AccessManager() {
 
     async function fetchDataAccess() {
         setLoadingDataAccess(true)
-        // const dataAccess = await axios.get(URL_getAccessList, { headers: authHeader() });
-        const dataAccess = {data: dataAccessJS}
+        const dataAccess = await axios.get(URL_getAccessList, { headers: authHeader() });
         setDataAccess(dataAccess.data);
         setLoadingDataAccess(false)
     }
 
     async function fetchDataRoles() {
         setLoadingDataRoles(true)
-        // const dataRoles = await axios.get(URL_getRoles, { headers: authHeader() });
-        const dataRoles = {data: dataRolesJS}
+        const dataRoles = await axios.get(URL_getRoles, { headers: authHeader() });
         setDataRoles(dataRoles.data)
         setLoadingDataRoles(false)
     }

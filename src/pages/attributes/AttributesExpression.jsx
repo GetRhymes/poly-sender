@@ -6,11 +6,14 @@ import EndBlock from "../../components/create/EndBlock";
 import PopupLoading from "../../components/PopupLoading";
 import {useStateIfMounted} from "use-state-if-mounted";
 import ExpressionBlock from "../../components/create/way-expression/ExpressionBlock";
-import axios from "axios";
 import PopupCheckInfo from "../../components/create/way-expression/PopupCheckInfo";
 import PopupStudentsList from "../../components/create/way-expression/PopupStudentsList";
 import {PathContext} from "../../context";
-import authHeader, {URL_getAttributeById, URL_getAttributesCurrentStaff, URL_getGroupAttributes} from "../../util/api";
+import {
+    fetchDataAttributeById,
+    fetchDataAttributesCurrentStaff,
+    fetchDataFunctions
+} from "../../util/AsyncFunctionAttributes";
 
 function AttributesExpression(
     {
@@ -31,46 +34,15 @@ function AttributesExpression(
 
     const [students, setStudents] = useStateIfMounted(null)
 
-    async function fetchDataFunctions() {
-        const dataFunction = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
-        for (let group of dataFunction.data) {
-            group.groupName = group.groupName.toLowerCase().replaceAll(/\s/g, '_')
-            let newAttributes = []
-            for (let attribute of group.attributes) {
-                newAttributes.push(attribute.toLowerCase().replaceAll(/\s/g, '_'))
-            }
-            group.attributes = newAttributes
-        }
-        setDataFunctions(dataFunction.data);
-    }
-
-    async function fetchDataAttributeById() {
-        const data = {
-            "idAttribute": id
-        }
-        const attribute = await axios.post(URL_getAttributeById, data, { headers: authHeader() })
-        setNameAttribute(attribute.data.attributeName)
-        setSelectedGroupName(attribute.data.groupName)
-        setExpression(attribute.data.expression)
-        setStudents(attribute.data.studentsDTO)
-    }
-
-    async function fetchDataAttributesCurrentStaff() {
-        setLoadingAttributes(true)
-        const dataAttributes = await axios.get(URL_getAttributesCurrentStaff, { headers: authHeader() });
-        setDataAttributes(dataAttributes.data);
-        setLoadingAttributes(false)
-    }
-
     const {setRootPath, setCreate} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataFunctions()
-        fetchDataAttributesCurrentStaff()
+        fetchDataFunctions(setDataFunctions)
+        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes)
         setCreate(true)
         setRootPath("Атрибуты")
         if (id !== null) {
-            fetchDataAttributeById()
+            fetchDataAttributeById(id, setNameAttribute, setSelectedGroupName, setExpression, setStudents)
         }
         return () => {
             setSelectedGroupName("")
@@ -98,7 +70,6 @@ function AttributesExpression(
         setExpression(expr)
         setPosition(newPosition)
     }
-
 
     function handleSelectedGroupName(event) {
         const groupName = event.target.value

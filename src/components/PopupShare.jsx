@@ -1,21 +1,16 @@
 import React, {useEffect} from 'react';
 import '../styles/Create.css'
 import {Autocomplete, Button, TextField} from "@mui/material";
-import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
 import CircularProgress from "@mui/material/CircularProgress";
-import authHeader, {URL_attributeShare, URL_filterShare, URL_getAllStaff} from "../util/api";
+import {share} from "../util/Utils";
+import {getStaff} from "../util/AsyncFunctionStaff";
 
 function PopupShare({active, setActive, id, setId, endPoint}) {
 
     useEffect(() => {
-        getStaff()
+        getStaff(setDataStaff)
     }, [])
-
-    async function getStaff() {
-        const dataStaff = await axios.get(URL_getAllStaff, { headers: authHeader() })
-        setDataStaff(dataStaff.data)
-    }
 
     const [dataStaff, setDataStaff] = useStateIfMounted([])
 
@@ -87,22 +82,5 @@ function PopupShareButton({text, action}) {
         </Button>
     );
 }
-
-function getArrayIds(selectedStaff) {
-    const array = []
-    for (let staff of selectedStaff) {
-        array.push(staff.id)
-    }
-    return array
-}
-
-async function share(itemId, staffIds, endPoint) {
-    const data = {
-        id: itemId,
-        staffIds: getArrayIds(staffIds)
-    }
-    await axios.post(endPoint === 'attributes' ? URL_attributeShare : URL_filterShare, data, { headers: authHeader() })
-}
-
 
 export default PopupShare;

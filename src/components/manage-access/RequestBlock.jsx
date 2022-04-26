@@ -60,9 +60,6 @@ function RequestBlock({request, dataRoles, setLoading}) {
                             sx={styleButton}
                             onClick={() => access(
                                 request.idRequest,
-                                request.idStaff,
-                                request.fullName,
-                                request.email,
                                 selectorRole,
                                 request.role === null ? 'setup' : 'change',
                                 setLoading
@@ -95,17 +92,14 @@ function RowInfo({leftText, rightText}) {
     )
 }
 
-async function access(idRequest, idStaff, fullName, email, role, type, setLoading) {
+async function access(idRequest, role, type, setLoading) {
     setLoading(true)
     const data = {
         "idRequest": idRequest,
-        "idStaff": idStaff,
-        "fullName": fullName,
-        "email": email,
         "role": role,
     }
-    // if (type === 'setup') await axios.post(URL_setup, data, { headers: authHeader() })
-    // if (type === 'change') await axios.post(URL_change, data, { headers: authHeader() })
+    if (type === 'setup') await axios.post(URL_setup, data, { headers: authHeader() })
+    if (type === 'change') await axios.post(URL_change, data, { headers: authHeader() })
     console.log(data)
     setLoading(false)
 }
@@ -114,12 +108,9 @@ async function reject(idRequest, idStaff, setLoading) {
     setLoading(true)
     const data = {
         "idRequest": idRequest,
-        "idStaff": idStaff,
-        "fullName": null,
-        "email": null,
         "role": null,
     }
-    // await axios.post(URL_reject, data, { headers: authHeader() })
+    await axios.post(URL_reject, data, { headers: authHeader() })
     console.log(data)
     setLoading(false)
 }

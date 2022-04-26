@@ -4,11 +4,12 @@ import HeaderBlock from "../../components/create/HeaderBlock";
 import WorkBlock from "../../components/create/way-list/WorkBlock";
 import EndBlock from "../../components/create/EndBlock";
 import {useStateIfMounted} from "use-state-if-mounted";
-import axios from "axios";
 import LoadingScreen from "../../components/LoadingScreen";
 import PopupLoading from "../../components/PopupLoading";
 import {PathContext} from "../../context";
-import authHeader, {URL_getAllStudents, URL_getFiltersShort, URL_getGroupAttributes} from "../../util/api";
+import {fetchDataAccordion} from "../../util/AsyncFunctionAttributes";
+import {fetchDataTable} from "../../util/AsyncFunctionStudents";
+import {fetchDataFilters, fetchDataFiltersShort} from "../../util/AsyncFunctionFilters";
 
 function FiltersList(
     {
@@ -26,23 +27,6 @@ function FiltersList(
     const [dataAccordions, setDataAccordions] = useStateIfMounted([])
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
-
-    async function fetchDataTable() {
-        const dataTable = await axios.get(URL_getAllStudents, { headers: authHeader() });
-        setDataTable(dataTable.data);
-    }
-
-    async function fetchDataAccordion() {
-        const dataAccordions = await axios.get(URL_getGroupAttributes, { headers: authHeader() });
-        setDataAccordions(dataAccordions.data);
-    }
-
-    async function fetchDataFilters() {
-        setLoadingDataFilters(true)
-        const dataFilters = await axios.get(URL_getFiltersShort, { headers: authHeader() });
-        setDataFilters(dataFilters.data);
-        setLoadingDataFilters(false)
-    }
 
     function initSelectedStudentState() {
         let memory = []
@@ -65,9 +49,9 @@ function FiltersList(
     useEffect(() => {
         setCreate(true)
         setRootPath("Фильтры")
-        fetchDataFilters()
-        fetchDataTable()
-        fetchDataAccordion()
+        fetchDataFiltersShort(setLoadingDataFilters, setDataFilters)
+        fetchDataTable(setDataTable)
+        fetchDataAccordion(setDataAccordions)
         return () => {
             setRootPath("")
             setCreate(false)

@@ -16,8 +16,8 @@ function Notification() {
         const data = {
             "idStaff": localStorage.getItem('id')
         }
-        // const result = await axios.post(URL_getNotifications, data, { headers: authHeader() })
-        const result = {data: dataNotificationJS}
+        const result = await axios.post(URL_getNotifications, data, { headers: authHeader() })
+        // const result = {data: dataNotificationJS}
         setDataNotification(result.data)
         setLoading(false)
     }

@@ -2,12 +2,11 @@ import {Button, TextField} from "@mui/material";
 import React, {useEffect} from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import axios from "axios";
 import '../../../styles/CreationPages.css'
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import authHeader, {URL_calculateAttribute} from "../../../util/api";
+import {calculateExpression} from "../../../util/AsyncFunctionAttributes";
 
 function ExpressionField(
     {
@@ -66,6 +65,8 @@ function ExpressionField(
 }
 
 function ButtonOperands({expression, setExpression, focus, setPosition, setLoading, setStatus, setStudents}) {
+
+    console.log(expression)
 
     const buttonStyle = {
         height: "35px",
@@ -152,11 +153,7 @@ function ButtonOperands({expression, setExpression, focus, setPosition, setLoadi
             </Button>
             <Button
                 sx={buttonStyle}
-                onClick={() => {
-                    if (expression !== "") {
-                        calculateExpression(setLoading, expression, setStatus, setStudents)
-                    }
-                }}
+                onClick={() =>  expression !== "" && expression !== undefined ? calculateExpression(setLoading, expression, setStatus, setStudents) : () => {} }
             >
                 <PlayArrowIcon/>
             </Button>
@@ -170,7 +167,7 @@ function Report({status, students, setCheckAbout, setInfoStudents}) {
             <div className="report">
                 <div className={"report__line " + status}>
                     <p>Количество студентов:</p>
-                    <p style={{marginLeft: "20px"}}>{students !== null ? students.length : 0}</p>
+                    <p style={{marginLeft: "20px"}}>{students !== null && students !== undefined ? students.length : 0}</p>
 
                 </div>
                 <div className={"report__line " + status}>
@@ -182,7 +179,7 @@ function Report({status, students, setCheckAbout, setInfoStudents}) {
             <div className="buttons__report">
                 <div style={{ height: "24px", width: "24px", marginTop: "9px", marginLeft: "20px"}}>
                     {
-                        students !== null && students.length > 0 ?
+                        students !== null && students !== undefined && students.length > 0 ?
                             <IconButton sx={{ padding: "5px"}} onClick={()=> setInfoStudents(true)}>
                                 <ViewListIcon/>
                             </IconButton>
@@ -209,17 +206,6 @@ function getStatus(status) {
     if (status === 'success') return "Successful!"
     if (status === 'warning') return "Warning!"
     if (status === 'error') return "Error!"
-}
-
-async function calculateExpression(setLoading, expression, setStatus, setStudents) {
-    setLoading(true)
-    const data = {
-        "expression": expression
-    }
-    const computedExpression = await axios.post(URL_calculateAttribute, data, { headers: authHeader() })
-    setStatus(computedExpression.data.status)
-    setStudents(computedExpression.data.students)
-    setLoading(false)
 }
 
 export default ExpressionField

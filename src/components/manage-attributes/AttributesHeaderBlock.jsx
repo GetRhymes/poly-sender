@@ -4,8 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ButtonCreate from "../ButtonCreate";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
-import axios from "axios";
-import authHeader, {URL_deleteGroupAttribute} from "../../util/api";
+import {deleteGroupName} from "../../util/AsyncFunctionAttributes";
 
 function AttributesHeaderBlock(
     {
@@ -82,13 +81,6 @@ function AttributesHeaderBlock(
             />
         </Box>
     );
-}
-
-async function deleteGroupName(id, setLoading) {
-    setLoading(true)
-    const data = { "idGroupAttribute": id }
-    await axios.post(URL_deleteGroupAttribute, data, { headers: authHeader() })
-    setLoading(false)
 }
 
 export default AttributesHeaderBlock;
