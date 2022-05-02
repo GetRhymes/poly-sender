@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import NotificationRowInfo from "./NotificationRowInfo";
 import {acceptRequest, rejectRequest} from "../../../util/AsyncFunctionStaff";
+import {AuthContext, PathContext} from "../../../context";
 
 function NotificationItem({notification, setLoading, setData}) {
 
@@ -30,6 +31,8 @@ function NotificationItem({notification, setLoading, setData}) {
     const handleChange = (event, newAlignment) => {
         setType(newAlignment);
     };
+
+    const {setLoadFilterAfterNot, setLoadAttrAfterNot} = useContext(PathContext)
 
     return (
         <div className="notification__item">
@@ -60,7 +63,7 @@ function NotificationItem({notification, setLoading, setData}) {
             </ToggleButtonGroup>
             <div className="notification__action">
                 <Button
-                    onClick={() => acceptRequest(setLoading, notification.idNotification, type)}
+                    onClick={() => acceptRequest(setLoading, notification.idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot)}
                     sx={buttonStyle}
                 >Принять</Button>
                 <Button

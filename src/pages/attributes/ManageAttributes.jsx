@@ -34,7 +34,7 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
 
     const [groupName, setGroupName] = useStateIfMounted(null)
 
-    const {setRootPath} = useContext(PathContext)
+    const {setRootPath, loadAttrAfterNot} = useContext(PathContext)
 
     useEffect(() => {
         fetchDataGroupNames(setLoadingGroupNames, setDataGroupNames)
@@ -43,7 +43,7 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
         return (() => {
             setRootPath("")
         })
-    }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute])
+    }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute, loadAttrAfterNot])
 
     function handleAttributesName(event) {
         const value = event.target.value
@@ -55,7 +55,8 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
         loadingGroupNames ||
         loadingCreateGroupName ||
         loadingDeleteAttribute ||
-        loadingDeleteGroupAttribute
+        loadingDeleteGroupAttribute ||
+        loadAttrAfterNot
 
     return (
         isLoading ?

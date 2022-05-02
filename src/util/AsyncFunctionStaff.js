@@ -17,14 +17,19 @@ export async function fetchNotification(setLoading, setData) {
     setLoading(false)
 }
 
-export async function acceptRequest(setLoading, idNotification, type) {
+export async function acceptRequest(setLoading, idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot) {
     setLoading(true)
+    setLoadAttrAfterNot(true)
+    setLoadFilterAfterNot(true)
     const data = {
         "idNotification": idNotification,
         "type": type
     }
     await axios.post(URL_acceptRequest, data, { headers: authHeader() })
+    await fetchNotification(setLoading, setData)
     setLoading(false)
+    setLoadAttrAfterNot(false)
+    setLoadFilterAfterNot(false)
 }
 
 export async function rejectRequest(setLoading, idNotification, setData) {

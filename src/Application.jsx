@@ -16,13 +16,16 @@ function Application() {
 
     const [roles, setRoles] = useState([])
 
+    const [loadAttrAfterNot, setLoadAttrAfterNot] = useState(false)
+    const [loadAttrFilterNot, setLoadFilterAfterNot] = useState(false)
+
     let rolesFromStorage = []
 
     if (localStorage.getItem('roles')) {
         rolesFromStorage = localStorage.getItem('roles').split(',')
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         if (rolesFromStorage.length > 0) {
             setRoles(rolesFromStorage)
         }
@@ -36,7 +39,16 @@ function Application() {
         !isAuth ?
             <AuthNavigation setRoles={setRoles}/>
             :
-            <PathContext.Provider value={{rootPath, setRootPath, create, setCreate}}>
+            <PathContext.Provider value={{
+                rootPath,
+                setRootPath,
+                create,
+                setCreate,
+                loadAttrAfterNot,
+                setLoadAttrAfterNot,
+                loadAttrFilterNot,
+                setLoadFilterAfterNot
+            }}>
                 <div className="cont">
                     <Sidebar roles={roles}/>
                     <div className="active__screen">

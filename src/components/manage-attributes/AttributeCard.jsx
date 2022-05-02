@@ -7,7 +7,7 @@ import ReportIcon from '@mui/icons-material/Report';
 function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute, setSelectedGroupName, setLoading}) {
     return (
         <div className="attribute__card">
-            <div className="attribute__card__header">
+            <div className={!attribute.link ? "attribute__card__header" : "attribute__card__header disabled__header"}>
                 <p className="attribute__card__header__text">{attribute.attributeName}</p>
                 {
                     attribute.status === "warning" ?
@@ -22,12 +22,12 @@ function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute,
 
 
             </div>
-            <div className="attribute__card__body">
+            <div className={!attribute.link ? "attribute__card__body" : "attribute__card__body disabled__body"}>
                 <div className="attribute__card__body__info">
-                    <AttributeRowInfo nameRow="Раздел:" valueRow={attribute.groupName}/>
-                    <AttributeRowInfo nameRow="Студенты:" valueRow={attribute.students.length}/>
-                    <AttributeRowInfo nameRow="Создан:" valueRow={getType(attribute.type)}/>
-                    <AttributeRowInfo nameRow="Дата создания:" valueRow={attribute.created}/>
+                    <AttributeRowInfo nameRow="Раздел:" valueRow={attribute.groupName} link={attribute.link}/>
+                    <AttributeRowInfo nameRow="Студенты:" valueRow={attribute.students.length} link={attribute.link}/>
+                    <AttributeRowInfo nameRow="Создан:" valueRow={getType(attribute.type)} link={attribute.link}/>
+                    <AttributeRowInfo nameRow="Дата создания:" valueRow={attribute.created} link={attribute.link}/>
                 </div>
                 <div className="attribute__card__body__buttons">
                     <ButtonActionGroup
@@ -42,6 +42,7 @@ function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute,
                         selectedOption={attribute.groupName}
                         setSelectedOption={setSelectedGroupName}
                         setLoading={setLoading}
+                        link={attribute.link}
                     />
                 </div>
             </div>

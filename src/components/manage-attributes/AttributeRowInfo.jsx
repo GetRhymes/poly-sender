@@ -1,15 +1,11 @@
 import React from 'react';
 
-function AttributeRowInfo({nameRow, valueRow}) {
+function AttributeRowInfo({nameRow, valueRow, link}) {
 
     return (
-        <div className="attribute__row__info">
-            <div className="attribute__row__text attribute__row__info__left">
-                <p>{nameRow}</p>
-            </div>
-            <div className="attribute__row__text attribute__row__info__right">
-                <p>{valueRow}</p>
-            </div>
+        <div className={!link ? "attribute__row__info" : "attribute__row__info row_disabled"}>
+            <p className="attribute__row__text attribute__row__info__left">{nameRow}</p>
+            <p className="attribute__row__text attribute__row__info__right">{valueRow}</p>
         </div>
     );
 }

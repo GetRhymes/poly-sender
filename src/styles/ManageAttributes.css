@@ -31,6 +31,10 @@
     justify-content: space-between;
 }
 
+.disabled__header {
+    background-color: #858b93;
+}
+
 .attribute__card__header__text {
     margin-left: 15px;
     display: flex;
@@ -56,6 +60,10 @@
     border-top-right-radius: 12px;
 }
 
+.disabled__body {
+    border: 1px solid rgb(133, 139, 147);
+}
+
 .attribute__card__body__info {
     flex-direction: column;
     justify-content: center;
@@ -70,13 +78,17 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 16px;
     font-style: normal;
-    color: #366ac3
 }
 
 .attribute__row__info {
     display: flex;
     flex-direction: row;
     justify-content: left;
+    color: #366ac3
+}
+
+.row_disabled {
+    color: #858b93
 }
 
 .attribute__row__info__left {
