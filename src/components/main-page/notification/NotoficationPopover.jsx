@@ -33,6 +33,7 @@ function NotificationPopover({loading, setLoading, dataNotification, anchorEl, s
                                 sx={{width: "100%", height: "calc(100%)", overflow: "auto"}}>
                                 {dataNotification.map((notification) =>
                                     <NotificationItem
+                                        key={notification.id}
                                         notification={notification}
                                         setLoading={setLoading}
                                         setData={setData}

@@ -95,4 +95,5 @@ function logout(handleClose, setIsAuth) {
     localStorage.removeItem('token')
     localStorage.removeItem('roles')
     localStorage.removeItem('auth')
+    localStorage.removeItem('page')
 }

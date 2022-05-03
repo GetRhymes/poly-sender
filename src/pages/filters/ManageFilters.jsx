@@ -24,7 +24,7 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
 
     const [popupShareActive, setPopupShareActive] = useState(false)
 
-    const {setRootPath} = useContext(PathContext)
+    const {setRootPath, loadFilterAfterNot} = useContext(PathContext)
 
     useEffect(() => {
         setRootPath("Фильтры")
@@ -32,14 +32,14 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
         return (() => {
             setRootPath("")
         })
-    }, [loadingDeleteFilter])
+    }, [loadingDeleteFilter, loadFilterAfterNot])
 
     function handleFiltersName(event) {
         const value = event.target.value
         setSearchValue(value)
     }
 
-    const isLoading = loadingDataFilters || loadingDeleteFilter
+    const isLoading = loadingDataFilters || loadingDeleteFilter || loadFilterAfterNot
 
     return (
         isLoading ?

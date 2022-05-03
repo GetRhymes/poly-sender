@@ -17,7 +17,7 @@ function Application() {
     const [roles, setRoles] = useState([])
 
     const [loadAttrAfterNot, setLoadAttrAfterNot] = useState(false)
-    const [loadAttrFilterNot, setLoadFilterAfterNot] = useState(false)
+    const [loadFilterAfterNot, setLoadFilterAfterNot] = useState(false)
 
     let rolesFromStorage = []
 
@@ -46,7 +46,7 @@ function Application() {
                 setCreate,
                 loadAttrAfterNot,
                 setLoadAttrAfterNot,
-                loadAttrFilterNot,
+                loadFilterAfterNot,
                 setLoadFilterAfterNot
             }}>
                 <div className="cont">

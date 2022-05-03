@@ -144,7 +144,7 @@ function SignUp() {
                             label="Выберите институт"
                             onChange={handleDepartment}
                         >
-                            <MenuItem value="i">ИКНТ</MenuItem>
+                            <MenuItem value="ИКНТ">ИКНТ</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl sx={{width: "290px", marginLeft: "20px"}} focused={!correctHighSchool}>
@@ -155,7 +155,7 @@ function SignUp() {
                             label="Выберите высшую школу"
                             onChange={handleHighSchool}
                         >
-                            <MenuItem value="v">ВШИСиСТ</MenuItem>
+                            <MenuItem value="ВШИСиСТ">ВШИСиСТ</MenuItem>
                         </Select>
                     </FormControl>
                 </div>

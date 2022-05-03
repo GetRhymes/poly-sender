@@ -7,12 +7,14 @@ import authHeader, {URL_change, URL_reject, URL_setup} from "../../util/api";
 function RequestBlock({request, dataRoles, setLoading}) {
 
     const [selectorRole, setSelectorRole] = useState(() => {
-        if (request.role === null) return 'USER'
-        else return 'ADMIN'
+        if (request.role === null) return {role: "USER", level: 1}
+        else return {role: "ADMIN", level: 2}
     })
 
     function handleSelectorRole(event) {
-        setSelectorRole(event.target.value)
+        const role = event.target.value
+        const level = getLevelByRole(role)
+        setSelectorRole({role, level})
     }
 
     const styleButton = {
@@ -40,13 +42,15 @@ function RequestBlock({request, dataRoles, setLoading}) {
                         <InputLabel>Выберите роль</InputLabel>
                         <Select
                             sx={{width: "250px"}}
-                            value={selectorRole}
+                            value={selectorRole.role}
                             label="Выберите роль"
                             onChange={handleSelectorRole}
                         >
                             {
-                                dataRoles.map(({id, role}) => {
-                                    return <MenuItem key={id} value={role}>{getRoleNameByRole(role)}</MenuItem>
+                                dataRoles.map(({id, role, level}) => {
+                                    if (getLevelByRole(request.role) + 1 <= level) {
+                                        return <MenuItem key={id} value={role}>{getRoleNameByRole(role)}</MenuItem>
+                                    }
                                 })
                             }
                         </Select>
@@ -83,6 +87,12 @@ function getRoleNameByRole(role) {
     if (role === 'ADMIN') return 'Администратор'
 }
 
+function getLevelByRole(role) {
+    if (role === 'ADMIN') return 2
+    if (role === 'USER') return 1
+    if (role === null) return 0
+}
+
 function RowInfo({leftText, rightText}) {
     return (
         <div className="request__row">
@@ -114,7 +124,5 @@ async function reject(idRequest, idStaff, setLoading) {
     console.log(data)
     setLoading(false)
 }
-
-
 
 export default RequestBlock;

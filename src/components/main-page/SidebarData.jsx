@@ -9,37 +9,37 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const SidebarData = [
     {
-        id: 1,
-        name: "Профиль",
-        path: "/profile",
-        icon: <AccountCircleIcon/>
-    },
-    {
-        id: 2,
+        id: '1',
         name: "Атрибуты",
         path: "/attributes",
         icon: <AttributionIcon/>
     },
     {
-        id: 3,
+        id: '2',
         name: "Фильтры",
         path: "/filters",
         icon: <FilterAltIcon/>
     },
     {
-        id: 4,
+        id: '3',
         name: "Списки",
         path: "/lists",
         icon: <ListAltIcon/>
     },
     {
-        id: 5,
+        id: '4',
+        name: "Профиль",
+        path: "/profile",
+        icon: <AccountCircleIcon/>
+    },
+    {
+        id: '5',
         name: "Доступы",
         path: "/access-manager",
         icon: <PersonAddIcon/>
     },
     {
-        id: 6,
+        id: '6',
         name: "Данные",
         path: "/data-manager",
         icon: <StorageIcon/>

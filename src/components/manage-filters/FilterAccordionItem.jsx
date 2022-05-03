@@ -42,7 +42,7 @@ function FilterAccordionSummary({filter}) {
     return (
         <AccordionSummary>
             <div className="header__accordion__container">
-                <div className="header__accordion__block">
+                <div className={!filter.link ? "header__accordion__block" : "header__accordion__block header__accordion__disabled"}>
                     {ModeFilter(filter.mode)}
                     <p className="header__accordion__label">{filter.filterName}</p>
                 </div>
@@ -75,13 +75,13 @@ function FilterAccordionDetails(
         <AccordionDetails>
             <div className="background body__accordion__container">
                 <div className="body__accordion__info">
-                    <FilterRowInfo nameRow="Почтовый адрес:" valueRow={filter.mail}/>
-                    <FilterRowInfo nameRow="Количество студентов:" valueRow={filter.students.length}/>
-                    <FilterRowInfo nameRow="Создан:" valueRow={getType(filter.type)}/>
-                    <FilterRowInfo nameRow="Режим:" valueRow={filter.mode}/>
+                    <FilterRowInfo nameRow="Почтовый адрес:" valueRow={filter.mail} link={filter.link}/>
+                    <FilterRowInfo nameRow="Количество студентов:" valueRow={filter.students.length} link={filter.link}/>
+                    <FilterRowInfo nameRow="Создан:" valueRow={getType(filter.type)} link={filter.link}/>
+                    <FilterRowInfo nameRow="Режим:" valueRow={filter.mode} link={filter.link}/>
                     {filter.mode === "manual" ?
-                        <FilterRowInfo nameRow="Полученные ответы:" valueRow={filter.mailCounter}/> : null}
-                    <FilterRowInfo nameRow="Дата создания:" valueRow={filter.created}/>
+                        <FilterRowInfo nameRow="Полученные ответы:" valueRow={filter.mailCounter} link={filter.link}/> : null}
+                    <FilterRowInfo nameRow="Дата создания:" valueRow={filter.created} link={filter.link}/>
                 </div>
                 <div className="body__accordion__buttons">
                     <ButtonActionGroup
@@ -96,7 +96,7 @@ function FilterAccordionDetails(
                         setName={setNameFilter}
                         selectedOption={filter.mode}
                         setSelectedOption={setSelectedMailOption}
-
+                        link={filter.link}
                     />
                     {filter.mode === "manual" ?
                         <Button

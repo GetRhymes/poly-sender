@@ -15,13 +15,17 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 24px;
     font-style: normal;
-    color: #366ac3;
 }
 
 .header__accordion__block {
     align-items: center;
     display: flex;
     flex-direction: row;
+    color: #366ac3;
+}
+
+.header__accordion__disabled {
+    color: #858b93
 }
 
 .header__accordion__container {
@@ -49,7 +53,6 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 15px;
     font-style: normal;
-    color: #366ac3
 }
 
 .body__accordion__buttons {
