@@ -1,6 +1,6 @@
 //MAIN ADDRESS
-// const API_ROOT = 'http://poly-sender.ru'
-const API_ROOT = 'http://localhost:8080'
+const API_ROOT = 'http://poly-sender.ru:4085'
+// const API_ROOT = 'http://localhost:8080'
 const API_PREFIX = ''
 
 //STUDENTS CONTROLLER
