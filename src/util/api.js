@@ -1,4 +1,5 @@
 //MAIN ADDRESS
+// const API_ROOT = 'http://poly-sender.ru'
 const API_ROOT = 'http://localhost:8080'
 const API_PREFIX = ''
 
@@ -67,6 +68,7 @@ export const URL_change = ADMIN_ROOT + '/change'
 export const URL_reject = ADMIN_ROOT + '/reject'
 export const URL_getAccessList = ADMIN_ROOT + '/getAccessList'
 export const URL_getRoles = ADMIN_ROOT + '/getRoles'
+export const URL_update = ADMIN_ROOT + '/update'
 
 //HEADERS
 export default function authHeader() {

@@ -106,7 +106,7 @@ async function access(idRequest, role, type, setLoading) {
     setLoading(true)
     const data = {
         "idRequest": idRequest,
-        "role": role,
+        "role": role.role,
     }
     if (type === 'setup') await axios.post(URL_setup, data, { headers: authHeader() })
     if (type === 'change') await axios.post(URL_change, data, { headers: authHeader() })

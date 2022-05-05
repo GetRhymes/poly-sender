@@ -26,20 +26,20 @@ const SidebarData = [
         path: "/lists",
         icon: <ListAltIcon/>
     },
+    // {
+    //     id: '4',
+    //     name: "Профиль",
+    //     path: "/profile",
+    //     icon: <AccountCircleIcon/>
+    // },
     {
         id: '4',
-        name: "Профиль",
-        path: "/profile",
-        icon: <AccountCircleIcon/>
-    },
-    {
-        id: '5',
         name: "Доступы",
         path: "/access-manager",
         icon: <PersonAddIcon/>
     },
     {
-        id: '6',
+        id: '5',
         name: "Данные",
         path: "/data-manager",
         icon: <StorageIcon/>

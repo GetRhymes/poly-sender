@@ -16,7 +16,7 @@ import List from "@mui/material/List";
 function AttributesAccordion({dataAccordions, setSample, height}) {
 
     const styleListItem = {
-        height: "35px",
+        // height: "35px",
         paddingTop: "4px",
         paddingBottom: "4px"
     }

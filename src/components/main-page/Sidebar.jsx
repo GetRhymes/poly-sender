@@ -83,8 +83,8 @@ const AppBar = styled(MuiAppBar, {
 
 function filterPagesByRoles(roles) {
     if (roles.length === 2) return sidebarData
-    if (roles.length === 1 && roles.includes('ADMIN')) return sidebarData.filter((item) => item.id >= 4)
-    if (roles.length === 1 && roles.includes('USER')) return sidebarData.filter((item) => item.id < 5)
+    if (roles.length === 1 && roles.includes('ADMIN')) return sidebarData.filter((item) => item.id > 3)
+    if (roles.length === 1 && roles.includes('USER')) return sidebarData.filter((item) => item.id < 4)
     if (roles.length < 1) return []
 }
 
@@ -97,7 +97,7 @@ function Sidebar({roles}) {
         const page = localStorage.getItem('page')
         if (page !== null && page !== undefined) handleIsActive(page)
         else if (roles.includes('USER')) handleIsActive('1')
-        else handleIsActive('5')
+        else handleIsActive('4')
     }, [roles])
 
     const theme = useTheme();

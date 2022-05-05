@@ -17,7 +17,7 @@ import React from "react";
 function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPosition}) {
 
     const styleListItem = {
-        height: "35px",
+        // height: "35px",
         paddingTop: "4px",
         paddingLeft: "0px",
         paddingBottom: "4px"
@@ -86,7 +86,7 @@ function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPos
                                         >
                                             <EditIcon fontSize="small"/>
                                         </Button>
-                                        <ListItemText key={item + "text"} primary={item}/>
+                                        <ListItemText key={item + "text"} primary={item.replaceAll('_', ' ')}/>
                                     </ListItem>
                                 )}
                             </List>
