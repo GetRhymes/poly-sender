@@ -86,8 +86,13 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
                             setLoading={setLoadingDeleteAttribute}
                         />
                 }
-                <PopupShare active={popupShareActive} setActive={setPopupShareActive} id={idAttribute} setId={setId}
-                            endPoint="attributes"/>
+                <PopupShare
+                    active={popupShareActive}
+                    setActive={setPopupShareActive}
+                    id={idAttribute}
+                    setId={setId}
+                    endPoint="attributes"
+                />
                 <PopupCreate
                     active={popupCreateActive}
                     setActive={setPopupCreateActive}

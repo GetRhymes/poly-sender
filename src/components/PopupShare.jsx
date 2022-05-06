@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/Create.css'
 import {Autocomplete, Button, TextField} from "@mui/material";
 import {useStateIfMounted} from "use-state-if-mounted";
@@ -9,24 +9,24 @@ import {getStaff} from "../util/AsyncFunctionStaff";
 function PopupShare({active, setActive, id, setId, endPoint}) {
 
     useEffect(() => {
-        getStaff(setDataStaff)
+        getStaff(setDataStaff, setLoading)
     }, [])
 
     const [dataStaff, setDataStaff] = useStateIfMounted([])
 
     const [selectedStaff, setSelectedStaff] = useStateIfMounted([])
 
-    const isLoading = dataStaff.length === 0
+    const [loading, setLoading] = useState(false)
 
     return (
         <div className={active ? "popup active" : "popup"} onClick={() => setActive(false)}>
             {
-                isLoading ?
+                loading ?
                     <CircularProgress/>
                     :
                     <div className="popup__share__content" onClick={e => e.stopPropagation()}>
                         <div>
-                            <p className="popup__label">Поделиться аттрибутом</p>
+                            <p className="popup__label">{endPoint === 'attributes' ? 'Поделиться атрибутом' : 'Поделиться фильтром'}</p>
                             <div className="popup__share__body">
                                 <Autocomplete
                                     sx={{marginTop: "10px"}}

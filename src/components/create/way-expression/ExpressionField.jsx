@@ -66,8 +66,6 @@ function ExpressionField(
 
 function ButtonOperands({expression, setExpression, focus, setPosition, setLoading, setStatus, setStudents}) {
 
-    console.log(expression)
-
     const buttonStyle = {
         height: "35px",
         width: "45px",

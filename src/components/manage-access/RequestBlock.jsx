@@ -110,7 +110,6 @@ async function access(idRequest, role, type, setLoading) {
     }
     if (type === 'setup') await axios.post(URL_setup, data, { headers: authHeader() })
     if (type === 'change') await axios.post(URL_change, data, { headers: authHeader() })
-    console.log(data)
     setLoading(false)
 }
 
@@ -121,7 +120,6 @@ async function reject(idRequest, idStaff, setLoading) {
         "role": null,
     }
     await axios.post(URL_reject, data, { headers: authHeader() })
-    console.log(data)
     setLoading(false)
 }
 

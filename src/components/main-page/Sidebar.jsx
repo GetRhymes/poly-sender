@@ -18,6 +18,7 @@ import MuiAppBar from '@mui/material/AppBar';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
+    background: "#366ac3",
     width: drawerWidth,
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -27,6 +28,7 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
+    background: "#366ac3",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -98,6 +100,9 @@ function Sidebar({roles}) {
         if (page !== null && page !== undefined) handleIsActive(page)
         else if (roles.includes('USER')) handleIsActive('1')
         else handleIsActive('4')
+        return (() => {
+            localStorage.removeItem('page')
+        })
     }, [roles])
 
     const theme = useTheme();

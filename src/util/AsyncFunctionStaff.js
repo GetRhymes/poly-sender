@@ -1,10 +1,12 @@
 import axios from "axios";
 import authHeader, {URL_acceptRequest, URL_getAllStaff, URL_getNotifications, URL_rejectRequest} from "./api";
 
-export async function getStaff(setData) {
-    const data = { "id": localStorage.getItem('idStaff') }
-    const dataStaff = await axios.post(URL_getAllStaff, data,{ headers: authHeader() })
+export async function getStaff(setData, setLoading) {
+    setLoading(true)
+    const data = {"id": localStorage.getItem('idStaff')}
+    const dataStaff = await axios.post(URL_getAllStaff, data, {headers: authHeader()})
     setData(dataStaff.data)
+    setLoading(false)
 }
 
 export async function fetchNotification(setLoading, setData) {
