@@ -63,18 +63,21 @@ export const URL_getAccess = AUTH_ROOT + '/getAccess'
 const ADMIN = '/admin'
 const ADMIN_ROOT = API_ROOT + API_PREFIX + ADMIN
 
-export const URL_setup  = ADMIN_ROOT + '/setup'
+export const URL_setup = ADMIN_ROOT + '/setup'
 export const URL_change = ADMIN_ROOT + '/change'
 export const URL_reject = ADMIN_ROOT + '/reject'
 export const URL_getAccessList = ADMIN_ROOT + '/getAccessList'
 export const URL_getRoles = ADMIN_ROOT + '/getRoles'
 export const URL_update = ADMIN_ROOT + '/update'
+export const URL_getUsers = ADMIN_ROOT + '/getUsers'
+export const URL_changeRoles = ADMIN_ROOT + '/changeRoles'
+export const URL_deleteUser = ADMIN_ROOT + '/deleteUser'
 
 //HEADERS
 export default function authHeader() {
     const token = localStorage.getItem('token')
     if (token) {
-        return { Authorization: 'Bearer ' + token };
+        return {Authorization: 'Bearer ' + token};
     } else {
         return {};
     }

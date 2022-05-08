@@ -12,6 +12,7 @@ import FiltersExpression from "../filters/FiltersExpression";
 import AccessManager from "../admin/AccessManager";
 import DataManager from "../admin/DataManager";
 import Settings from "../Settings";
+import UserManager from "../admin/UserManager";
 
 function UserAdminRoutes() {
 
@@ -96,6 +97,7 @@ function UserAdminRoutes() {
             <Route path="/settings" element={<Settings/>}/>
             <Route path="/access-manager" element={<AccessManager/>}/>
             <Route path="/data-manager" element={<DataManager/>}/>
+            <Route path="/users" element={<UserManager/>}/>
             <Route path="*" element={<Navigate to="/attributes"/>}/>
         </Routes>
     );

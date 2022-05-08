@@ -1,0 +1,46 @@
+.user__content {
+    border-radius: 12px;
+    background-color: white;
+    height: 250px;
+    width: 450px;
+}
+
+.user__buttons {
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user__roles {
+    display: flex;
+    flex-direction: column;
+}
+
+.user__roles__label {
+    margin-top: 15px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: #366ac3;
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+}
+
+.user__roles__checker {
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.user__header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    justify-content: center;
+    color: white;
+    background-color: #366ac3;
+    display: flex;
+}

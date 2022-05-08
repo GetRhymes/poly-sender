@@ -4,6 +4,7 @@ import DataManager from "../admin/DataManager";
 import React from "react";
 import Profile from "../Profile";
 import Settings from "../Settings";
+import UserManager from "../admin/UserManager";
 
 function AdminRoutes() {
     return (
@@ -12,6 +13,7 @@ function AdminRoutes() {
             <Route path="/settings" element={<Settings/>}/>
             <Route path="/access-manager" element={<AccessManager/>}/>
             <Route path="/data-manager" element={<DataManager/>}/>
+            <Route path="/users" element={<UserManager/>}/>
             <Route path="*" element={<Navigate to="/access-manager"/>}/>
         </Routes>
     );

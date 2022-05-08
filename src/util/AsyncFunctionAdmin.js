@@ -1,5 +1,13 @@
 import axios from "axios";
-import authHeader, {URL_change, URL_reject, URL_setup, URL_update} from "./api";
+import authHeader, {
+    URL_change,
+    URL_changeRoles,
+    URL_deleteUser,
+    URL_getUsers,
+    URL_reject,
+    URL_setup,
+    URL_update
+} from "./api";
 
 export async function update(file, setLoading, setStatus, handleAccess) {
     try {
@@ -42,3 +50,41 @@ export async function reject(idRequest, idStaff, setLoading, handleAccess) {
         handleAccess(403)
     }
 }
+
+export async function fetchDataUsers(setDataUsers, setLoading, handleAccess) {
+    try {
+        setLoading(true)
+        const dataUsers = await axios.get(URL_getUsers, {headers: authHeader()})
+        setDataUsers(dataUsers.data)
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
+    }
+}
+
+export async function changeRoles(id, admin, user, handleAccess) {
+    try {
+        const roles = []
+        if (admin) roles.push('ADMIN')
+        if (user) roles.push('USER')
+        const data = {
+            "id": id,
+            "roles": roles
+        }
+        await axios.post(URL_changeRoles, data, {headers: authHeader()})
+    } catch (e) {
+        handleAccess(403)
+    }
+}
+
+export async function deleteUser(id, setLoading, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {"id": id}
+        await axios.post(URL_deleteUser, data, {headers: authHeader()})
+        setLoading(true)
+    } catch (e) {
+        handleAccess(403)
+    }
+}
+

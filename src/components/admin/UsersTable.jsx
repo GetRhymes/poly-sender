@@ -1,43 +1,51 @@
-import React from 'react';
+import * as React from 'react';
+import {useContext} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {withStyles} from '@mui/styles';
-import {createTheme} from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import {AutoSizer, Column, Table} from 'react-virtualized';
-import '../../../styles/Create.css'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckBoxTable from "./CheckBoxTable";
+import CheckboxUser from "./CheckBoxUser";
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from "@mui/material/IconButton";
+import {deleteUser} from "../../util/AsyncFunctionAdmin";
+import {PathContext} from "../../context";
 
-const styles = (theme) => ({
-    flexContainer: {
+const classes = {
+    flexContainer: 'ReactVirtualizedDemo-flexContainer',
+    tableRow: 'ReactVirtualizedDemo-tableRow',
+    tableRowHover: 'ReactVirtualizedDemo-tableRowHover',
+    tableCell: 'ReactVirtualizedDemo-tableCell',
+    noClick: 'ReactVirtualizedDemo-noClick',
+};
+
+const styles = ({theme}) => ({
+    '& .ReactVirtualized__Table__headerRow': {
+        ...(theme.direction === 'rtl' && {
+            paddingLeft: '0 !important',
+        }),
+        ...(theme.direction !== 'rtl' && {
+            paddingRight: undefined,
+        }),
+    },
+    [`& .${classes.flexContainer}`]: {
         display: 'flex',
         alignItems: 'center',
         boxSizing: 'border-box',
     },
-    table: {
-        '& .ReactVirtualized__Table__headerRow': {
-            ...(theme.direction === 'rtl' && {
-                paddingLeft: '0 !important',
-            }),
-            ...(theme.direction !== 'rtl' && {
-                paddingRight: undefined,
-            }),
-        },
-    },
-    tableRow: {
+    [`& .${classes.tableRow}`]: {
         cursor: 'pointer',
     },
-    tableRowHover: {
+    [`& .${classes.tableRowHover}`]: {
         '&:hover': {
             backgroundColor: theme.palette.grey[200],
         },
     },
-    tableCell: {
+    [`& .${classes.tableCell}`]: {
         flex: 1,
     },
-    noClick: {
+    [`& .${classes.noClick}`]: {
         cursor: 'initial',
     },
 });
@@ -49,7 +57,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     getRowClassName = ({index}) => {
-        const {classes, onRowClick} = this.props;
+        const {onRowClick} = this.props;
 
         return clsx(classes.tableRow, classes.flexContainer, {
             [classes.tableRowHover]: index !== -1 && onRowClick != null,
@@ -57,7 +65,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     };
 
     cellRenderer = ({cellData, columnIndex}) => {
-        let {columns, classes, rowHeight, onRowClick} = this.props;
+        const {columns, rowHeight, onRowClick} = this.props;
         return (
             <TableCell
                 component="div"
@@ -67,7 +75,8 @@ class MuiVirtualizedTable extends React.PureComponent {
                 variant="body"
                 style={{
                     height: rowHeight,
-                    padding: "8px"
+                    padding: "8px",
+                    justifyContent: columnIndex === 4 || columnIndex === 5 ? 'center' : 'unset'
                 }}
                 align={
                     (columnIndex != null && columns[columnIndex].numeric) || false
@@ -75,23 +84,14 @@ class MuiVirtualizedTable extends React.PureComponent {
                         : 'left'
                 }
             >
-                {
-                    columnIndex === 0
-                        ?
-                        <CheckBoxTable
-                            id={cellData.id}
-                            isSelected={cellData.isSelected}
-                            setSelectedStudents={cellData.setter}
-                        />
-                        :
-                        cellData
-                }
+                {columnIndex === 4 || columnIndex === 5 ?
+                    <CheckboxUser id={cellData.id} checked={cellData.value}/> : cellData}
             </TableCell>
         );
     };
 
     headerRenderer = ({label, columnIndex}) => {
-        const {headerHeight, columns, classes} = this.props;
+        const {headerHeight, columns} = this.props;
 
         return (
             <TableCell
@@ -100,28 +100,18 @@ class MuiVirtualizedTable extends React.PureComponent {
                 variant="head"
                 style={{
                     height: headerHeight,
-                    padding: "8px"
+                    padding: "8px",
+                    justifyContent: columnIndex === 4 || columnIndex === 5 ? 'center' : 'unset'
                 }}
                 align={columns[columnIndex].numeric || false ? 'right' : 'left'}
             >
-                <span>
-                    {
-                        // label === 'ФИО' ?
-                        //     <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                        //         <TextField sx={{width: "200px"}} id="input-with-sx" label={label} variant="standard"/>
-                        //         <SearchIcon sx={{color: 'action.active'}}/>
-                        //     </Box>
-                        //     :
-                        label
-                    }
-
-                </span>
+                <span>{label}</span>
             </TableCell>
         );
     };
 
     render() {
-        const {classes, columns, rowHeight, headerHeight, ...tableProps} = this.props;
+        const {columns, rowHeight, headerHeight, ...tableProps} = this.props;
         return (
             <AutoSizer>
                 {({height, width}) => (
@@ -133,7 +123,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                             direction: 'inherit',
                         }}
                         headerHeight={headerHeight}
-                        className={classes.table}
                         {...tableProps}
                         rowClassName={this.getRowClassName}
                     >
@@ -152,7 +141,6 @@ class MuiVirtualizedTable extends React.PureComponent {
                                     dataKey={dataKey}
                                     {...other}
                                 />
-
                             );
                         })}
                     </Table>
@@ -163,7 +151,6 @@ class MuiVirtualizedTable extends React.PureComponent {
 }
 
 MuiVirtualizedTable.propTypes = {
-    classes: PropTypes.object.isRequired,
     columns: PropTypes.arrayOf(
         PropTypes.shape({
             dataKey: PropTypes.string.isRequired,
@@ -177,67 +164,91 @@ MuiVirtualizedTable.propTypes = {
     rowHeight: PropTypes.number,
 };
 
-const defaultTheme = createTheme();
-const VirtualizedTable = withStyles(styles, {defaultTheme})(MuiVirtualizedTable);
+const VirtualizedTable = styled(MuiVirtualizedTable)(styles);
 
-function createData(id, checkBox, fullName, email, more) {
-    return {id, checkBox, fullName, email, more};
+function createData(id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit) {
+    return {id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit};
 }
 
-export default function VirtualizedStudentTable(
-    {
-        setPopupActive,
-        dataTable,
-        selectedStudents,
-        setSelectedStudents,
-        height,
-        setCurrentId
-    }) {
+export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex, setLoading}) {
+
+    const {handleAccess} = useContext(PathContext)
 
     return (
-        <Paper style={{height: height, width: 730}}>
+        <Paper style={{height: "100%", width: "1100px"}}>
             <VirtualizedTable
                 onRowClick={({index}) => {
-                    setCurrentId(dataTable[index].id)
+                    setUser(dataUsers[index])
+                    setIndex(index)
                     setPopupActive(true)
                 }}
-                rowCount={dataTable.length}
+                rowCount={dataUsers.length}
                 rowGetter={
                     ({index}) => {
-                        const student = dataTable[index]
+                        const staff = dataUsers[index]
                         return createData(
-                            student.id,
+                            staff.id,
+                            '',
+                            staff.lastName,
+                            staff.firstName,
+                            staff.patronymic,
                             {
-                                id: dataTable[index].id,
-                                isSelected: selectedStudents[dataTable[index].id],
-                                setter: setSelectedStudents
+                                "id": staff.id,
+                                "value": staff.admin
                             },
-                            student.name,
-                            student.email,
-                            <MoreVertIcon fontSize="medium"/>
-                        );
-                    }
-                }
+                            {
+                                "id": staff.id,
+                                "value": staff.user
+                            },
+                            staff.date,
+                            <IconButton onClick={(event) => {
+                                event.stopPropagation()
+                                deleteUser(staff.id, setLoading, handleAccess)
+                            }}>
+                                <ClearIcon fontSize="medium"/>
+                            </IconButton>
+                        )
+                    }}
                 columns={[
                     {
-                        width: 60,
+                        width: 50,
                         label: '',
-                        dataKey: 'checkBox'
+                        dataKey: 'emptyStart'
                     },
                     {
-                        width: 355,
-                        label: 'ФИО',
-                        dataKey: 'fullName',
+                        width: 200,
+                        label: 'Фамилия',
+                        dataKey: 'lastName'
                     },
                     {
-                        width: 355,
-                        label: 'Почта',
-                        dataKey: 'email',
+                        width: 200,
+                        label: 'Имя',
+                        dataKey: 'firstName'
                     },
                     {
-                        width: 60,
+                        width: 200,
+                        label: 'Отчество',
+                        dataKey: 'patronymic'
+                    },
+                    {
+                        width: 200,
+                        label: 'Администратор',
+                        dataKey: 'admin'
+                    },
+                    {
+                        width: 200,
+                        label: 'Пользователь',
+                        dataKey: 'user'
+                    },
+                    {
+                        width: 200,
+                        label: 'Дата обновления',
+                        dataKey: 'date'
+                    },
+                    {
+                        width: 70,
                         label: '',
-                        dataKey: 'more',
+                        dataKey: 'edit'
                     },
                 ]}
             />

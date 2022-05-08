@@ -1,10 +1,10 @@
 import React from 'react';
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AttributionIcon from '@mui/icons-material/Attribution';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import StorageIcon from '@mui/icons-material/Storage';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PeopleIcon from '@mui/icons-material/People';
 
 
 const SidebarData = [
@@ -43,6 +43,12 @@ const SidebarData = [
         name: "Данные",
         path: "/data-manager",
         icon: <StorageIcon/>
+    },
+    {
+        id: '6',
+        name: "Пользователи",
+        path: "/users",
+        icon: <PeopleIcon/>
     }
 ];
 

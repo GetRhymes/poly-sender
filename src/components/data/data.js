@@ -338,3 +338,42 @@ export const dataNotificationJS = [
         date: '2021-12-12'
     },
 ]
+
+export const dataUsers = [
+    {
+        id: '1',
+        lastName: 'Тарасенко',
+        firstName: 'Никита',
+        patronymic: 'Иванович',
+        admin: true,
+        user: true,
+        date: '2020-01-01'
+    },
+    {
+        id: '2',
+        lastName: 'Тарасенко',
+        firstName: 'Екатерина',
+        patronymic: 'Иванович',
+        admin: false,
+        user: true,
+        date: '2020-01-01'
+    },
+    {
+        id: '3',
+        lastName: 'Тарасенко',
+        firstName: 'Василий',
+        patronymic: 'Вульфович',
+        admin: true,
+        user: false,
+        date: '2020-01-01'
+    },
+    {
+        id: '4',
+        lastName: 'Тарасенко',
+        firstName: 'Артем',
+        patronymic: 'Васильевич',
+        admin: true,
+        user: true,
+        date: '2020-01-01'
+    },
+]
