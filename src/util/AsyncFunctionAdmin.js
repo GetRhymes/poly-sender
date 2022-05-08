@@ -82,7 +82,7 @@ export async function deleteUser(id, setLoading, handleAccess) {
         setLoading(true)
         const data = {"id": id}
         await axios.post(URL_deleteUser, data, {headers: authHeader()})
-        setLoading(true)
+        setLoading(false)
     } catch (e) {
         handleAccess(403)
     }

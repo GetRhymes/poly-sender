@@ -73,6 +73,12 @@ export const URL_getUsers = ADMIN_ROOT + '/getUsers'
 export const URL_changeRoles = ADMIN_ROOT + '/changeRoles'
 export const URL_deleteUser = ADMIN_ROOT + '/deleteUser'
 
+//EXCEL CONTROLLER
+const EXCEL = '/excel'
+const EXCEL_ROOT = API_ROOT + API_PREFIX + EXCEL
+
+export const URL_download = EXCEL_ROOT + '/download'
+
 //HEADERS
 export default function authHeader() {
     const token = localStorage.getItem('token')
