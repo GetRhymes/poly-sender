@@ -100,7 +100,7 @@ function ButtonEnd(
                     setCorrectName(false)
                 } else setCorrectName(true)
 
-                if (checkStudents && checkSelectedOption && checkCorrectName && localUnique) {
+                if (checkStudents && checkSelectedOption && checkCorrectName && localUnique && name.replace(/\s+/, '').length > 0) {
                     id !== null ?
                         mailOption !== undefined ?
                             updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus, arraySelectedStudents, handleAccess)

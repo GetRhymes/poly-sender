@@ -48,7 +48,7 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
     }
 
     function createGroup() {
-        if (groupName !== "") {
+        if (groupName.replace(/\s+/, '').length > 0) {
             if (!/[^a-zA-Zа-яА-Я0-9\s]+/.test(groupName)) {
                 const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
                 if (finder === undefined) {
