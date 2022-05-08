@@ -11,7 +11,7 @@ import axios from "axios";
 
 function AccessManager() {
 
-    const {setRootPath} = useContext(PathContext)
+    const {setRootPath, handleAccess} = useContext(PathContext)
 
     const [loadingAction, setLoadingAction] = useState(false)
 
@@ -39,17 +39,25 @@ function AccessManager() {
     }
 
     async function fetchDataAccess() {
-        setLoadingDataAccess(true)
-        const dataAccess = await axios.get(URL_getAccessList, { headers: authHeader() });
-        setDataAccess(dataAccess.data);
-        setLoadingDataAccess(false)
+        try {
+            setLoadingDataAccess(true)
+            const dataAccess = await axios.get(URL_getAccessList, {headers: authHeader()});
+            setDataAccess(dataAccess.data);
+            setLoadingDataAccess(false)
+        } catch (e) {
+            handleAccess(403)
+        }
     }
 
     async function fetchDataRoles() {
-        setLoadingDataRoles(true)
-        const dataRoles = await axios.get(URL_getRoles, { headers: authHeader() });
-        setDataRoles(dataRoles.data)
-        setLoadingDataRoles(false)
+        try {
+            setLoadingDataRoles(true)
+            const dataRoles = await axios.get(URL_getRoles, {headers: authHeader()});
+            setDataRoles(dataRoles.data)
+            setLoadingDataRoles(false)
+        } catch (e) {
+            handleAccess(403)
+        }
     }
 
     const isLoading = loadingDataAccess || loadingDataRoles || loadingAction

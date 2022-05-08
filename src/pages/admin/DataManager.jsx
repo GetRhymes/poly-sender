@@ -10,7 +10,7 @@ import {useStateIfMounted} from "use-state-if-mounted";
 
 function DataManager() {
 
-    const {setRootPath} = useContext(PathContext)
+    const {setRootPath, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
         setRootPath("Данные")
@@ -76,7 +76,7 @@ function DataManager() {
                     <p className={getStyleByStatus(status)}>{getLabelByStatus(status)}</p>
                     <Button
                         onClick={() => {
-                            if (file !== undefined) update(file, setLoading, setStatus)
+                            if (file !== undefined) update(file, setLoading, setStatus, handleAccess)
                         }}
                         sx={{
                             width: "200px",

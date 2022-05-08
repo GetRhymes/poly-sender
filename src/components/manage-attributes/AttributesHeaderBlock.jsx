@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Autocomplete, Box, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ButtonCreate from "../ButtonCreate";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
 import {deleteGroupName} from "../../util/AsyncFunctionAttributes";
+import {PathContext} from "../../context";
 
 function AttributesHeaderBlock(
     {
@@ -42,6 +43,8 @@ function AttributesHeaderBlock(
         flexDirection: "row"
     }
 
+    const {handleAccess} = useContext(PathContext)
+
     return (
         <Box sx={containerStyle}>
             <Box sx={containerFilters}>
@@ -64,7 +67,7 @@ function AttributesHeaderBlock(
                             {option.groupName}
                             <IconButton onClick={((event) => {
                                 event.stopPropagation()
-                                deleteGroupName(option.idGroupName, setLoading)
+                                deleteGroupName(option.idGroupName, setLoading, handleAccess)
                             })}>
                                 <ClearIcon/>
                             </IconButton>

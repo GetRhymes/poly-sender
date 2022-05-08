@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import {Button, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import NotificationRowInfo from "./NotificationRowInfo";
 import {acceptRequest, rejectRequest} from "../../../util/AsyncFunctionStaff";
-import {AuthContext, PathContext} from "../../../context";
+import {PathContext} from "../../../context";
 
 function NotificationItem({notification, setLoading, setData}) {
 
@@ -32,7 +32,7 @@ function NotificationItem({notification, setLoading, setData}) {
         setType(newAlignment);
     };
 
-    const {setLoadFilterAfterNot, setLoadAttrAfterNot} = useContext(PathContext)
+    const {setLoadFilterAfterNot, setLoadAttrAfterNot, handleAccess} = useContext(PathContext)
 
     return (
         <div className="notification__item">
@@ -63,11 +63,11 @@ function NotificationItem({notification, setLoading, setData}) {
             </ToggleButtonGroup>
             <div className="notification__action">
                 <Button
-                    onClick={() => acceptRequest(setLoading, notification.idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot)}
+                    onClick={() => acceptRequest(setLoading, notification.idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot, handleAccess)}
                     sx={buttonStyle}
                 >Принять</Button>
                 <Button
-                    onClick={() => rejectRequest(setLoading, notification.idNotification, setData)}
+                    onClick={() => rejectRequest(setLoading, notification.idNotification, setData, handleAccess)}
                     sx={buttonStyle}
                 >Отклонить</Button>
             </div>

@@ -31,14 +31,14 @@ function FiltersExpression(
 
     const [dataFilters, setDataFilters] = useStateIfMounted([])
 
-    const {setRootPath, setCreate} = useContext(PathContext)
+    const {setRootPath, setCreate, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
         setRootPath("Фильтры")
         setCreate(true)
-        fetchDataFilters(setLoadingDataFilters, setDataFilters)
-        fetchDataFunctions(setDataFunctions)
-        if (id !== null) fetchDataFilterById(id, setNameFilter, setSelectedMailOption, setExpression, setStudents)
+        fetchDataFilters(setLoadingDataFilters, setDataFilters, handleAccess)
+        fetchDataFunctions(setDataFunctions, handleAccess)
+        if (id !== null) fetchDataFilterById(id, setNameFilter, setSelectedMailOption, setExpression, setStudents, handleAccess)
         return () => {
             setSelectedMailOption("")
             setId(null)

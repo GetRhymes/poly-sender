@@ -1,16 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import '../styles/Settings.css'
 import PopupLoading from "../components/PopupLoading";
-import axios from "axios";
 import {useStateIfMounted} from "use-state-if-mounted";
-import authHeader, {URL_changeAccess, URL_changePassword} from "../util/api";
 import Divider from "@mui/material/Divider";
 import {Button, TextField} from "@mui/material";
 import {PathContext} from "../context";
+import {changeAccess, changePassword} from "../util/AsyncFunctionStaff";
 
-function Settings(props) {
+function Settings() {
 
-    const {setRootPath} = useContext(PathContext)
+    const {setRootPath, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
         const isDisabled = localStorage.getItem('disabled')
@@ -107,7 +106,8 @@ function Settings(props) {
                                     setEquals,
                                     setOldPassword,
                                     setNewPassword,
-                                    setRepeatNewPassword
+                                    setRepeatNewPassword,
+                                    handleAccess
                                 )
                             } else {
                                 setEquals(false)
@@ -141,7 +141,8 @@ function Settings(props) {
                         onClick={() => changeAccess(
                             localStorage.getItem('idStaff'),
                             setLoading,
-                            setIsDisable
+                            setIsDisable,
+                            handleAccess
                         )}
                     >
                         Запросить
@@ -151,38 +152,6 @@ function Settings(props) {
             <PopupLoading active={loading}/>
         </div>
     );
-}
-
-async function changePassword(
-    id, oldPassword, newPassword, setLoading, setStatus, setEquals, setOldPassword, setNewPassword, setRepeatNewPassword) {
-    setLoading(true)
-    const data = {
-        "idStaff": id,
-        "oldPassword": oldPassword,
-        "newPassword": newPassword
-    }
-    const result = await axios.post(URL_changePassword, data, {headers: authHeader()})
-    const status = result.data.status
-    setStatus(status)
-    if (status === 'success') {
-        localStorage.setItem('token', result.data.token)
-        setEquals(null)
-        setOldPassword("")
-        setNewPassword("")
-        setRepeatNewPassword("")
-    }
-    setLoading(false)
-}
-
-async function changeAccess(id, setLoading, setDisable) {
-    setLoading(true)
-    const data = {
-        "id": id
-    }
-    await axios.post(URL_changeAccess, data, {headers: authHeader()})
-    setDisable(true)
-    localStorage.setItem('disabled', 'true')
-    setLoading(false)
 }
 
 function getColorPassword(equals, status, idTextField) {

@@ -24,11 +24,11 @@ const ManageFilters = ({idFilter, setId, setNameFilter, setSelectedMailOption}) 
 
     const [popupShareActive, setPopupShareActive] = useState(false)
 
-    const {setRootPath, loadFilterAfterNot} = useContext(PathContext)
+    const {setRootPath, loadFilterAfterNot, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
         setRootPath("Фильтры")
-        fetchDataFilters(setLoadingDataFilters, setDataFilters)
+        fetchDataFilters(setLoadingDataFilters, setDataFilters, handleAccess)
         return (() => {
             setRootPath("")
         })

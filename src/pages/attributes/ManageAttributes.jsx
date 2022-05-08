@@ -34,11 +34,11 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
 
     const [groupName, setGroupName] = useStateIfMounted(null)
 
-    const {setRootPath, loadAttrAfterNot} = useContext(PathContext)
+    const {setRootPath, loadAttrAfterNot, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataGroupNames(setLoadingGroupNames, setDataGroupNames)
-        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes)
+        fetchDataGroupNames(setLoadingGroupNames, setDataGroupNames, handleAccess)
+        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes, handleAccess)
         setRootPath("Атрибуты")
         return (() => {
             setRootPath("")

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, ButtonGroup} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
 import {deleteItem} from "../util/Utils";
+import {PathContext} from "../context";
 
 function ButtonActionGroup(
     {
@@ -30,9 +31,11 @@ function ButtonActionGroup(
         navigate(path);
     }
 
+    const {handleAccess} = useContext(PathContext)
+
     return (
         <ButtonGroup orientation={orientation} sx={{boxShadow: "unset", borderRadius: "12px"}}>
-            <Button  disabled={link} onClick={() => {
+            <Button disabled={link} onClick={() => {
                 redirect()
                 setName(name)
                 setId(id)
@@ -46,7 +49,7 @@ function ButtonActionGroup(
             }}>
                 <ShareIcon/>
             </Button>
-            <Button onClick={() => deleteItem(id, setLoading, endPoint, orientation)}>
+            <Button onClick={() => deleteItem(id, setLoading, endPoint, orientation, handleAccess)}>
                 <DeleteIcon/>
             </Button>
         </ButtonGroup>

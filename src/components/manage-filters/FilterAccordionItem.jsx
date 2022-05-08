@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import SendIcon from "@mui/icons-material/Send";
@@ -8,6 +8,7 @@ import ButtonActionGroup from "../ButtonActionGroup";
 import WarningIcon from "@mui/icons-material/Warning";
 import ReportIcon from "@mui/icons-material/Report";
 import {getEmails} from "../../util/AsyncFunctionFilters";
+import {PathContext} from "../../context";
 
 function FilterAccordionItem(
     {
@@ -71,12 +72,16 @@ function FilterAccordionDetails(
         setSelectedMailOption
     }
 ) {
+
+    const {handleAccess} = useContext(PathContext)
+
     return (
         <AccordionDetails>
             <div className="background body__accordion__container">
                 <div className="body__accordion__info">
                     <FilterRowInfo nameRow="Почтовый адрес:" valueRow={filter.mail} link={filter.link}/>
-                    <FilterRowInfo nameRow="Количество студентов:" valueRow={filter.students.length} link={filter.link}/>
+                    <FilterRowInfo nameRow="Количество студентов:" valueRow={filter.students.length}
+                                   link={filter.link}/>
                     <FilterRowInfo nameRow="Создан:" valueRow={getType(filter.type)} link={filter.link}/>
                     <FilterRowInfo nameRow="Режим:" valueRow={filter.mode} link={filter.link}/>
                     {filter.mode === "manual" ?
@@ -101,7 +106,7 @@ function FilterAccordionDetails(
                     {filter.mode === "manual" ?
                         <Button
                             sx={{border: "1px solid rgba(25, 118, 210, 0.5)"}}
-                            onClick={() => getEmails(filter.id, setLoading)}
+                            onClick={() => getEmails(filter.id, setLoading, handleAccess)}
                         >
                             Получить
                         </Button> : null}

@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
-import authHeader, {URL_change, URL_reject, URL_setup} from "../../util/api";
+import {access, reject} from "../../util/AsyncFunctionAdmin";
+import {PathContext} from "../../context";
 
 function RequestBlock({request, dataRoles, setLoading}) {
 
@@ -21,6 +21,8 @@ function RequestBlock({request, dataRoles, setLoading}) {
         width: "125px",
         height: "40px"
     }
+
+    const {handleAccess} = useContext(PathContext)
 
     return (
         <div className="request">
@@ -58,7 +60,7 @@ function RequestBlock({request, dataRoles, setLoading}) {
                     <div className="request__action__buttons">
                         <Button
                             sx={styleButton}
-                            onClick={() => reject(request.idRequest, request.idStaff, setLoading)}
+                            onClick={() => reject(request.idRequest, request.idStaff, setLoading, handleAccess)}
                         >Отклонить</Button>
                         <Button
                             sx={styleButton}
@@ -66,7 +68,8 @@ function RequestBlock({request, dataRoles, setLoading}) {
                                 request.idRequest,
                                 selectorRole,
                                 request.role === null ? 'setup' : 'change',
-                                setLoading
+                                setLoading,
+                                handleAccess
                             )}
                         >Принять</Button>
                     </div>
@@ -100,27 +103,6 @@ function RowInfo({leftText, rightText}) {
             <p className="request__row__right">{rightText}</p>
         </div>
     )
-}
-
-async function access(idRequest, role, type, setLoading) {
-    setLoading(true)
-    const data = {
-        "idRequest": idRequest,
-        "role": role.role,
-    }
-    if (type === 'setup') await axios.post(URL_setup, data, { headers: authHeader() })
-    if (type === 'change') await axios.post(URL_change, data, { headers: authHeader() })
-    setLoading(false)
-}
-
-async function reject(idRequest, idStaff, setLoading) {
-    setLoading(true)
-    const data = {
-        "idRequest": idRequest,
-        "role": null,
-    }
-    await axios.post(URL_reject, data, { headers: authHeader() })
-    setLoading(false)
 }
 
 export default RequestBlock;

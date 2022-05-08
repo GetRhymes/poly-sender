@@ -9,7 +9,7 @@ import PopupLoading from "../../components/PopupLoading";
 import {PathContext} from "../../context";
 import {fetchDataAccordion} from "../../util/AsyncFunctionAttributes";
 import {fetchDataTable} from "../../util/AsyncFunctionStudents";
-import {fetchDataFilters, fetchDataFiltersShort} from "../../util/AsyncFunctionFilters";
+import {fetchDataFiltersShort} from "../../util/AsyncFunctionFilters";
 
 function FiltersList(
     {
@@ -44,14 +44,14 @@ function FiltersList(
 
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
-    const {setRootPath, setCreate} = useContext(PathContext)
+    const {setRootPath, setCreate, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
         setCreate(true)
         setRootPath("Фильтры")
-        fetchDataFiltersShort(setLoadingDataFilters, setDataFilters)
-        fetchDataTable(setDataTable)
-        fetchDataAccordion(setDataAccordions)
+        fetchDataFiltersShort(setLoadingDataFilters, setDataFilters, handleAccess)
+        fetchDataTable(setDataTable, handleAccess)
+        fetchDataAccordion(setDataAccordions, handleAccess)
         return () => {
             setRootPath("")
             setCreate(false)

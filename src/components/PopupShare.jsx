@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import '../styles/Create.css'
 import {Autocomplete, Button, TextField} from "@mui/material";
 import {useStateIfMounted} from "use-state-if-mounted";
 import CircularProgress from "@mui/material/CircularProgress";
 import {share} from "../util/Utils";
 import {getStaff} from "../util/AsyncFunctionStaff";
+import {PathContext} from "../context";
 
 function PopupShare({active, setActive, id, setId, endPoint}) {
 
+    const {handleAccess} = useContext(PathContext)
+
     useEffect(() => {
-        getStaff(setDataStaff, setLoading)
+        getStaff(setDataStaff, setLoading, handleAccess)
     }, [])
 
     const [dataStaff, setDataStaff] = useStateIfMounted([])
@@ -48,7 +51,7 @@ function PopupShare({active, setActive, id, setId, endPoint}) {
                             </div>
                             <div className="popup__share_button">
                                 <PopupShareButton text="Поделиться" action={() => {
-                                    share(id, selectedStaff, endPoint)
+                                    share(id, selectedStaff, endPoint, handleAccess)
                                     setActive(false)
                                     setId(null)
                                 }}/>

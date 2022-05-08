@@ -1,5 +1,5 @@
 import {Button, TextField} from "@mui/material";
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import '../../../styles/CreationPages.css'
@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoIcon from '@mui/icons-material/Info';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import {calculateExpression} from "../../../util/AsyncFunctionAttributes";
+import {PathContext} from "../../../context";
 
 function ExpressionField(
     {
@@ -34,6 +35,8 @@ function ExpressionField(
         }
     }, [position])
 
+    const {handleAccess} = useContext(PathContext)
+
     return (
         <div style={{height: height, width: 730}}>
             <ButtonOperands
@@ -44,6 +47,7 @@ function ExpressionField(
                 setLoading={setLoading}
                 setStudents={setStudents}
                 setStatus={setStatus}
+                handleAccess={handleAccess}
             />
             <TextField
                 focused={true}
@@ -64,7 +68,17 @@ function ExpressionField(
     );
 }
 
-function ButtonOperands({expression, setExpression, focus, setPosition, setLoading, setStatus, setStudents}) {
+function ButtonOperands({
+                            expression,
+                            setExpression,
+                            focus,
+                            setPosition,
+                            setLoading,
+                            setStatus,
+                            setStudents,
+                            handleAccess
+                        }) {
+
 
     const buttonStyle = {
         height: "35px",
@@ -151,7 +165,8 @@ function ButtonOperands({expression, setExpression, focus, setPosition, setLoadi
             </Button>
             <Button
                 sx={buttonStyle}
-                onClick={() =>  expression !== "" && expression !== undefined ? calculateExpression(setLoading, expression, setStatus, setStudents) : () => {} }
+                onClick={() => expression !== "" && expression !== undefined ? calculateExpression(setLoading, expression, setStatus, setStudents, handleAccess) : () => {
+                }}
             >
                 <PlayArrowIcon/>
             </Button>

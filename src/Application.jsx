@@ -5,6 +5,7 @@ import Sidebar from "./components/main-page/Sidebar";
 import NavigationRoutes from "./pages/NavigationRoutes";
 import LoadingScreen from "./components/LoadingScreen";
 import {useStateIfMounted} from "use-state-if-mounted";
+import {useNavigate} from "react-router-dom";
 
 function Application() {
 
@@ -12,7 +13,7 @@ function Application() {
 
     const [create, setCreate] = useStateIfMounted(false)
 
-    const {isAuth, isLoading} = useContext(AuthContext)
+    const {isAuth, setIsAuth, isLoading} = useContext(AuthContext)
 
     const [roles, setRoles] = useState([])
 
@@ -23,6 +24,28 @@ function Application() {
 
     if (localStorage.getItem('roles')) {
         rolesFromStorage = localStorage.getItem('roles').split(',')
+    }
+
+    let navigate = useNavigate();
+
+    function redirect() {
+        navigate("/login");
+    }
+
+    function handleAccess(number) {
+        if (number === 403) {
+            setIsAuth(false)
+            localStorage.removeItem('disabled')
+            localStorage.removeItem('auth')
+            localStorage.removeItem('idStaff')
+            localStorage.removeItem('fullName')
+            localStorage.removeItem('email')
+            localStorage.removeItem('token')
+            localStorage.removeItem('roles')
+            localStorage.removeItem('auth')
+            localStorage.removeItem('page')
+            redirect()
+        }
     }
 
     useEffect(() => {
@@ -47,7 +70,8 @@ function Application() {
                 loadAttrAfterNot,
                 setLoadAttrAfterNot,
                 loadFilterAfterNot,
-                setLoadFilterAfterNot
+                setLoadFilterAfterNot,
+                handleAccess
             }}>
                 <div className="cont">
                     <Sidebar roles={roles}/>

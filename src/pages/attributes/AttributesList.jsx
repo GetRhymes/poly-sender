@@ -44,12 +44,12 @@ function AttributesList(
 
     const [selectedStudents, setSelectedStudents] = useStateIfMounted(initSelectedStudentState())
 
-    const {setRootPath, setCreate} = useContext(PathContext)
+    const {setRootPath, setCreate, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataTable(setDataTable)
-        fetchDataAttributes(setDataAttributes)
-        fetchDataAccordion(setDataAccordions)
+        fetchDataTable(setDataTable, handleAccess)
+        fetchDataAttributes(setDataAttributes, handleAccess)
+        fetchDataAccordion(setDataAccordions, handleAccess)
 
         setCreate(true)
         setRootPath("Атрибуты")

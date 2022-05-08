@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import LabelInBlock from "./create/LabelInBlock";
 import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useStateIfMounted} from "use-state-if-mounted";
 import {fetchDataGroupNames} from "../util/AsyncFunctionAttributes";
+import {PathContext} from "../context";
 
 function SelectorGroup({selectedGroupName, handleSelector}) {
 
+    const {handleAccess} = useContext(PathContext)
+
     useEffect(() => {
-        fetchDataGroupNames(setLoading, setDataGroupNames)
+        fetchDataGroupNames(setLoading, setDataGroupNames, handleAccess)
     }, [])
 
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])

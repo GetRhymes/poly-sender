@@ -1,7 +1,9 @@
 import axios from "axios";
 import authHeader, {
     URL_calculateFilter,
-    URL_createFilter, URL_getEmails, URL_getFilterById,
+    URL_createFilter,
+    URL_getEmails,
+    URL_getFilterById,
     URL_getFilters,
     URL_getFiltersShort,
     URL_updateFilter
@@ -16,30 +18,35 @@ export async function createFilter(
     redirect,
     expression,
     setStatus,
-    arraySelectedStudents
+    arraySelectedStudents,
+    handleAccess
 ) {
-    setLoading(true)
-    let currentStatus = ""
-    let students = []
-    if (expression !== "" && expression !== undefined) {
-        const response = await calculate(expression, URL_calculateFilter)
-        currentStatus = response.status
-        students = createListStudents(response.students, currentStatus)
-    }
-    if (currentStatus === "" || currentStatus === "success") {
-        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
-        const newFilter = {
-            "idStaff": localStorage.getItem('idStaff'),
-            name: nameFilter,
-            mailOption: mailOption,
-            expression: expression,
-            studentsId: students
+    try {
+        setLoading(true)
+        let currentStatus = ""
+        let students = []
+        if (expression !== "" && expression !== undefined) {
+            const response = await calculate(expression, URL_calculateFilter, handleAccess)
+            currentStatus = response.status
+            students = createListStudents(response.students, currentStatus)
         }
-        await axios.post(URL_createFilter, newFilter, { headers: authHeader() })
+        if (currentStatus === "" || currentStatus === "success") {
+            if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+            const newFilter = {
+                "idStaff": localStorage.getItem('idStaff'),
+                name: nameFilter,
+                mailOption: mailOption,
+                expression: expression,
+                studentsId: students
+            }
+            await axios.post(URL_createFilter, newFilter, {headers: authHeader()})
+            setLoading(false)
+            redirect()
+        } else setStatus(currentStatus)
         setLoading(false)
-        redirect()
-    } else setStatus(currentStatus)
-    setLoading(false)
+    } catch (e) {
+        handleAccess(403)
+    }
 }
 
 export async function updateFilter(
@@ -51,69 +58,90 @@ export async function updateFilter(
     redirect,
     expression,
     setStatus,
-    arraySelectedStudents
+    arraySelectedStudents,
+    handleAccess
 ) {
-    setLoading(true)
-    let currentStatus = ""
-    let students = []
-    if (expression !== "" && expression !== undefined) {
-        const response = await calculate(expression, URL_calculateFilter)
-        currentStatus = response.status
-        students = createListStudents(response.students, currentStatus)
-    }
-    if (currentStatus === "" || currentStatus === "success") {
-        if (students.length === 0) students = arraySelectedStudents(selectedStudents)
-        const newFilter = {
-            "idStaff": localStorage.getItem('idStaff'),
-            idFilter: idFilter,
-            name: nameFilter,
-            mailOption: mailOption,
-            expression: expression,
-            studentsId: students
+    try {
+        setLoading(true)
+        let currentStatus = ""
+        let students = []
+        if (expression !== "" && expression !== undefined) {
+            const response = await calculate(expression, URL_calculateFilter, handleAccess)
+            currentStatus = response.status
+            students = createListStudents(response.students, currentStatus)
         }
-        await axios.post(URL_updateFilter, newFilter, { headers: authHeader() })
+        if (currentStatus === "" || currentStatus === "success") {
+            if (students.length === 0) students = arraySelectedStudents(selectedStudents)
+            const newFilter = {
+                "idStaff": localStorage.getItem('idStaff'),
+                idFilter: idFilter,
+                name: nameFilter,
+                mailOption: mailOption,
+                expression: expression,
+                studentsId: students
+            }
+            await axios.post(URL_updateFilter, newFilter, {headers: authHeader()})
+            setLoading(false)
+            redirect()
+        } else setStatus(currentStatus)
         setLoading(false)
-        redirect()
-    } else setStatus(currentStatus)
-    setLoading(false)
+    } catch (e) {
+        handleAccess(403)
+    }
 }
 
-export async function fetchDataFiltersShort(setLoading, setData) {
-    setLoading(true)
-    const data = {
-        "id": localStorage.getItem('idStaff'),
+export async function fetchDataFiltersShort(setLoading, setData, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {
+            "id": localStorage.getItem('idStaff'),
+        }
+        const dataFilters = await axios.post(URL_getFiltersShort, data, {headers: authHeader()});
+        setData(dataFilters.data);
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
     }
-    const dataFilters = await axios.post(URL_getFiltersShort, data,{ headers: authHeader() });
-    setData(dataFilters.data);
-    setLoading(false)
 }
 
-export async function fetchDataFilters(setLoading, setData) {
-    setLoading(true)
-    const data = {
-        "id": localStorage.getItem('idStaff'),
+export async function fetchDataFilters(setLoading, setData, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {
+            "id": localStorage.getItem('idStaff'),
+        }
+        const dataFilters = await axios.post(URL_getFilters, data, {headers: authHeader()});
+        setData(dataFilters.data)
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
     }
-    const dataFilters = await axios.post(URL_getFilters, data,{ headers: authHeader() });
-    setData(dataFilters.data)
-    setLoading(false)
 }
 
-export async function fetchDataFilterById(id, setName, setSMO, setExpression, setStudents) {
-    const data = {
-        "idFilter": id
+export async function fetchDataFilterById(id, setName, setSMO, setExpression, setStudents, handleAccess) {
+    try {
+        const data = {
+            "idFilter": id
+        }
+        const filter = await axios.post(URL_getFilterById, data, {headers: authHeader()})
+        setName(filter.data.filterName)
+        setSMO(filter.data.mode)
+        setExpression(filter.data.expression)
+        setStudents(filter.data.studentsDTO)
+    } catch (e) {
+        handleAccess(403)
     }
-    const filter = await axios.post(URL_getFilterById, data, { headers: authHeader() })
-    setName(filter.data.filterName)
-    setSMO(filter.data.mode)
-    setExpression(filter.data.expression)
-    setStudents(filter.data.studentsDTO)
 }
 
-export async function getEmails(id, setLoading) {
-    setLoading(true)
-    const data = {
-        "idFilter": id
+export async function getEmails(id, setLoading, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {
+            "idFilter": id
+        }
+        await axios.post(URL_getEmails, data, {headers: authHeader()})
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
     }
-    await axios.post(URL_getEmails, data, { headers: authHeader() })
-    setLoading(false)
 }

@@ -34,15 +34,15 @@ function AttributesExpression(
 
     const [students, setStudents] = useStateIfMounted(null)
 
-    const {setRootPath, setCreate} = useContext(PathContext)
+    const {setRootPath, setCreate, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataFunctions(setDataFunctions)
-        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes)
+        fetchDataFunctions(setDataFunctions, handleAccess)
+        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes, handleAccess)
         setCreate(true)
         setRootPath("Атрибуты")
         if (id !== null) {
-            fetchDataAttributeById(id, setNameAttribute, setSelectedGroupName, setExpression, setStudents)
+            fetchDataAttributeById(id, setNameAttribute, setSelectedGroupName, setExpression, setStudents, handleAccess)
         }
         return () => {
             setSelectedGroupName("")

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button} from "@mui/material";
 import '../../styles/CreationPages.css'
 import {useNavigate} from "react-router-dom";
 import {createAttribute, updateAttribute} from "../../util/AsyncFunctionAttributes";
 import {createFilter, updateFilter} from "../../util/AsyncFunctionFilters";
+import {PathContext} from "../../context";
 
 function EndBlock(
     {
@@ -75,6 +76,8 @@ function ButtonEnd(
         navigate(path);
     }
 
+    const {handleAccess} = useContext(PathContext)
+
     return (
         <Button
             onClick={() => {
@@ -100,14 +103,14 @@ function ButtonEnd(
                 if (checkStudents && checkSelectedOption && checkCorrectName && localUnique) {
                     id !== null ?
                         mailOption !== undefined ?
-                            updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus, arraySelectedStudents)
+                            updateFilter(id, name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus, arraySelectedStudents, handleAccess)
                             :
-                            updateAttribute(id, name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus, arraySelectedStudents)
+                            updateAttribute(id, name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus, arraySelectedStudents, handleAccess)
                         :
                         mailOption !== undefined ?
-                            createFilter(name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus, arraySelectedStudents)
+                            createFilter(name, selectedStudents, mailOption, setLoading, redirect, expression, setStatus, arraySelectedStudents, handleAccess)
                             :
-                            createAttribute(name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus, arraySelectedStudents)
+                            createAttribute(name, selectedStudents, selectedGroupName, setLoading, redirect, expression, setStatus, arraySelectedStudents, handleAccess)
                     setCorrectName(true)
                 }
             }}

@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import IconButton from "@mui/material/IconButton";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {useStateIfMounted} from "use-state-if-mounted";
 import NotificationPopover from "./NotoficationPopover";
 import {fetchNotification} from "../../../util/AsyncFunctionStaff";
+import {PathContext} from "../../../context";
 
 function Notification() {
 
@@ -13,9 +14,11 @@ function Notification() {
 
     const [dataNotification, setDataNotification] = useStateIfMounted([])
 
+    const {handleAccess} = useContext(PathContext)
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        fetchNotification(setLoading, setDataNotification)
+        fetchNotification(setLoading, setDataNotification, handleAccess)
     };
 
     return (

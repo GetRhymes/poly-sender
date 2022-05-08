@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import PopupLoading from "../../components/PopupLoading";
 import axios from "axios";
-import authHeader, {URL_getAccess} from "../../util/api";
+import {URL_getAccess} from "../../util/api";
 
 function SignUp() {
 
@@ -87,8 +87,9 @@ function SignUp() {
                 department: department,
                 highSchool: highSchool
             }
-            await axios.post(URL_getAccess, data)
-            goBack()
+            const response = await axios.post(URL_getAccess, data)
+            if (response.data.status === 'success') goBack()
+            else setCorrectEmail(false)
         }
         setLoading(false)
     }

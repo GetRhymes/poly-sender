@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import '../../styles/Create.css'
 import {useNavigate} from "react-router-dom";
 import PopupButton from "./PopupButton";
@@ -7,6 +7,7 @@ import {FormControl, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
 import {createGroupName} from "../../util/AsyncFunctionAttributes";
+import {PathContext} from "../../context";
 
 function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) {
 
@@ -37,6 +38,8 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
 
     const [uniqueGroupName, setUniqueGroupName] = useState(true)
 
+    const {handleAccess} = useContext(PathContext)
+
     let navigate = useNavigate();
 
     function redirect() {
@@ -49,7 +52,7 @@ function PopupCreate({active, setActive, endPoint, setLoading, dataGroupNames}) 
             if (!/[^a-zA-Zа-яА-Я0-9\s]+/.test(groupName)) {
                 const finder = dataGroupNames.find((item) => item.groupName.toLowerCase() === groupName.toLowerCase())
                 if (finder === undefined) {
-                    createGroupName(groupName, setLoading)
+                    createGroupName(groupName, setLoading, handleAccess)
                     setIncorrectGroupName(false)
                     setActive(false)
                 } else setUniqueGroupName(false)
