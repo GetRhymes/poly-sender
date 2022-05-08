@@ -170,7 +170,7 @@ function createData(id, emptyStart, lastName, firstName, patronymic, admin, user
     return {id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit};
 }
 
-export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex, setLoading}) {
+export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex, setLoading, setData}) {
 
     const {handleAccess} = useContext(PathContext)
 
@@ -203,7 +203,7 @@ export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex
                             staff.date,
                             <IconButton onClick={(event) => {
                                 event.stopPropagation()
-                                deleteUser(staff.id, setLoading, handleAccess)
+                                deleteUser(staff.id, setLoading, handleAccess, setData)
                             }}>
                                 <ClearIcon fontSize="medium"/>
                             </IconButton>

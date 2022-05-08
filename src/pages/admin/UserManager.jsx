@@ -66,6 +66,7 @@ function UserManager() {
                                 setPopupActive={setPopupActive}
                                 setIndex={setIndex}
                                 setLoading={setLoading}
+                                setData={setDataUsers}
                             />
                         </Box>
                 }

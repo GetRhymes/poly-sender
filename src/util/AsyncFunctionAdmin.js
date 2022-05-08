@@ -77,11 +77,12 @@ export async function changeRoles(id, admin, user, handleAccess) {
     }
 }
 
-export async function deleteUser(id, setLoading, handleAccess) {
+export async function deleteUser(id, setLoading, handleAccess, setData) {
     try {
         setLoading(true)
         const data = {"id": id}
         await axios.post(URL_deleteUser, data, {headers: authHeader()})
+        await fetchDataUsers(setData, setLoading, handleAccess)
         setLoading(false)
     } catch (e) {
         handleAccess(403)
