@@ -7,13 +7,14 @@ import Divider from "@mui/material/Divider";
 function PopupInfoStudent({popupActive, setPopupActive, info, attributes}) {
 
     const sxFirst = {
-        width: "170px",
+        width: "200px",
         color: "#366ac3",
         fontStyle: "normal",
         flex: "unset"
     }
 
     const sxSecond = {
+        width: "350px",
         color: "#494949",
         fontStyle: "normal",
     }
