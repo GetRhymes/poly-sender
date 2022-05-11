@@ -76,7 +76,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 style={{
                     height: rowHeight,
                     padding: "8px",
-                    justifyContent: columnIndex === 4 || columnIndex === 5 ? 'center' : 'unset'
+                    justifyContent: columnIndex === 5 || columnIndex === 6 ? 'center' : 'unset'
                 }}
                 align={
                     (columnIndex != null && columns[columnIndex].numeric) || false
@@ -84,7 +84,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         : 'left'
                 }
             >
-                {columnIndex === 4 || columnIndex === 5 ?
+                {columnIndex === 5 || columnIndex === 6 ?
                     <CheckboxUser id={cellData.id} checked={cellData.value}/> : cellData}
             </TableCell>
         );
@@ -101,7 +101,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                 style={{
                     height: headerHeight,
                     padding: "8px",
-                    justifyContent: columnIndex === 4 || columnIndex === 5 ? 'center' : 'unset'
+                    justifyContent: columnIndex === 5 || columnIndex === 6 || columnIndex === 4 ? 'center' : 'unset'
                 }}
                 align={columns[columnIndex].numeric || false ? 'right' : 'left'}
             >
@@ -166,8 +166,9 @@ MuiVirtualizedTable.propTypes = {
 
 const VirtualizedTable = styled(MuiVirtualizedTable)(styles);
 
-function createData(id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit) {
-    return {id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit};
+function createData(id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit, email) {
+    console.log({id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit})
+    return {id, emptyStart, lastName, firstName, patronymic, admin, user, date, edit, email};
 }
 
 export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex, setLoading, setData}) {
@@ -192,6 +193,7 @@ export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex
                             staff.lastName,
                             staff.firstName,
                             staff.patronymic,
+                            // staff.email,
                             {
                                 "id": staff.id,
                                 "value": staff.admin
@@ -206,7 +208,8 @@ export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex
                                 deleteUser(staff.id, setLoading, handleAccess, setData)
                             }}>
                                 <ClearIcon fontSize="medium"/>
-                            </IconButton>
+                            </IconButton>,
+                            staff.email
                         )
                     }}
                 columns={[
@@ -216,19 +219,24 @@ export default function UsersTable({dataUsers, setUser, setPopupActive, setIndex
                         dataKey: 'emptyStart'
                     },
                     {
-                        width: 200,
+                        width: 150,
                         label: 'Фамилия',
                         dataKey: 'lastName'
                     },
                     {
-                        width: 200,
+                        width: 150,
                         label: 'Имя',
                         dataKey: 'firstName'
                     },
                     {
-                        width: 200,
+                        width: 150,
                         label: 'Отчество',
                         dataKey: 'patronymic'
+                    },
+                    {
+                        width: 200,
+                        label: 'Почта',
+                        dataKey: 'email'
                     },
                     {
                         width: 200,

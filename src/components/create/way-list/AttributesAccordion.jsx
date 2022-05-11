@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
     Accordion,
     AccordionDetails,
@@ -16,7 +16,6 @@ import List from "@mui/material/List";
 function AttributesAccordion({dataAccordions, setSample, height}) {
 
     const styleListItem = {
-        // height: "35px",
         paddingTop: "4px",
         paddingBottom: "4px"
     }
@@ -80,7 +79,7 @@ function AttributesAccordion({dataAccordions, setSample, height}) {
                         <AccordionDetails sx={styleAccordion} key={id + "det"}>
                             <Divider/>
                             <List>
-                                {attributes.map((item) =>
+                                {attributes.sort().map((item) =>
                                     <ListItem sx={styleListItem} key={item + "listItem"}>
                                         <Checkbox
                                             id={item}

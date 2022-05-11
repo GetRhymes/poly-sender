@@ -16,7 +16,7 @@ function AttributesBodyBlock(
 ) {
 
     const checkOnlyGroupName = (attributes) => attributes.groupName.includes(groupName.groupName)
-    const checkOnlyAttributeName = (attributes) => attributes.attributeName.includes(searchValue)
+    const checkOnlyAttributeName = (attributes) => attributes.attributeName.toLowerCase().includes(searchValue.toLowerCase())
 
     return (
         <div className="attributes__body__block">

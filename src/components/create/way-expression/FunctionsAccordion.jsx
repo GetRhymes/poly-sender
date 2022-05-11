@@ -70,12 +70,12 @@ function FunctionsAccordion({dataFunctions, height, focus, setExpression, setPos
                         <AccordionDetails sx={styleAccordion} key={id + "det"}>
                             <Divider/>
                             <List>
-                                {attributes.map((item) =>
+                                {attributes.sort().map((item) =>
                                     <ListItem sx={styleListItem} key={item + "listItem"}>
                                         <Button
                                             sx={addButtonStyle}
-                                            onClick={()=> {
-                                                setExpression((expression)=> {
+                                            onClick={() => {
+                                                setExpression((expression) => {
                                                     const position = focus.current.selectionEnd
                                                     const left = expression.substring(0, position) + groupName + '[' + item + ']'
                                                     setPosition(left.length)

@@ -19,7 +19,7 @@ function FilterBodyBlock(
             <List>
                 {dataFilters.map((filter) => {
                     if (searchValue !== null) {
-                        if (filter.filterName.includes(searchValue)) {
+                        if (filter.filterName.toLowerCase().includes(searchValue.toLowerCase())) {
                             return (
                                 <FilterAccordionItem
                                     key={filter.id}

@@ -69,6 +69,7 @@
     width: 200px;
 }
 .body__accordion__row__right {
+    cursor: pointer;
     width: 250px;
 }
 
