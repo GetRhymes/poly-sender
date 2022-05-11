@@ -33,7 +33,6 @@ function NotificationItem({notification, setLoading, setData}) {
     };
 
     const {setLoadFilterAfterNot, setLoadAttrAfterNot, handleAccess} = useContext(PathContext)
-
     return (
         <div className="notification__item">
             <p className="notification__label">{getNameTypeByType(notification.type)}</p>
@@ -63,7 +62,11 @@ function NotificationItem({notification, setLoading, setData}) {
             </ToggleButtonGroup>
             <div className="notification__action">
                 <Button
-                    onClick={() => acceptRequest(setLoading, notification.idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot, handleAccess)}
+                    onClick={() => {
+                        if (type !== null) {
+                            acceptRequest(setLoading, notification.idNotification, type, setData, setLoadFilterAfterNot, setLoadAttrAfterNot, handleAccess)
+                        }
+                    }}
                     sx={buttonStyle}
                 >Принять</Button>
                 <Button

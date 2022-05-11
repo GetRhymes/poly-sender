@@ -5,9 +5,13 @@ import WarningIcon from '@mui/icons-material/Warning';
 import ReportIcon from '@mui/icons-material/Report';
 
 function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute, setSelectedGroupName, setLoading}) {
+
+    const id = localStorage.getItem('idStaff')
+
     return (
         <div className="attribute__card">
-            <div className={!attribute.link ? "attribute__card__header" : "attribute__card__header disabled__header"}>
+            <div
+                className={attribute.link || attribute.owner !== id ? "attribute__card__header disabled__header" : "attribute__card__header"}>
                 <p className="attribute__card__header__text">{attribute.attributeName}</p>
                 {
                     attribute.status === "warning" ?
@@ -22,7 +26,8 @@ function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute,
 
 
             </div>
-            <div className={!attribute.link ? "attribute__card__body" : "attribute__card__body disabled__body"}>
+            <div
+                className={attribute.link || attribute.owner !== id ? "attribute__card__body disabled__body" : "attribute__card__body"}>
                 <div className="attribute__card__body__info">
                     <AttributeRowInfo nameRow="Раздел:" valueRow={attribute.groupName} link={attribute.link}/>
                     <AttributeRowInfo nameRow="Студенты:" valueRow={attribute.students.length} link={attribute.link}/>
@@ -43,6 +48,7 @@ function AttributeCard({attribute, setId, setPopupShareActive, setNameAttribute,
                         setSelectedOption={setSelectedGroupName}
                         setLoading={setLoading}
                         link={attribute.link}
+                        basic={attribute.owner !== id}
                     />
                 </div>
             </div>

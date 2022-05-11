@@ -102,6 +102,7 @@ function FilterAccordionDetails(
                         selectedOption={filter.mode}
                         setSelectedOption={setSelectedMailOption}
                         link={filter.link}
+                        basic={false}
                     />
                     {filter.mode === "manual" ?
                         <Button

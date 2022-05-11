@@ -8,6 +8,7 @@ import authHeader, {
     URL_getAttributes,
     URL_getAttributesCurrentStaff,
     URL_getGroupAttributes,
+    URL_getGroupNames,
     URL_getGroupNamesCurrentStaff,
     URL_updateAttribute
 } from "./api";
@@ -80,6 +81,20 @@ export async function fetchDataAttributesCurrentStaff(setLoading, setData, handl
             "id": localStorage.getItem('idStaff')
         }
         const dataAttributes = await axios.post(URL_getAttributesCurrentStaff, data, {headers: authHeader()});
+        setData(dataAttributes.data);
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
+    }
+}
+
+export async function fetchDataAttributesWithBasic(setLoading, setData, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {
+            "id": localStorage.getItem('idStaff'),
+        }
+        const dataAttributes = await axios.post(URL_getAttributes, data, {headers: authHeader()});
         setData(dataAttributes.data);
         setLoading(false)
     } catch (e) {
@@ -192,13 +207,27 @@ export async function createGroupName(groupName, setLoading, handleAccess) {
     }
 }
 
-export async function fetchDataGroupNames(setLoading, setData, handleAccess) {
+export async function fetchDataGroupNamesCurrentStaff(setLoading, setData, handleAccess) {
     try {
         setLoading(true)
         const data = {
             "id": localStorage.getItem('idStaff'),
         }
         const dataGroupNames = await axios.post(URL_getGroupNamesCurrentStaff, data, {headers: authHeader()});
+        setData(dataGroupNames.data);
+        setLoading(false)
+    } catch (e) {
+        handleAccess(403)
+    }
+}
+
+export async function fetchDataGroupNamesWithBasic(setLoading, setData, handleAccess) {
+    try {
+        setLoading(true)
+        const data = {
+            "id": localStorage.getItem('idStaff'),
+        }
+        const dataGroupNames = await axios.post(URL_getGroupNames, data, {headers: authHeader()});
         setData(dataGroupNames.data);
         setLoading(false)
     } catch (e) {

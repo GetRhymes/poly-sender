@@ -8,7 +8,12 @@ import PopupShare from "../../components/PopupShare";
 import LoadingScreen from "../../components/LoadingScreen";
 import CleanBlock from "../../components/CleanBlock";
 import {PathContext} from "../../context";
-import {fetchDataAttributesCurrentStaff, fetchDataGroupNames} from "../../util/AsyncFunctionAttributes";
+import {
+    fetchDataAttributesCurrentStaff,
+    fetchDataAttributesWithBasic,
+    fetchDataGroupNamesCurrentStaff,
+    fetchDataGroupNamesWithBasic
+} from "../../util/AsyncFunctionAttributes";
 
 const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGroupName}) => {
 
@@ -34,16 +39,23 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
 
     const [groupName, setGroupName] = useStateIfMounted(null)
 
+    const [basic, setBasic] = useStateIfMounted(false)
+
     const {setRootPath, loadAttrAfterNot, handleAccess} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataGroupNames(setLoadingGroupNames, setDataGroupNames, handleAccess)
-        fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes, handleAccess)
+        if (basic) {
+            fetchDataAttributesWithBasic(setLoadingAttributes, setDataAttributes, handleAccess)
+            fetchDataGroupNamesWithBasic(setLoadingGroupNames, setDataGroupNames, handleAccess)
+        } else {
+            fetchDataGroupNamesCurrentStaff(setLoadingGroupNames, setDataGroupNames, handleAccess)
+            fetchDataAttributesCurrentStaff(setLoadingAttributes, setDataAttributes, handleAccess)
+        }
         setRootPath("Атрибуты")
         return (() => {
             setRootPath("")
         })
-    }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute, loadAttrAfterNot])
+    }, [loadingDeleteAttribute, loadingCreateGroupName, loadingDeleteGroupAttribute, loadAttrAfterNot, basic])
 
     function handleAttributesName(event) {
         const value = event.target.value
@@ -70,6 +82,8 @@ const ManageAttributes = ({idAttribute, setId, setNameAttribute, setSelectedGrou
                     dataGroupNames={dataGroupNames}
                     handleGroupName={setGroupName}
                     setLoading={setLoadingDeleteGroupAttribute}
+                    basic={basic}
+                    setBasic={setBasic}
                 />
                 {
                     dataAttributes.length === 0 ?

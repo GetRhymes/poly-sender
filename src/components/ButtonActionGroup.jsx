@@ -20,7 +20,8 @@ function ButtonActionGroup(
         selectedOption,
         setSelectedOption,
         setLoading,
-        link
+        link,
+        basic
     }
 ) {
 
@@ -35,7 +36,7 @@ function ButtonActionGroup(
 
     return (
         <ButtonGroup orientation={orientation} sx={{boxShadow: "unset", borderRadius: "12px"}}>
-            <Button disabled={link} onClick={() => {
+            <Button disabled={link || basic} onClick={() => {
                 redirect()
                 setName(name)
                 setId(id)
@@ -43,7 +44,7 @@ function ButtonActionGroup(
             }}>
                 <EditIcon/>
             </Button>
-            <Button disabled={link} onClick={() => {
+            <Button disabled={link || basic} onClick={() => {
                 setPopupShareActive(true)
                 setId(id)
             }}>

@@ -2,10 +2,10 @@ import React from 'react';
 import {Button} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-function ButtonCreate({setActive, setId}) {
+function ButtonCreate({setActive, setId, isAttr}) {
 
     const buttonStyle = {
-        marginTop: "20px",
+        marginTop: isAttr !== undefined ? "20px" : "0px",
         marginLeft: "20px",
         paddingRight: "13px",
         borderRadius: "30px",

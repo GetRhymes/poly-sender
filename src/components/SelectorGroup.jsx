@@ -3,7 +3,7 @@ import LabelInBlock from "./create/LabelInBlock";
 import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useStateIfMounted} from "use-state-if-mounted";
-import {fetchDataGroupNames} from "../util/AsyncFunctionAttributes";
+import {fetchDataGroupNamesCurrentStaff} from "../util/AsyncFunctionAttributes";
 import {PathContext} from "../context";
 
 function SelectorGroup({selectedGroupName, handleSelector}) {
@@ -11,7 +11,7 @@ function SelectorGroup({selectedGroupName, handleSelector}) {
     const {handleAccess} = useContext(PathContext)
 
     useEffect(() => {
-        fetchDataGroupNames(setLoading, setDataGroupNames, handleAccess)
+        fetchDataGroupNamesCurrentStaff(setLoading, setDataGroupNames, handleAccess)
     }, [])
 
     const [dataGroupNames, setDataGroupNames] = useStateIfMounted([])

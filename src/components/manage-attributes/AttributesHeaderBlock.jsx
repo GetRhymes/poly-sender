@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Autocomplete, Box, InputAdornment, TextField} from "@mui/material";
+import {Autocomplete, Box, Checkbox, FormControlLabel, InputAdornment, TextField,} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ButtonCreate from "../ButtonCreate";
 import IconButton from "@mui/material/IconButton";
@@ -15,20 +15,27 @@ function AttributesHeaderBlock(
         dataGroupNames,
         handleGroupName,
         setLoading,
+        basic,
+        setBasic
     }
 ) {
 
     const containerStyle = {
-        marginTop: "10px",
         display: 'flex',
         alignItems: 'flex-end',
-        height: "30px",
+        height: "55px",
         justifyContent: "space-between"
     }
 
     const containerFilters = {
         display: "flex",
         flexDirection: "row"
+    }
+
+    const containerFiltersAndCheck = {
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "20px"
     }
 
     const adornment = (
@@ -45,42 +52,64 @@ function AttributesHeaderBlock(
 
     const {handleAccess} = useContext(PathContext)
 
+    const id = localStorage.getItem('idStaff')
+
     return (
         <Box sx={containerStyle}>
-            <Box sx={containerFilters}>
-                <TextField
-                    onChange={handleSearchValue}
-                    variant="standard"
-                    label="Введите название атрибута"
-                    sx={{width: "300px"}}
-                    InputProps={{startAdornment: (adornment)}}
-                />
-                <Autocomplete
-                    clearOnEscape
-                    disabled={dataGroupNames.length === 0}
-                    getOptionLabel={(option) => option.groupName}
-                    options={dataGroupNames}
-                    onChange={(event, value) => handleGroupName(value)}
-                    sx={{width: 300, marginLeft: "20px"}}
-                    renderOption={(props, option) => (
-                        <div {...props} style={styleOption}>
-                            {option.groupName}
-                            <IconButton onClick={((event) => {
-                                event.stopPropagation()
-                                deleteGroupName(option.idGroupName, setLoading, handleAccess)
-                            })}>
-                                <ClearIcon/>
-                            </IconButton>
-                        </div>
-                    )}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Выберите раздел" variant="standard"/>
-                    )}
+            <Box sx={containerFiltersAndCheck}>
+                <Box sx={containerFilters}>
+                    <TextField
+                        onChange={handleSearchValue}
+                        variant="standard"
+                        label="Введите название атрибута"
+                        sx={{width: "300px"}}
+                        InputProps={{startAdornment: (adornment)}}
+                    />
+                    <Autocomplete
+                        clearOnEscape
+                        disabled={dataGroupNames.length === 0}
+                        getOptionLabel={(option) => option.groupName}
+                        options={dataGroupNames}
+                        onChange={(event, value) => handleGroupName(value)}
+                        sx={{width: 300, marginLeft: "20px"}}
+                        renderOption={(props, option) => (
+                            <div {...props} style={styleOption}>
+                                {option.groupName}
+                                {
+                                    option.idStaff === id ?
+                                        <IconButton onClick={((event) => {
+                                            event.stopPropagation()
+                                            deleteGroupName(option.idGroupName, setLoading, handleAccess)
+                                        })}>
+                                            <ClearIcon/>
+                                        </IconButton>
+                                        :
+                                        null
+                                }
+                            </div>
+                        )}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Выберите раздел" variant="standard"/>
+                        )}
+                    />
+                </Box>
+                <FormControlLabel
+                    sx={{
+                        marginTop: "10px",
+                        height: "25px",
+                    }}
+                    value="end"
+                    control={<Checkbox checked={basic} onChange={(event) => {
+                        setBasic(event.target.checked)
+                    }}/>}
+                    label="Бызовые атрибуты"
+                    labelPlacement="end"
                 />
             </Box>
             <ButtonCreate
                 setActive={setPopupCreateActive}
                 setId={setId}
+                isAttr={true}
             />
         </Box>
     );
